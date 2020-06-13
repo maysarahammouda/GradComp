@@ -1,0 +1,25 @@
+Vocabluary size: 10000
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  1062
+Percentage Done: 0.941620%    |  Perplexity:  9698.21     |   Speed:   592.40 wps
+Percentage Done: 10.922787%    |  Perplexity:  3592.68     |   Speed:   576.90 wps
+Percentage Done: 20.903955%    |  Perplexity:  2249.53     |   Speed:   581.59 wps
+Percentage Done: 30.885122%    |  Perplexity:  1802.32     |   Speed:   574.21 wps
+Percentage Done: 40.866290%    |  Perplexity:  1573.28     |   Speed:   572.25 wps
+Percentage Done: 50.847458%    |  Perplexity:  1438.31     |   Speed:   563.61 wps
+Percentage Done: 60.828625%    |  Perplexity:  1346.80     |   Speed:   563.05 wps
+Percentage Done: 70.809793%    |  Perplexity:  1263.97     |   Speed:   567.49 wps
+Percentage Done: 80.790960%    |  Perplexity:  1206.80     |   Speed:   559.23 wps
+Percentage Done: 90.772128%    |  Perplexity:  1161.30     |   Speed:   522.87 wps
+Train perplexity at epoch 0:  1131.27
+Epoch Size=  84
+Validation perplexity at epoch 0:   766.99
+==================================================
+|                    Testing                     |
+==================================================
+Epoch Size=  2355
+Test Perplexity:   734.95
+
+======================== Done! ========================

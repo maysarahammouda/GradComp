@@ -1,0 +1,95 @@
+2020-06-13 02:41:53,771 DEBUG   MainThread:32248 [wandb_config.py:_load_defaults():133] no defaults not found in config-defaults.yaml
+2020-06-13 02:41:54,089 DEBUG   MainThread:32248 [meta.py:_setup_code_git():49] probe for git information
+2020-06-13 02:41:54,244 DEBUG   MainThread:32248 [run_manager.py:__init__():547] Initialized sync for GradientCompression/3ogn9ace
+2020-06-13 02:41:54,247 INFO    MainThread:32248 [run_manager.py:wrap_existing_process():1147] wrapping existing process 31212
+2020-06-13 02:41:54,371 INFO    MainThread:32248 [run_manager.py:init_run():926] system metrics and metadata threads started
+2020-06-13 02:41:54,371 INFO    MainThread:32248 [run_manager.py:init_run():965] upserting run before process can begin, waiting at most 10 seconds
+2020-06-13 02:41:54,638 INFO    Thread-23 :32248 [run_manager.py:_upsert_run():1054] saving pip packages
+2020-06-13 02:41:54,646 INFO    Thread-23 :32248 [run_manager.py:_upsert_run():1056] initializing streaming files api
+2020-06-13 02:41:54,647 INFO    Thread-23 :32248 [run_manager.py:_upsert_run():1063] unblocking file change observer, beginning sync with W&B servers
+2020-06-13 02:41:54,647 INFO    MainThread:32248 [run_manager.py:wrap_existing_process():1164] informing user process we are ready to proceed
+2020-06-13 02:41:54,652 INFO    MainThread:32248 [run_manager.py:_sync_etc():1296] entering loop for messages from user process
+2020-06-13 02:41:55,092 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\config.yaml
+2020-06-13 02:41:55,301 INFO    Thread-10 :32248 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\requirements.txt
+2020-06-13 02:41:55,302 INFO    Thread-10 :32248 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:41:55,303 INFO    Thread-10 :32248 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\output.log
+2020-06-13 02:41:56,094 INFO    Thread-10 :32248 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-summary.json
+2020-06-13 02:41:56,096 INFO    Thread-10 :32248 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\media\graph\graph_0_summary_fc978971.graph.json
+2020-06-13 02:41:56,097 INFO    Thread-10 :32248 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\media
+2020-06-13 02:41:56,098 INFO    Thread-10 :32248 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\media\graph
+2020-06-13 02:41:57,098 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-summary.json
+2020-06-13 02:42:09,128 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-history.jsonl
+2020-06-13 02:42:09,130 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-summary.json
+2020-06-13 02:42:11,138 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:42:24,186 INFO    Thread-10 :32248 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:42:27,203 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:42:43,284 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:42:55,369 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:42:59,402 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:43:15,465 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:43:27,506 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:43:31,515 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:43:47,583 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:43:58,632 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:44:03,646 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:44:19,712 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:44:29,772 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:44:35,799 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:44:51,845 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:44:59,867 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:45:07,892 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:45:21,964 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-history.jsonl
+2020-06-13 02:45:21,964 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-summary.json
+2020-06-13 02:45:22,967 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:45:30,990 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:45:39,013 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:45:55,048 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:46:01,092 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:46:11,127 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:46:27,194 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:46:32,208 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:46:43,246 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:46:59,323 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:47:03,338 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:47:15,382 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:47:31,459 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:47:34,468 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:47:47,524 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:48:03,582 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:48:05,589 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:48:19,643 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:48:35,734 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:48:36,736 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:48:51,811 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:49:03,876 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-history.jsonl
+2020-06-13 02:49:03,876 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-summary.json
+2020-06-13 02:49:07,913 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:49:07,914 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:49:23,995 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:49:39,083 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:49:40,085 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:49:56,162 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:50:10,235 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:50:12,252 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:50:28,343 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:50:42,401 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:50:44,407 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:51:00,478 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:51:13,538 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:51:16,550 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:51:32,606 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:51:44,667 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:51:48,707 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:52:04,783 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:52:15,847 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:52:20,863 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:52:35,953 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:52:47,051 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:52:51,069 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-history.jsonl
+2020-06-13 02:52:52,073 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:52:52,073 INFO    Thread-10 :32248 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-summary.json
+Compression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:52:47,051 INFO    Thread-10 :32248 [3ogn9ace:run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-events.jsonl
+2020-06-13 02:52:51,069 INFO    Thread-10 :32248 [3ogn9ace:run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-history.jsonl
+2020-06-13 02:52:52,073 INFO    Thread-10 :32248 [3ogn9ace:run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-metadata.json
+2020-06-13 02:52:52,073 INFO    Thread-10 :32248 [3ogn9ace:run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradientCompression\wandb\run-20200613_014152-3ogn9ace\wandb-summary.json

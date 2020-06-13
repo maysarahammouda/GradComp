@@ -1,0 +1,17 @@
+Vocabluary size: 95
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  17
+Train perplexity at epoch 0:    79.95
+Epoch Size=  17
+Validation perplexity at epoch 0:    63.53
+==================================================
+|                    Testing                     |
+==================================================
+Epoch Size=  104
+Test Perplexity:    63.90
+Traceback (most recent call last):
+  File "main.py", line 183, in <module>
+    wandb.log({"Trainable Parameters": param_with_grads})
+NameError: name 'param_with_grads' is not defined

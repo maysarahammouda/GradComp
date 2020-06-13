@@ -1,0 +1,43 @@
+Vocabluary size: 10000
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  1327
+0.007535795026375283    perplexity:  9679.85     speed:   612.18 wps
+0.10700828937452901    perplexity:  3040.26     speed:   475.32 wps
+0.20648078372268275    perplexity:  2009.24     speed:   491.56 wps
+0.3059532780708365    perplexity:  1651.39     speed:   508.12 wps
+0.4054257724189902    perplexity:  1468.13     speed:   513.53 wps
+0.5048982667671439    perplexity:  1353.99     speed:   519.43 wps
+0.6043707611152976    perplexity:  1262.48     speed:   523.75 wps
+0.7038432554634514    perplexity:  1197.99     speed:   526.04 wps
+0.8033157498116051    perplexity:  1150.07     speed:   525.65 wps
+0.9027882441597589    perplexity:  1111.08     speed:   529.22 wps
+Train perplexity at epoch 0:  1078.72
+Epoch Size=  105
+Validation perplexity at epoch 0:   752.49
+Epoch Size=  1327
+0.007535795026375283    perplexity:   903.17     speed:   569.86 wps
+0.10700828937452901    perplexity:   817.26     speed:   556.17 wps
+0.20648078372268275    perplexity:   826.13     speed:   555.82 wps
+0.3059532780708365    perplexity:   820.97     speed:   556.23 wps
+0.4054257724189902    perplexity:   820.87     speed:   557.02 wps
+0.5048982667671439    perplexity:   819.14     speed:   552.43 wps
+0.6043707611152976    perplexity:   810.04     speed:   549.54 wps
+0.7038432554634514    perplexity:   804.33     speed:   550.11 wps
+0.8033157498116051    perplexity:   800.70     speed:   549.09 wps
+0.9027882441597589    perplexity:   797.21     speed:   547.83 wps
+Train perplexity at epoch 1:   793.13
+Epoch Size=  105
+Validation perplexity at epoch 1:   711.21
+==================================================
+|                    Testing                     |
+==================================================
+Epoch Size=  2355
+Test Perplexity:   680.58
+
+Number of Parameters: 19780400
+
+The model has been saved to the saved_models folder!
+
+======================== Done! ========================

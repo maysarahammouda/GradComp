@@ -1,0 +1,49 @@
+Vocabluary size: 10000
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  1327
+0.007535795026375283    perplexity:  7863.68     speed:   520.96 wps
+0.10700828937452901    perplexity:  1389.92     speed:   526.90 wps
+0.20648078372268275    perplexity:  1130.64     speed:   517.14 wps
+0.3059532780708365    perplexity:  1020.79     speed:   511.46 wps
+0.4054257724189902    perplexity:   964.58     speed:   521.39 wps
+0.5048982667671439    perplexity:   927.67     speed:   526.86 wps
+0.6043707611152976    perplexity:   893.25     speed:   530.40 wps
+0.7038432554634514    perplexity:   869.11     speed:   534.22 wps
+0.8033157498116051    perplexity:   850.84     speed:   536.01 wps
+0.9027882441597589    perplexity:   833.69     speed:   538.82 wps
+Train perplexity at epoch 0:   817.91
+Epoch Size=  105
+Validation perplexity at epoch 0:   656.81
+Epoch Size=  1327
+0.007535795026375283    perplexity:   758.28     speed:   575.38 wps
+0.10700828937452901    perplexity:   667.99     speed:   569.42 wps
+0.20648078372268275    perplexity:   678.87     speed:   558.41 wps
+0.3059532780708365    perplexity:   668.14     speed:   553.45 wps
+0.4054257724189902    perplexity:   662.22     speed:   505.94 wps
+0.5048982667671439    perplexity:   656.61     speed:   499.03 wps
+0.6043707611152976    perplexity:   642.70     speed:   495.26 wps
+0.7038432554634514    perplexity:   632.81     speed:   494.60 wps
+0.8033157498116051    perplexity:   624.41     speed:   493.16 wps
+0.9027882441597589    perplexity:   614.68     speed:   491.47 wps
+Train perplexity at epoch 1:   605.28
+Epoch Size=  105
+Validation perplexity at epoch 1:   508.49
+==================================================
+|                    Testing                     |
+==================================================
+Epoch Size=  2355
+Test Perplexity:   494.73
+
+Number of Parameters: 19780400
+Traceback (most recent call last):
+  File "main.py", line 177, in <module>
+    save_model(model)
+  File "C:\Users\ltopuser\GradientCompression\utils.py", line 32, in save_model
+    torch.save(model, f=os.path.join("saved_models", dt_string))
+  File "C:\Users\ltopuser\.conda\envs\master\lib\site-packages\torch\serialization.py", line 370, in save
+    _legacy_save(obj, opened_file, pickle_module, pickle_protocol)
+  File "C:\Users\ltopuser\.conda\envs\master\lib\site-packages\torch\serialization.py", line 443, in _legacy_save
+    pickler.dump(obj)
+AttributeError: Can't pickle local object 'TorchHistory.add_log_hooks_to_pytorch_module.<locals>.<lambda>'

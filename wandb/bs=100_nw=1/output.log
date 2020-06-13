@@ -1,0 +1,29 @@
+Vocabluary size: 10000
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  265
+Percentage Done: 3.773585%    |  Perplexity:  7945.93     |   Speed:  1059.77 wps
+Percentage Done: 13.584906%    |  Perplexity:  2843.77     |   Speed:  1048.59 wps
+Percentage Done: 23.396226%    |  Perplexity:  2011.11     |   Speed:  1033.87 wps
+Percentage Done: 33.207547%    |  Perplexity:  1680.19     |   Speed:  1015.12 wps
+Percentage Done: 43.018868%    |  Perplexity:  1484.19     |   Speed:  1013.49 wps
+Percentage Done: 52.830189%    |  Perplexity:  1361.75     |   Speed:  1018.79 wps
+Percentage Done: 62.641509%    |  Perplexity:  1277.20     |   Speed:  1020.53 wps
+Percentage Done: 72.452830%    |  Perplexity:  1214.57     |   Speed:  1016.63 wps
+Percentage Done: 82.264151%    |  Perplexity:  1163.36     |   Speed:  1008.03 wps
+Percentage Done: 92.075472%    |  Perplexity:  1122.93     |   Speed:  1004.62 wps
+Train perplexity at epoch 0:  1098.29
+Epoch Size=  21
+Validation perplexity at epoch 0:   749.43
+==================================================
+|                    Testing                     |
+==================================================
+Epoch Size=  2355
+Test Perplexity:   712.57
+Traceback (most recent call last):
+  File "main.py", line 182, in <module>
+    total_num_params, param_with_grads = get_num_parameters(model)
+  File "C:\Users\ltopuser\GradientCompression\utils.py", line 23, in get_num_parameters
+    param_with_grads += np.prod(param.shape)
+UnboundLocalError: local variable 'param_with_grads' referenced before assignment
