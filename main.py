@@ -14,8 +14,6 @@ from torchsummary import summary
 # import tqdm
 # import math
 
-# torch.nn.utils.parameters_to_vector(parameters)
-
 ################################# Command Line Arguments  #################################
 
 # Reading the arguments from the command line
@@ -53,12 +51,10 @@ seed = args.seed
 use_gpu = args.use_gpu
 save = args.save
 
-# batch_size = batch_size / accumulation_steps
-
 # dataset_name = "test"
 num_epochs = 1
-batch_size = 20
-accumulation_steps = 5
+batch_size = 10
+accumulation_steps = 10
 # hidden_size = 30
 # num_steps = 2
 
@@ -89,10 +85,11 @@ def run_epoch(model, data, is_train=False, lr=1.0):
     iters = 0
     criterion = nn.CrossEntropyLoss()
     optimizer = SGD(model.parameters(), lr=lr)
+    # model.zero_grad()
 
     for batch_idx, (input, target) in enumerate(batch_generator(data, model.batch_size, model.num_steps)):
         # print(batch_idx)
-        model.zero_grad()
+        # model.zero_grad()
         inputs = Variable(torch.from_numpy(input.astype(np.int64)).transpose(0, 1).contiguous())
         targets = Variable(torch.from_numpy(target.astype(np.int64)).transpose(0, 1).contiguous())
         hidden = repackage_hidden(hidden)
@@ -107,16 +104,32 @@ def run_epoch(model, data, is_train=False, lr=1.0):
         costs += float(loss.data) * model.num_steps
         iters += model.num_steps
 
+        grads = []
+        grad = []
         if is_train:
             # model.zero_grad()
-            optimizer.zero_grad()  # set all weight grads from previous training iters to 0
+            # optimizer.zero_grad()  # set all weight grads from previous training iters to 0
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 0.25)
             # optimizer.step()
+            # print("#############", batch_idx+1)
+            # for param in model.parameters():
+            #     grad.append(param.grad.view(-1))
+            # # print (len(grad))
+            # print (grad[0:3])
+            # # print (grad[1])
 
             if (batch_idx+1) % accumulation_steps == 0:
                 # print("batch_idx:",batch_idx+1)
                 optimizer.step()
+                # print("*****", batch_idx+1)
+                # for param in model.parameters():
+                #     grads.append(param.grad.view(-1))
+                # # print (len(grads))
+                # print (grads[0:3])
+                # print(grads)
+                    # gard = np.array(grads)
+                    # print(grad.shape)
                 model.zero_grad()
 
             if batch_idx % (epoch_size // 10) == 10:
@@ -158,32 +171,34 @@ if __name__ == "__main__":
         lr_decay = lr_decay_factor ** max(epoch - m_flat_lr, 0)
         lr = lr * lr_decay
 
-        train_p = run_epoch(model, train_data, True, lr)
-        print('Train perplexity at epoch {}: {:8.2f}'.format(epoch, train_p))
+        train_ppl = run_epoch(model, train_data, True, lr)
+        print('Train perplexity at epoch {}: {:8.2f}'.format(epoch, train_ppl))
 
-        valid_p = run_epoch(model, valid_data)
-        print('Validation perplexity at epoch {}: {:8.2f}'.format(epoch, valid_p))
+        valid_ppl = run_epoch(model, valid_data)
+        print('Validation perplexity at epoch {}: {:8.2f}'.format(epoch, valid_ppl))
 
         # logging the ppl values to wandb
-        wandb.log({"Train perplexity": train_p})
-        wandb.log({"Validation perplexity": valid_p})
+        wandb.log({"Train perplexity": train_ppl})
+        wandb.log({"Validation perplexity": valid_ppl})
 
     print("="*50)
     print("|"," "*18,"Testing"," "*19,"|")
     print("="*50)
 
     model.batch_size = 1 # to make sure we process all the data
-    test_p = run_epoch(model, test_data)
-    print('Test Perplexity: {:8.2f}'.format(test_p))
+    test_ppl = run_epoch(model, test_data)
+    print('Test Perplexity: {:8.2f}'.format(test_ppl))
 
     # logging the ppl values to wandb
-    wandb.log({"Test perplexity": test_p})
+    wandb.log({"Test perplexity": test_ppl})
     total_num_params, trainable_params, non_trainable_params = get_num_parameters(model)
     wandb.log({"Number of parameters": total_num_params})
     wandb.log({"Trainable Parameters": trainable_params})
     wandb.log({"Non-Trainable Parameters": non_trainable_params})
+
     # summary(model,input_size=(batch_size,num_steps,95))
-    # Saving the model
+
+    ## Saving the model
     # save_model(save, model)
 
     print("\n======================== Done! ========================")

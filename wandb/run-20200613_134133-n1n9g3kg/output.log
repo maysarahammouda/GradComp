@@ -1,0 +1,15 @@
+Vocabluary size: 10000
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  1327
+Traceback (most recent call last):
+  File "main.py", line 161, in <module>
+    train_p = run_epoch(model, train_data, True, lr)
+  File "main.py", line 113, in run_epoch
+    loss.backward()
+  File "C:\Users\ltopuser\.conda\envs\master\lib\site-packages\torch\tensor.py", line 198, in backward
+    torch.autograd.backward(self, gradient, retain_graph, create_graph)
+  File "C:\Users\ltopuser\.conda\envs\master\lib\site-packages\torch\autograd\__init__.py", line 98, in backward
+    Variable._execution_engine.run_backward(
+KeyboardInterrupt
