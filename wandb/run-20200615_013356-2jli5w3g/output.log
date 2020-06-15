@@ -1,0 +1,43 @@
+Vocabluary size: 39
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  8
+
+***batch_idx -- n workers***: 2
+torch.Size([17259])
+<class 'compressor.topk.TopKCompressor'>
+<class 'tuple'>
+<class 'tuple'>
+(17259, torch.Size([17259]))
+
+***batch_idx -- n workers***: 4
+torch.Size([17259])
+<class 'compressor.topk.TopKCompressor'>
+<class 'tuple'>
+<class 'tuple'>
+(17259, torch.Size([17259]))
+
+***batch_idx -- n workers***: 6
+torch.Size([17259])
+<class 'compressor.topk.TopKCompressor'>
+<class 'tuple'>
+<class 'tuple'>
+(17259, torch.Size([17259]))
+
+***batch_idx -- n workers***: 8
+torch.Size([17259])
+<class 'compressor.topk.TopKCompressor'>
+<class 'tuple'>
+<class 'tuple'>
+(17259, torch.Size([17259]))
+Train perplexity at epoch 0:    37.58
+Epoch Size=  8
+Validation perplexity at epoch 0:    33.41
+==================================================
+|                    Testing                     |
+==================================================
+Epoch Size=  36
+Test Perplexity:    34.24
+
+======================== Done! ========================

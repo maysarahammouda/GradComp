@@ -1,0 +1,49 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.9.1
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.8.3
+accumulation_steps:
+  desc: null
+  value: 4
+batch_size:
+  desc: null
+  value: 20
+data:
+  desc: null
+  value: datasets
+dataset_name:
+  desc: null
+  value: ptb
+dp_keep_prob:
+  desc: null
+  value: 0.5
+hidden_size:
+  desc: null
+  value: 650
+initial_lr:
+  desc: null
+  value: 1.0
+num_epochs:
+  desc: null
+  value: 2
+num_layers:
+  desc: null
+  value: 2
+num_steps:
+  desc: null
+  value: 35
+save:
+  desc: null
+  value: LSTM_model
+seed:
+  desc: null
+  value: 1111
+use_gpu:
+  desc: null
+  value: false

@@ -1,0 +1,25 @@
+Vocabluary size: 39
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  8
+
+batch## 1
+grad[0]: tensor([ 0.0000, -0.0003, -0.0003,  ...,  0.0000,  0.0000,  0.0000])
+grad[1]: tensor([ 2.1651e-06,  2.0497e-07,  3.5994e-06,  ...,  3.6116e-08,
+        -4.4187e-08, -1.6756e-07])
+
+batch## 2
+grad[0]: tensor([ 0.0000e+00, -1.8092e-04, -2.6775e-06,  ...,  0.0000e+00,
+         0.0000e+00,  0.0000e+00])
+grad[1]: tensor([1.2320e-06, 1.4598e-07, 6.5203e-06,  ..., 1.8312e-06, 5.5325e-07,
+        3.4233e-07])
+
+***batch_idx -- n workers***: 2
+grads length: 11
+Traceback (most recent call last):
+  File "main.py", line 187, in <module>
+    train_ppl = run_epoch(model, train_data, True, lr)
+  File "main.py", line 141, in run_epoch
+    pt_tensor_from_list = torch.FloatTensor(grads)
+ValueError: only one element tensors can be converted to Python scalars

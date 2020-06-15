@@ -8,6 +8,8 @@ import collections
 import numpy as np
 import datetime
 import torch
+import re
+
 # import pprint
 
 
@@ -62,8 +64,17 @@ def _read_words(filename):
     Returns:
         The words available in the file. It also adds <eos> at the end of each sentence.
     """
-    with io.open(filename, 'r', encoding='utf-8')as f:
-        return f.read().replace("\n", "<eos>").split()
+    # with io.open(filename, 'r', encoding='utf-8')as f:
+    #     return f.read().replace("\n", "<eos>").split()
+    with open(filename, 'r', encoding='utf-8') as f:
+        tokens = 0
+        words = []
+        for line in f:
+            tokens = line.lower().split() + ['<eos>']
+            for token in tokens:
+                words.append(token)
+        return words
+        # return re.findall('[a-zA-Z0-9]+', f.read().lower().split())
 
 
 def _build_vocab(filename):
@@ -143,7 +154,9 @@ def batch_generator(raw_data, batch_size, num_steps):
     raw_data = np.array(raw_data, dtype=np.int32)
 
     data_len = len(raw_data)
+    # print("len of raw data:", data_len)
     batch_len = data_len // batch_size
+    # print("batch_len:", batch_len)
     data = np.zeros([batch_size, batch_len], dtype=np.int32)
     for i in range(batch_size):
         data[i] = raw_data[batch_len * i:batch_len * (i + 1)]

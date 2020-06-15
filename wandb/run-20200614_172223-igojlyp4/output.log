@@ -1,0 +1,17 @@
+{'the': 0, 'and': 1, '<eos>': 2, 'of': 3, 'god': 4, 'was': 5, 'face': 6, 'there': 7, 'upon': 8, 'be': 9, 'beginning': 10, 'bible': 11, 'book': 12, 'called': 13, 'created': 14, 'darkness': 15, 'deep.': 16, 'earth': 17, 'earth.': 18, 'first': 19, 'form,': 20, 'genesis': 21, 'heaven': 22, 'in': 23, 'james': 24, 'king': 25, 'let': 26, 'light.': 27, 'light:': 28, 'moses:': 29, 'moved': 30, 'old': 31, 'said,': 32, 'spirit': 33, 'testament': 34, 'version': 35, 'void;': 36, 'waters.': 37, 'without': 38}
+Vocabluary size: 39
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  4
+Percentage Done: 25.000000%    |  Perplexity:    37.88     |   Speed:   940.18 wps
+Train perplexity at epoch 0:    38.02
+Epoch Size=  4
+Validation perplexity at epoch 0:    34.73
+==================================================
+|                    Testing                     |
+==================================================
+Epoch Size=  36
+Test Perplexity:    34.75
+
+======================== Done! ========================

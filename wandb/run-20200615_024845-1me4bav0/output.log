@@ -1,0 +1,42 @@
+Vocabluary size: 39
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  8
+
+batch## 1
+0
+
+batch## 2
+0
+
+batch## 3
+0
+
+batch## 4
+0
+
+batch## 5
+0
+
+batch## 6
+0
+
+batch## 7
+0
+
+batch## 8
+0
+
+Train perplexity at epoch 0:    36.93
+Epoch Size=  8
+
+Validation perplexity at epoch 0:    31.51
+==================================================
+|                    Testing                     |
+==================================================
+Epoch Size=  36
+
+Test Perplexity:    32.64
+
+======================== Done! ========================

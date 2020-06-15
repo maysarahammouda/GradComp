@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "main.py", line 149, in <module>
+    raw_data = raw_data(data_path=data, prefix=dataset_name)
+  File "C:\Users\ltopuser\GradComp\utils.py", line 125, in raw_data
+    word_to_id, id_to_word = _build_vocab(train_path)
+  File "C:\Users\ltopuser\GradComp\utils.py", line 84, in _build_vocab
+    data = _read_words(filename)
+  File "C:\Users\ltopuser\GradComp\utils.py", line 71, in _read_words
+    return f.read().lower().split().translate(translator)
+AttributeError: 'list' object has no attribute 'translate'

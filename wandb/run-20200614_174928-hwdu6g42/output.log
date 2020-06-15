@@ -1,0 +1,20 @@
+Vocabluary size: 39
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  4
+############# 1
+30
+1170
+30
+3600
+30
+3600
+Traceback (most recent call last):
+  File "main.py", line 188, in <module>
+    train_ppl = run_epoch(model, train_data, True, lr)
+  File "main.py", line 125, in run_epoch
+    print(len(b[0]))
+  File "C:\Users\ltopuser\.conda\envs\master\lib\site-packages\torch\tensor.py", line 451, in __len__
+    raise TypeError("len() of a 0-d tensor")
+TypeError: len() of a 0-d tensor

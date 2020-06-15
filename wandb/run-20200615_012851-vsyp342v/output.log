@@ -1,0 +1,14 @@
+Vocabluary size: 39
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  8
+
+***batch_idx -- n workers***: 2
+torch.Size([17259])
+Traceback (most recent call last):
+  File "main.py", line 195, in <module>
+    train_ppl = run_epoch(model, train_data, True, lr)
+  File "main.py", line 147, in run_epoch
+    Compressor = TopKCompressor()
+TypeError: __init__() missing 1 required positional argument: 'compress_ratio'

@@ -1,0 +1,31 @@
+Vocabluary size: 39
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  4
+batch######## 1
+grad[0].shape: torch.Size([1170])
+grad[1].shape: torch.Size([3600])
+grad[10].shape: torch.Size([39])
+batch######## 2
+grad[0].shape: torch.Size([1170])
+grad[1].shape: torch.Size([3600])
+grad[10].shape: torch.Size([39])
+batch######## 3
+grad[0].shape: torch.Size([1170])
+grad[1].shape: torch.Size([3600])
+grad[10].shape: torch.Size([39])
+batch######## 4
+grad[0].shape: torch.Size([1170])
+grad[1].shape: torch.Size([3600])
+grad[10].shape: torch.Size([39])
+Train perplexity at epoch 0:    38.02
+Epoch Size=  4
+Validation perplexity at epoch 0:    34.73
+==================================================
+|                    Testing                     |
+==================================================
+Epoch Size=  36
+Test Perplexity:    34.75
+
+======================== Done! ========================

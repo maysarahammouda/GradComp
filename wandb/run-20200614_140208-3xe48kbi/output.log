@@ -1,0 +1,153 @@
+Vocabluary size: 95
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  17
+batch_idx: 0
+batch_idx: 1
+batch_idx: 2
+batch_idx: 3
+batch_idx: 4
+batch_idx: 5
+batch_idx: 6
+batch_idx: 7
+batch_idx: 8
+batch_idx: 9
+batch_idx: 10
+batch_idx: 11
+batch_idx: 12
+batch_idx: 13
+batch_idx: 14
+batch_idx: 15
+batch_idx: 16
+Train perplexity at epoch 0:    79.95
+Epoch Size=  17
+batch_idx: 0
+batch_idx: 1
+batch_idx: 2
+batch_idx: 3
+batch_idx: 4
+batch_idx: 5
+batch_idx: 6
+batch_idx: 7
+batch_idx: 8
+batch_idx: 9
+batch_idx: 10
+batch_idx: 11
+batch_idx: 12
+batch_idx: 13
+batch_idx: 14
+batch_idx: 15
+batch_idx: 16
+Validation perplexity at epoch 0:    63.53
+==================================================
+|                    Testing                     |
+==================================================
+Epoch Size=  104
+batch_idx: 0
+batch_idx: 1
+batch_idx: 2
+batch_idx: 3
+batch_idx: 4
+batch_idx: 5
+batch_idx: 6
+batch_idx: 7
+batch_idx: 8
+batch_idx: 9
+batch_idx: 10
+batch_idx: 11
+batch_idx: 12
+batch_idx: 13
+batch_idx: 14
+batch_idx: 15
+batch_idx: 16
+batch_idx: 17
+batch_idx: 18
+batch_idx: 19
+batch_idx: 20
+batch_idx: 21
+batch_idx: 22
+batch_idx: 23
+batch_idx: 24
+batch_idx: 25
+batch_idx: 26
+batch_idx: 27
+batch_idx: 28
+batch_idx: 29
+batch_idx: 30
+batch_idx: 31
+batch_idx: 32
+batch_idx: 33
+batch_idx: 34
+batch_idx: 35
+batch_idx: 36
+batch_idx: 37
+batch_idx: 38
+batch_idx: 39
+batch_idx: 40
+batch_idx: 41
+batch_idx: 42
+batch_idx: 43
+batch_idx: 44
+batch_idx: 45
+batch_idx: 46
+batch_idx: 47
+batch_idx: 48
+batch_idx: 49
+batch_idx: 50
+batch_idx: 51
+batch_idx: 52
+batch_idx: 53
+batch_idx: 54
+batch_idx: 55
+batch_idx: 56
+batch_idx: 57
+batch_idx: 58
+batch_idx: 59
+batch_idx: 60
+batch_idx: 61
+batch_idx: 62
+batch_idx: 63
+batch_idx: 64
+batch_idx: 65
+batch_idx: 66
+batch_idx: 67
+batch_idx: 68
+batch_idx: 69
+batch_idx: 70
+batch_idx: 71
+batch_idx: 72
+batch_idx: 73
+batch_idx: 74
+batch_idx: 75
+batch_idx: 76
+batch_idx: 77
+batch_idx: 78
+batch_idx: 79
+batch_idx: 80
+batch_idx: 81
+batch_idx: 82
+batch_idx: 83
+batch_idx: 84
+batch_idx: 85
+batch_idx: 86
+batch_idx: 87
+batch_idx: 88
+batch_idx: 89
+batch_idx: 90
+batch_idx: 91
+batch_idx: 92
+batch_idx: 93
+batch_idx: 94
+batch_idx: 95
+batch_idx: 96
+batch_idx: 97
+batch_idx: 98
+batch_idx: 99
+batch_idx: 100
+batch_idx: 101
+batch_idx: 102
+batch_idx: 103
+Test Perplexity:    63.90
+
+======================== Done! ========================

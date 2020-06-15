@@ -1,0 +1,83 @@
+['The', 'Old', 'Testament', 'of', 'the', 'King', 'James', 'Version', 'of', 'the', 'Bible<eos>The', 'First', 'Book', 'of', 'Moses:', 'Called', 'Genesis<eos>In', 'the', 'beginning', 'God', 'created', 'the', 'heaven', 'and', 'the', 'earth.<eos>And', 'the', 'earth', 'was', 'without', 'form,', 'and', 'void;', 'and', 'darkness', 'was', 'upon', 'the', 'face', 'of', 'the', 'deep.', 'And', 'the', 'Spirit', 'of', 'God', 'moved', 'upon', 'the', 'face', 'of', 'the<eos>waters.<eos>And', 'God', 'said,', 'Let', 'there', 'be', 'light:', 'and', 'there', 'was', 'light.']
+{'the': 0, 'of': 1, 'and': 2, 'God': 3, 'was': 4, 'face': 5, 'there': 6, 'upon': 7, 'And': 8, 'Bible<eos>The': 9, 'Book': 10, 'Called': 11, 'First': 12, 'Genesis<eos>In': 13, 'James': 14, 'King': 15, 'Let': 16, 'Moses:': 17, 'Old': 18, 'Spirit': 19, 'Testament': 20, 'The': 21, 'Version': 22, 'be': 23, 'beginning': 24, 'created': 25, 'darkness': 26, 'deep.': 27, 'earth': 28, 'earth.<eos>And': 29, 'form,': 30, 'heaven': 31, 'light.': 32, 'light:': 33, 'moved': 34, 'said,': 35, 'the<eos>waters.<eos>And': 36, 'void;': 37, 'without': 38}
+Vocabluary size: 39
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  9
+batch_idx: 0
+inputs: tensor([[21,  9, 25, 30,  0,  5]])
+outputs torch.Size([1, 6, 39])
+predictions: torch.Size([6, 39])
+labels torch.Size([6])
+targets: torch.Size([1, 6])
+batch_idx: 1
+inputs: tensor([[18, 12,  0,  2, 27,  1]])
+outputs torch.Size([1, 6, 39])
+predictions: torch.Size([6, 39])
+labels torch.Size([6])
+targets: torch.Size([1, 6])
+Percentage Done: 11.111111%    |  Perplexity:    39.41     |   Speed:   239.99 wps
+batch_idx: 2
+inputs: tensor([[20, 10, 31, 37,  8, 36]])
+outputs torch.Size([1, 6, 39])
+predictions: torch.Size([6, 39])
+labels torch.Size([6])
+targets: torch.Size([1, 6])
+batch_idx: 3
+inputs: tensor([[1, 1, 2, 2, 0, 3]])
+outputs torch.Size([1, 6, 39])
+predictions: torch.Size([6, 39])
+labels torch.Size([6])
+targets: torch.Size([1, 6])
+batch_idx: 4
+inputs: tensor([[ 0, 17,  0, 26, 19, 35]])
+outputs torch.Size([1, 6, 39])
+predictions: torch.Size([6, 39])
+labels torch.Size([6])
+targets: torch.Size([1, 6])
+batch_idx: 5
+inputs: tensor([[15, 11, 29,  4,  1, 16]])
+outputs torch.Size([1, 6, 39])
+predictions: torch.Size([6, 39])
+labels torch.Size([6])
+targets: torch.Size([1, 6])
+batch_idx: 6
+inputs: tensor([[14, 13,  0,  7,  3,  6]])
+outputs torch.Size([1, 6, 39])
+predictions: torch.Size([6, 39])
+labels torch.Size([6])
+targets: torch.Size([1, 6])
+batch_idx: 7
+inputs: tensor([[22,  0, 28,  0, 34, 23]])
+outputs torch.Size([1, 6, 39])
+predictions: torch.Size([6, 39])
+labels torch.Size([6])
+targets: torch.Size([1, 6])
+batch_idx: 8
+inputs: tensor([[ 1, 24,  4,  5,  7, 33]])
+outputs torch.Size([1, 6, 39])
+predictions: torch.Size([6, 39])
+labels torch.Size([6])
+targets: torch.Size([1, 6])
+Train perplexity at epoch 0:    37.88
+Epoch Size=  9
+Validation perplexity at epoch 0:    33.10
+==================================================
+|                    Testing                     |
+==================================================
+Epoch Size=  62
+Traceback (most recent call last):
+  File "main.py", line 198, in <module>
+    test_ppl = run_epoch(model, test_data)
+  File "main.py", line 101, in run_epoch
+    loss = criterion(predictions, labels)    # loss = loss_function(predictions, labels)
+  File "C:\Users\ltopuser\.conda\envs\master\lib\site-packages\torch\nn\modules\module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "C:\Users\ltopuser\.conda\envs\master\lib\site-packages\torch\nn\modules\loss.py", line 931, in forward
+    return F.cross_entropy(input, target, weight=self.weight,
+  File "C:\Users\ltopuser\.conda\envs\master\lib\site-packages\torch\nn\functional.py", line 2317, in cross_entropy
+    return nll_loss(log_softmax(input, 1), target, weight, None, ignore_index, None, reduction)
+  File "C:\Users\ltopuser\.conda\envs\master\lib\site-packages\torch\nn\functional.py", line 2111, in nll_loss
+    if input.size(0) != target.size(0):
+IndexError: dimension specified as 0 but tensor has no dimensions

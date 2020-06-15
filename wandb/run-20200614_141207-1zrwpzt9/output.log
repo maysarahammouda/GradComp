@@ -1,0 +1,26 @@
+Vocabluary size: 95
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  104
+Train perplexity at epoch 0:    84.35
+Epoch Size=  104
+Validation perplexity at epoch 0:    70.27
+==================================================
+|                    Testing                     |
+==================================================
+Epoch Size=  209
+Traceback (most recent call last):
+  File "main.py", line 189, in <module>
+    test_ppl = run_epoch(model, test_data)
+  File "main.py", line 101, in run_epoch
+    loss = criterion(predictions, labels)    # loss = loss_function(predictions, labels)
+  File "C:\Users\ltopuser\.conda\envs\master\lib\site-packages\torch\nn\modules\module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "C:\Users\ltopuser\.conda\envs\master\lib\site-packages\torch\nn\modules\loss.py", line 931, in forward
+    return F.cross_entropy(input, target, weight=self.weight,
+  File "C:\Users\ltopuser\.conda\envs\master\lib\site-packages\torch\nn\functional.py", line 2317, in cross_entropy
+    return nll_loss(log_softmax(input, 1), target, weight, None, ignore_index, None, reduction)
+  File "C:\Users\ltopuser\.conda\envs\master\lib\site-packages\torch\nn\functional.py", line 2111, in nll_loss
+    if input.size(0) != target.size(0):
+IndexError: dimension specified as 0 but tensor has no dimensions

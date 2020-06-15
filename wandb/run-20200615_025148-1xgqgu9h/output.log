@@ -1,0 +1,114 @@
+Vocabluary size: 39
+==================================================
+|                    Training                    |
+==================================================
+Epoch Size=  4
+
+batch## 1
+torch.Size([39, 30])
+d_p torch.Size([39, 30])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([39, 30])
+d_p torch.Size([39, 30])
+torch.Size([39])
+d_p torch.Size([39])
+
+batch## 2
+torch.Size([39, 30])
+d_p torch.Size([39, 30])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([39, 30])
+d_p torch.Size([39, 30])
+torch.Size([39])
+d_p torch.Size([39])
+
+batch## 3
+torch.Size([39, 30])
+d_p torch.Size([39, 30])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([39, 30])
+d_p torch.Size([39, 30])
+torch.Size([39])
+d_p torch.Size([39])
+
+batch## 4
+torch.Size([39, 30])
+d_p torch.Size([39, 30])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120, 30])
+d_p torch.Size([120, 30])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([120])
+d_p torch.Size([120])
+torch.Size([39, 30])
+d_p torch.Size([39, 30])
+torch.Size([39])
+d_p torch.Size([39])
+
+Train perplexity at epoch 0:    38.02
+Epoch Size=  4
+
+Validation perplexity at epoch 0:    34.73
+==================================================
+|                    Testing                     |
+==================================================
+Epoch Size=  36
+
+Test Perplexity:    34.75
+
+======================== Done! ========================

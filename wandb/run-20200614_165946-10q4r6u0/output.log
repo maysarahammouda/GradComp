@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "main.py", line 157, in <module>
+    raw_data = raw_data(data_path=data, prefix=dataset_name)
+  File "C:\Users\ltopuser\GradComp\utils.py", line 126, in raw_data
+    word_to_id, id_to_word = _build_vocab(train_path)
+  File "C:\Users\ltopuser\GradComp\utils.py", line 85, in _build_vocab
+    data = _read_words(filename)
+  File "C:\Users\ltopuser\GradComp\utils.py", line 73, in _read_words
+    return words.append(tokens)
+NameError: name 'words' is not defined

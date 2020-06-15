@@ -1,7 +1,8 @@
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
-from torch.optim import SGD
+# from torch.optim import SGD
+from optimizer import SGD_Comp
 import argparse
 import time
 import numpy as np
@@ -10,7 +11,8 @@ from model import LSTM
 import os
 import datetime
 import wandb
-from torchsummary import summary
+from compressor.topk import TopKCompressor
+# from torchsummary import summary
 # import tqdm
 # import math
 
@@ -51,12 +53,19 @@ seed = args.seed
 use_gpu = args.use_gpu
 save = args.save
 
-# dataset_name = "test"
+dataset_name = "test"
+
 num_epochs = 1
-batch_size = 10
-accumulation_steps = 10
-# hidden_size = 30
-# num_steps = 2
+batch_size = 100
+accumulation_steps = 1
+log_interval = 10
+
+if dataset_name == "test":
+    batch_size = 8
+    accumulation_steps = 1
+    hidden_size = 30
+    num_steps = 2
+    log_interval = 1
 
 ################################# Functions' definitions  #################################
 
@@ -84,11 +93,11 @@ def run_epoch(model, data, is_train=False, lr=1.0):
     costs = 0.0
     iters = 0
     criterion = nn.CrossEntropyLoss()
-    optimizer = SGD(model.parameters(), lr=lr)
+    optimizer = SGD_Comp(model.parameters(), lr=lr)
     # model.zero_grad()
 
     for batch_idx, (input, target) in enumerate(batch_generator(data, model.batch_size, model.num_steps)):
-        # print(batch_idx)
+
         # model.zero_grad()
         inputs = Variable(torch.from_numpy(input.astype(np.int64)).transpose(0, 1).contiguous())
         targets = Variable(torch.from_numpy(target.astype(np.int64)).transpose(0, 1).contiguous())
@@ -111,30 +120,51 @@ def run_epoch(model, data, is_train=False, lr=1.0):
             # optimizer.zero_grad()  # set all weight grads from previous training iters to 0
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 0.25)
-            # optimizer.step()
-            # print("#############", batch_idx+1)
+
+            print("\nbatch##", batch_idx+1)
             # for param in model.parameters():
             #     grad.append(param.grad.view(-1))
-            # # print (len(grad))
+            # print ("grad length:", len(grad))
             # print (grad[0:3])
-            # # print (grad[1])
+            # print("grad[0]:", grad[0])
+            # print ("grad[1]:", grad[1])
+            # print("grad[1].shape:", grad[1].shape)
+            # print("grad[10].shape:", grad[10].shape)
+            # print ("grad[0]+grad[1]:", grad[0]+grad[1])
+            # print("(grad[0]+grad[1]).shape:", (grad[0]+grad[1]).shape)
 
             if (batch_idx+1) % accumulation_steps == 0:
-                # print("batch_idx:",batch_idx+1)
+                # print("\n***batch_idx -- n workers***:",batch_idx+1)
+
                 optimizer.step()
-                # print("*****", batch_idx+1)
-                # for param in model.parameters():
-                #     grads.append(param.grad.view(-1))
-                # # print (len(grads))
-                # print (grads[0:3])
-                # print(grads)
-                    # gard = np.array(grads)
-                    # print(grad.shape)
+
+                for param in model.parameters():
+                    grads.append(param.grad.view(-1))
+
+                grads_tensor = torch.cat(grads)
+                # print(grads_tensor.shape)
+
+
+                Compressor = TopKCompressor(compress_ratio=0.01)
+                # print(type(Compressor))
+                compressed_grads, ctx = Compressor.compress(grads_tensor,"myGrads")
+                # print(type(compressed_grads))
+                # print(type(ctx))
+                # print(ctx)
+                # print(compressed_grads[0].shape)
+                decompressed_grads = Compressor.decompress(compressed_grads, ctx)
+                # print(type(decompressed_grads))
+                # print(decompressed_grads.shape)
+                # print("grads[0]:", grads[0])
+                # print ("grads[1]:", grads[1])
+                # print("grad[0].shape:", grad[0].shape)
+                # print("grad[1].shape:", grad[1].shape)
+
                 model.zero_grad()
 
-            if batch_idx % (epoch_size // 10) == 10:
-                print("Percentage Done: {:2f}%    |  Perplexity: {:8.2f}     |   Speed: {:8.2f} wps".format(batch_idx * 100.0 / epoch_size, np.exp(costs / iters),
-                                                           iters * model.batch_size / (time.time() - start_time)))
+            if batch_idx % (epoch_size // log_interval) == log_interval:    #### 10   10
+            #     print("Percentage Done: {:2f}%    |  Perplexity: {:8.2f}     |   Speed: {:8.2f} wps".format(batch_idx * 100.0 / epoch_size, np.exp(costs / iters),
+            #                                                iters * model.batch_size / (time.time() - start_time)))
                 # logging the loss values to wandb
                 wandb.log({"loss": loss})
     return np.exp(costs / iters)
@@ -153,7 +183,6 @@ if __name__ == "__main__":
 
     model = LSTM(embedding_dim=hidden_size, num_steps=num_steps, batch_size=batch_size,
                   vocab_size=vocab_size, num_layers=num_layers, dp_keep_prob=dp_keep_prob)
-
     device = torch.device("cuda" if use_gpu else "cpu")
     model.to(device)
 
@@ -172,10 +201,10 @@ if __name__ == "__main__":
         lr = lr * lr_decay
 
         train_ppl = run_epoch(model, train_data, True, lr)
-        print('Train perplexity at epoch {}: {:8.2f}'.format(epoch, train_ppl))
+        print('\nTrain perplexity at epoch {}: {:8.2f}'.format(epoch, train_ppl))
 
         valid_ppl = run_epoch(model, valid_data)
-        print('Validation perplexity at epoch {}: {:8.2f}'.format(epoch, valid_ppl))
+        print('\nValidation perplexity at epoch {}: {:8.2f}'.format(epoch, valid_ppl))
 
         # logging the ppl values to wandb
         wandb.log({"Train perplexity": train_ppl})
@@ -187,7 +216,7 @@ if __name__ == "__main__":
 
     model.batch_size = 1 # to make sure we process all the data
     test_ppl = run_epoch(model, test_data)
-    print('Test Perplexity: {:8.2f}'.format(test_ppl))
+    print('\nTest Perplexity: {:8.2f}'.format(test_ppl))
 
     # logging the ppl values to wandb
     wandb.log({"Test perplexity": test_ppl})

@@ -1,0 +1,7 @@
+{"loss": 3.609224796295166, "_runtime": 3.7149767875671387, "_timestamp": 1592154533.6898954, "_step": 0}
+{"Train perplexity": 38.021650914451655, "_runtime": 3.75996470451355, "_timestamp": 1592154533.7348833, "_step": 1}
+{"Validation perplexity": 34.734481254273426, "_runtime": 3.7649667263031006, "_timestamp": 1592154533.7398853, "_step": 2}
+{"Test perplexity": 34.747980629962385, "_runtime": 3.810962200164795, "_timestamp": 1592154533.7858808, "_step": 3}
+{"Number of parameters": 17259, "_runtime": 3.8159618377685547, "_timestamp": 1592154533.7908804, "_step": 4}
+{"Trainable Parameters": 17259, "_runtime": 3.819962739944458, "_timestamp": 1592154533.7948813, "_step": 5}
+{"Non-Trainable Parameters": 0, "_runtime": 3.8239619731903076, "_timestamp": 1592154533.7988806, "_step": 6}
