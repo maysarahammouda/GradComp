@@ -1,123 +1,114 @@
+## This implpementation was inspired by PyTorch implpementation for SGD
+## (https://github.com/pytorch/pytorch/blob/master/torch/optim/sgd.py)
+## and Horovod implementation for DistributedOptimizer
+## (https://github.com/horovod/horovod/blob/31f1f700b8fa6d3b6df284e291e302593fbb4fa3/horovod/torch/__init__.py)
+
 import torch
 # from .optimizer import Optimizer, required
 from torch.optim.optimizer import Optimizer, required
-
+from compressor.topk import TopKCompressor
+from compressor.randomk import RandomKCompressor
+from compressor.onebit import OneBitCompressor
+from compressor.none import NoneCompressor
 
 class SGD_Comp(Optimizer):
-    r"""Implements stochastic gradient descent (optionally with momentum).
-
-    Nesterov momentum is based on the formula from
-    `On the importance of initialization and momentum in deep learning`__.
-
+    """
+    This class is a modefied version of the origional SGD optimizer (by PyTorch).
+    It handles the gradient compression techniques and eliminates all unncessary
+        parts.
     Args:
         params (iterable): iterable of parameters to optimize or dicts defining
             parameter groups
         lr (float): learning rate
-        momentum (float, optional): momentum factor (default: 0)
-        weight_decay (float, optional): weight decay (L2 penalty) (default: 0)
-        dampening (float, optional): dampening for momentum (default: 0)
-        nesterov (bool, optional): enables Nesterov momentum (default: False)
-
-    Example:
-        >>> optimizer = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.9)
-        >>> optimizer.zero_grad()
-        >>> loss_fn(model(input), target).backward()
-        >>> optimizer.step()
-
-    __ http://www.cs.toronto.edu/%7Ehinton/absps/momentum.pdf
-
-    .. note::
-        The implementation of SGD with Momentum/Nesterov subtly differs from
-        Sutskever et. al. and implementations in some other frameworks.
-
-        Considering the specific case of Momentum, the update can be written as
-
-        .. math::
-            \begin{aligned}
-                v_{t+1} & = \mu * v_{t} + g_{t+1}, \\
-                p_{t+1} & = p_{t} - \text{lr} * v_{t+1},
-            \end{aligned}
-
-        where :math:`p`, :math:`g`, :math:`v` and :math:`\mu` denote the
-        parameters, gradient, velocity, and momentum respectively.
-
-        This is in contrast to Sutskever et. al. and
-        other frameworks which employ an update of the form
-
-        .. math::
-            \begin{aligned}
-                v_{t+1} & = \mu * v_{t} + \text{lr} * g_{t+1}, \\
-                p_{t+1} & = p_{t} - v_{t+1}.
-            \end{aligned}
-
-        The Nesterov version is analogously modified.
     """
 
-    def __init__(self, params, lr=required, momentum=0, dampening=0,
-                 weight_decay=0, nesterov=False):
+    def __init__(self, params, compressor=NoneCompressor(), num_workers=1, lr=required):
+        self.compressor = compressor
+        self.acc_comp_grads = {}
+        self.num_workers = num_workers
+
         if lr is not required and lr < 0.0:
             raise ValueError("Invalid learning rate: {}".format(lr))
-        if momentum < 0.0:
-            raise ValueError("Invalid momentum value: {}".format(momentum))
-        if weight_decay < 0.0:
-            raise ValueError("Invalid weight_decay value: {}".format(weight_decay))
 
-        defaults = dict(lr=lr, momentum=momentum, dampening=dampening,
-                        weight_decay=weight_decay, nesterov=nesterov)
-        if nesterov and (momentum <= 0 or dampening != 0):
-            raise ValueError("Nesterov momentum requires a momentum and zero dampening")
+        defaults = dict(lr=lr)
+
         super(SGD_Comp, self).__init__(params, defaults)
 
-    def __setstate__(self, state):
-        super(SGD_Comp, self).__setstate__(state)
+
+    def compress_grads(self):
+        grads = []
         for group in self.param_groups:
-            group.setdefault('nesterov', False)
+            for p in group['params']:
+                grads.append(p.grad.view(-1))
+        grads_tensor = torch.cat(grads)
+        # print("grads_tensor", max(abs(grads_tensor)))
+
+        # comp_grads_tensors is a list that contains two tensors: the
+        # compressed gradients and the indicies of these compressed gradients
+        comp_grads_tensors, ctx = self.compressor.compress(grads_tensor,"myGrads")
+        comp_grads, indices = comp_grads_tensors
+        # print("compressed_grads type:", type(compressed_grads))
+        # print("compressed_grads len:",len(compressed_grads[0]))
+        # print("compressed_grads shape:",compressed_grads[1].shape)
+        # print(comp_grads)
+        # print(indices)
+
+        for ind, grad in zip(indices, comp_grads):
+            # print(ind.item(),grad.item())
+            index = ind.item()
+            if index not in self.acc_comp_grads.keys():
+                self.acc_comp_grads[index] = grad.item()
+                # print("case1:",len(self.acc_comp_grads))
+            else:
+                self.acc_comp_grads[index] += grad.item()
+                # print("case2:",len(self.acc_comp_grads))
+        # decompressed_grads = self.compressor.decompress(compressed_grads, ctx)
+        # print("decompressed_grads type:", type(decompressed_grads))
+        # print("decompressed_grads shape:", decompressed_grads.shape)
+        # print("Compressor Type:",type(self.compressor))
+
+        # print("compress grads:",self.acc_comp_grads)
+        return self.acc_comp_grads
+        # summed_tensor_compressed = HorovodAllreduce.apply(tensor_compressed, average, name, op)
+        # return self.compressor.decompress(summed_tensor_compressed, ctx)
 
     @torch.no_grad()
     def step(self, closure=None):
-        """Performs a single optimization step.
-        Arguments:
+        """
+        Performs a single optimization step.
+        Args:
             closure (callable, optional): A closure that reevaluates the model
                 and returns the loss.
+        Returns:
+            loss
         """
         loss = None
         if closure is not None:
             with torch.enable_grad():
                 loss = closure()
 
-        print("loss:", loss)
+        all_p = []
 
         for group in self.param_groups:
             # a group for each batch --> we will have no. of batches groups
-            weight_decay = group['weight_decay']
-            momentum = group['momentum']
-            dampening = group['dampening']
-            nesterov = group['nesterov']
-
-            for p in group['params']:
-                # print(p.shape)
+            for i,p in enumerate(group['params']):
                 if p.grad is None:
                     continue
-
+                print((i+1),p.view(-1).shape)
                 d_p = p.grad
-                # print("d_p",p.shape)
-
-
-                if weight_decay != 0:
-                    d_p = d_p.add(p, alpha=weight_decay)
-
-                if momentum != 0:
-                    param_state = self.state[p]
-                    if 'momentum_buffer' not in param_state:
-                        buf = param_state['momentum_buffer'] = torch.clone(d_p).detach()
-                    else:
-                        buf = param_state['momentum_buffer']
-                        buf.mul_(momentum).add_(d_p, alpha=1 - dampening)
-                    if nesterov:
-                        d_p = d_p.add(buf, alpha=momentum)
-                    else:
-                        d_p = buf
-
                 p.add_(d_p, alpha=-group['lr'])
-        print("loss2:", loss)
+                # print("p:",p.shape )
+                # print("d_p:",d_p.shape)
+
+                all_p.append(p.view(-1))
+                all_param = torch.cat(all_p)
+
+        # comp_grads = SGD_Comp.compress_grads(self)
+        comp_grads = {k: v / self.num_workers for k, v in self.acc_comp_grads.items()}
+
+        # print("compressed grads shape:", comp_grads)
+        # print("indices shape:", indices.shape)
+            # print("grads_tensor", grads_tensor.shape)
+            # print("all_param:", all_param.shape)
+
         return loss

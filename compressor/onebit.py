@@ -1,6 +1,6 @@
 import torch
 
-from grace_dl.torch import Compressor
+from compressor.compressor import Compressor
 
 
 class OneBitCompressor(Compressor):

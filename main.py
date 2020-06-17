@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
-# from torch.optim import SGD
+from torch.optim import SGD
 from optimizer import SGD_Comp
 import argparse
 import time
@@ -12,6 +12,9 @@ import os
 import datetime
 import wandb
 from compressor.topk import TopKCompressor
+from compressor.randomk import RandomKCompressor
+from compressor.onebit import OneBitCompressor
+from compressor.none import NoneCompressor
 # from torchsummary import summary
 # import tqdm
 # import math
@@ -53,25 +56,26 @@ seed = args.seed
 use_gpu = args.use_gpu
 save = args.save
 
-dataset_name = "test"
+# dataset_name = "test"
 
 num_epochs = 1
-batch_size = 100
-accumulation_steps = 1
+batch_size = 20
+accumulation_steps = 5
 log_interval = 10
+# num_steps = 35
 
-if dataset_name == "test":
-    batch_size = 8
-    accumulation_steps = 1
-    hidden_size = 30
-    num_steps = 2
-    log_interval = 1
+# if dataset_name == "test":
+#     batch_size = 8
+#     accumulation_steps = 2
+#     hidden_size = 30
+#     num_steps = 2
+#     log_interval = 1
 
 ################################# Functions' definitions  #################################
 
 def run_epoch(model, data, is_train=False, lr=1.0):
     """
-    This function runs the model on the given data.
+    This function runs one epoch of the model on the given data.
     Args:
         model: the language model we want to use.
         data: the dataset we want to use. This can be a training, a validation, or a test dataset.
@@ -81,6 +85,11 @@ def run_epoch(model, data, is_train=False, lr=1.0):
     Returns:
         perplexity.
     """
+
+    criterion = nn.CrossEntropyLoss()
+    # optimizer = SGD_Comp(model.parameters(), compressor=TopKCompressor(compress_ratio=0.001), num_workers=accumulation_steps, lr=lr)
+    optimizer = SGD(model.parameters(), lr=lr)
+
     if is_train:
         model.train()
     else:
@@ -92,12 +101,8 @@ def run_epoch(model, data, is_train=False, lr=1.0):
 
     costs = 0.0
     iters = 0
-    criterion = nn.CrossEntropyLoss()
-    optimizer = SGD_Comp(model.parameters(), lr=lr)
-    # model.zero_grad()
 
     for batch_idx, (input, target) in enumerate(batch_generator(data, model.batch_size, model.num_steps)):
-
         # model.zero_grad()
         inputs = Variable(torch.from_numpy(input.astype(np.int64)).transpose(0, 1).contiguous())
         targets = Variable(torch.from_numpy(target.astype(np.int64)).transpose(0, 1).contiguous())
@@ -113,58 +118,22 @@ def run_epoch(model, data, is_train=False, lr=1.0):
         costs += float(loss.data) * model.num_steps
         iters += model.num_steps
 
-        grads = []
-        grad = []
         if is_train:
+            # print("\nbatch##", batch_idx+1)
             # model.zero_grad()
             # optimizer.zero_grad()  # set all weight grads from previous training iters to 0
             loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 0.25)
-
-            print("\nbatch##", batch_idx+1)
-            # for param in model.parameters():
-            #     grad.append(param.grad.view(-1))
-            # print ("grad length:", len(grad))
-            # print (grad[0:3])
-            # print("grad[0]:", grad[0])
-            # print ("grad[1]:", grad[1])
-            # print("grad[1].shape:", grad[1].shape)
-            # print("grad[10].shape:", grad[10].shape)
-            # print ("grad[0]+grad[1]:", grad[0]+grad[1])
-            # print("(grad[0]+grad[1]).shape:", (grad[0]+grad[1]).shape)
+            # torch.nn.utils.clip_grad_norm_(model.parameters(), 0.25)
+            # optimizer.compress_grads()
 
             if (batch_idx+1) % accumulation_steps == 0:
                 # print("\n***batch_idx -- n workers***:",batch_idx+1)
-
                 optimizer.step()
-
-                for param in model.parameters():
-                    grads.append(param.grad.view(-1))
-
-                grads_tensor = torch.cat(grads)
-                # print(grads_tensor.shape)
-
-
-                Compressor = TopKCompressor(compress_ratio=0.01)
-                # print(type(Compressor))
-                compressed_grads, ctx = Compressor.compress(grads_tensor,"myGrads")
-                # print(type(compressed_grads))
-                # print(type(ctx))
-                # print(ctx)
-                # print(compressed_grads[0].shape)
-                decompressed_grads = Compressor.decompress(compressed_grads, ctx)
-                # print(type(decompressed_grads))
-                # print(decompressed_grads.shape)
-                # print("grads[0]:", grads[0])
-                # print ("grads[1]:", grads[1])
-                # print("grad[0].shape:", grad[0].shape)
-                # print("grad[1].shape:", grad[1].shape)
-
                 model.zero_grad()
 
             if batch_idx % (epoch_size // log_interval) == log_interval:    #### 10   10
-            #     print("Percentage Done: {:2f}%    |  Perplexity: {:8.2f}     |   Speed: {:8.2f} wps".format(batch_idx * 100.0 / epoch_size, np.exp(costs / iters),
-            #                                                iters * model.batch_size / (time.time() - start_time)))
+                print("Percentage Done: {:2f}%    |  Perplexity: {:8.2f}     |   Speed: {:8.2f} wps".format(
+                batch_idx * 100.0 / epoch_size, np.exp(costs / iters), iters * model.batch_size / (time.time() - start_time)))
                 # logging the loss values to wandb
                 wandb.log({"loss": loss})
     return np.exp(costs / iters)

@@ -1,32 +1,37 @@
-2020-06-15 03:52:56,245 DEBUG   MainThread:36516 [wandb_config.py:_load_defaults():133] no defaults not found in config-defaults.yaml
-2020-06-15 03:52:56,519 DEBUG   MainThread:36516 [meta.py:_setup_code_git():49] probe for git information
-2020-06-15 03:52:56,625 DEBUG   MainThread:36516 [run_manager.py:__init__():547] Initialized sync for GradComp/3t8kkilt
-2020-06-15 03:52:56,629 INFO    MainThread:36516 [run_manager.py:wrap_existing_process():1147] wrapping existing process 23176
-2020-06-15 03:52:56,763 INFO    MainThread:36516 [run_manager.py:init_run():926] system metrics and metadata threads started
-2020-06-15 03:52:56,763 INFO    MainThread:36516 [run_manager.py:init_run():965] upserting run before process can begin, waiting at most 10 seconds
-2020-06-15 03:52:57,031 INFO    Thread-23 :36516 [run_manager.py:_upsert_run():1054] saving pip packages
-2020-06-15 03:52:57,032 INFO    Thread-23 :36516 [run_manager.py:_upsert_run():1056] initializing streaming files api
-2020-06-15 03:52:57,034 INFO    Thread-23 :36516 [run_manager.py:_upsert_run():1063] unblocking file change observer, beginning sync with W&B servers
-2020-06-15 03:52:57,034 INFO    MainThread:36516 [run_manager.py:wrap_existing_process():1164] informing user process we are ready to proceed
-2020-06-15 03:52:57,040 INFO    MainThread:36516 [run_manager.py:_sync_etc():1296] entering loop for messages from user process
-2020-06-15 03:52:57,216 INFO    MainThread:36516 [run_manager.py:_sync_etc():1319] received message from user process: {"exitcode": 0}
-2020-06-15 03:52:57,217 INFO    MainThread:36516 [run_manager.py:_sync_etc():1406] closing log streams and sending exitcode to W&B
-2020-06-15 03:52:57,217 INFO    MainThread:36516 [run_manager.py:shutdown():1070] shutting down system stats and metadata service
-2020-06-15 03:52:57,510 INFO    Thread-10 :36516 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200615_025254-3t8kkilt\config.yaml
-2020-06-15 03:52:57,702 INFO    Thread-10 :36516 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200615_025254-3t8kkilt\wandb-history.jsonl
-2020-06-15 03:52:57,703 INFO    Thread-10 :36516 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200615_025254-3t8kkilt\wandb-metadata.json
-2020-06-15 03:52:57,704 INFO    Thread-10 :36516 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200615_025254-3t8kkilt\requirements.txt
-2020-06-15 03:52:57,705 INFO    Thread-10 :36516 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200615_025254-3t8kkilt\wandb-events.jsonl
-2020-06-15 03:52:57,706 INFO    Thread-10 :36516 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200615_025254-3t8kkilt\output.log
-2020-06-15 03:52:57,710 INFO    Thread-10 :36516 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200615_025254-3t8kkilt\wandb-summary.json
-2020-06-15 03:52:57,715 INFO    Thread-10 :36516 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200615_025254-3t8kkilt\media\graph\graph_0_summary_5da82a3a.graph.json
-2020-06-15 03:52:57,715 INFO    Thread-10 :36516 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200615_025254-3t8kkilt\media\graph
-2020-06-15 03:52:57,716 INFO    Thread-10 :36516 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200615_025254-3t8kkilt\media
-2020-06-15 03:52:57,764 INFO    MainThread:36516 [run_manager.py:shutdown():1084] stopping streaming files and file change observer
-2020-06-15 03:52:58,514 INFO    Thread-10 :36516 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200615_025254-3t8kkilt\wandb-metadata.json
-2020-06-15 03:53:00,186 INFO    MainThread:36516 [run_manager.py:_sync_etc():1425] rendering summary
-2020-06-15 03:53:00,201 INFO    MainThread:36516 [run_manager.py:_sync_etc():1457] syncing files to cloud storage
-2020-06-15 03:53:00,718 INFO    MainThread:36516 [run_manager.py:_sync_etc():1466] syncing complete: https://app.wandb.ai/maysara/GradComp/runs/3t8kkilt
-ainThread:36516 [3t8kkilt:run_manager.py:_sync_etc():1425] rendering summary
-2020-06-15 03:53:00,201 INFO    MainThread:36516 [3t8kkilt:run_manager.py:_sync_etc():1457] syncing files to cloud storage
-2020-06-15 03:53:00,718 INFO    MainThread:36516 [3t8kkilt:run_manager.py:_sync_etc():1466] syncing complete: https://app.wandb.ai/maysara/GradComp/runs/3t8kkilt
+2020-06-17 01:37:57,742 DEBUG   MainThread:34360 [wandb_config.py:_load_defaults():133] no defaults not found in config-defaults.yaml
+2020-06-17 01:37:58,039 DEBUG   MainThread:34360 [meta.py:_setup_code_git():49] probe for git information
+2020-06-17 01:37:58,161 DEBUG   MainThread:34360 [run_manager.py:__init__():547] Initialized sync for GradComp/2c4bdujs
+2020-06-17 01:37:58,169 INFO    MainThread:34360 [run_manager.py:wrap_existing_process():1147] wrapping existing process 42864
+2020-06-17 01:37:58,372 INFO    MainThread:34360 [run_manager.py:init_run():926] system metrics and metadata threads started
+2020-06-17 01:37:58,372 INFO    MainThread:34360 [run_manager.py:init_run():965] upserting run before process can begin, waiting at most 10 seconds
+2020-06-17 01:37:58,676 INFO    Thread-23 :34360 [run_manager.py:_upsert_run():1054] saving pip packages
+2020-06-17 01:37:58,679 INFO    Thread-23 :34360 [run_manager.py:_upsert_run():1056] initializing streaming files api
+2020-06-17 01:37:58,679 INFO    Thread-23 :34360 [run_manager.py:_upsert_run():1063] unblocking file change observer, beginning sync with W&B servers
+2020-06-17 01:37:58,680 INFO    MainThread:34360 [run_manager.py:wrap_existing_process():1164] informing user process we are ready to proceed
+2020-06-17 01:37:58,683 INFO    MainThread:34360 [run_manager.py:_sync_etc():1296] entering loop for messages from user process
+2020-06-17 01:37:59,032 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\config.yaml
+2020-06-17 01:37:59,246 INFO    Thread-10 :34360 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-metadata.json
+2020-06-17 01:37:59,246 INFO    Thread-10 :34360 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\requirements.txt
+2020-06-17 01:37:59,247 INFO    Thread-10 :34360 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\output.log
+2020-06-17 01:38:01,036 INFO    Thread-10 :34360 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\media\graph\graph_0_summary_fcf2e75b.graph.json
+2020-06-17 01:38:01,036 INFO    Thread-10 :34360 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-summary.json
+2020-06-17 01:38:01,040 INFO    Thread-10 :34360 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\media
+2020-06-17 01:38:01,042 INFO    Thread-10 :34360 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\media\graph
+2020-06-17 01:38:02,036 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-summary.json
+2020-06-17 01:38:12,059 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-history.jsonl
+2020-06-17 01:38:12,061 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-summary.json
+2020-06-17 01:38:15,070 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-metadata.json
+2020-06-17 01:38:27,095 INFO    Thread-10 :34360 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-events.jsonl
+2020-06-17 01:38:31,106 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-metadata.json
+2020-06-17 01:38:47,148 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-metadata.json
+2020-06-17 01:38:58,171 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-events.jsonl
+2020-06-17 01:39:03,183 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-metadata.json
+2020-06-17 01:39:19,223 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-metadata.json
+2020-06-17 01:39:29,252 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-events.jsonl
+2020-06-17 01:39:35,269 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-metadata.json
+2020-06-17 01:39:51,310 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-metadata.json
+2020-06-17 01:39:59,331 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-events.jsonl
+2020-06-17 01:40:07,380 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-metadata.json
+2020-06-17 01:40:23,428 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-metadata.json
+2020-06-17 01:40:30,445 INFO    Thread-10 :34360 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\run-20200617_003756-2c4bdujs\wandb-events.jsonl
+2020-06-17 01:40:39,470 INF
