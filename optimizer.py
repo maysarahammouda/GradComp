@@ -94,18 +94,19 @@ class SGD_Comp(Optimizer):
             for i,p in enumerate(group['params']):
                 if p.grad is None:
                     continue
-                print((i+1),p.view(-1).shape)
+                # print((i+1),p.view(-1).shape)
                 d_p = p.grad
+
                 p.add_(d_p, alpha=-group['lr'])
                 # print("p:",p.shape )
                 # print("d_p:",d_p.shape)
 
                 all_p.append(p.view(-1))
                 all_param = torch.cat(all_p)
-
+                # print(d_p[0])
         # comp_grads = SGD_Comp.compress_grads(self)
         comp_grads = {k: v / self.num_workers for k, v in self.acc_comp_grads.items()}
-
+        # print("d_p",d_p)
         # print("compressed grads shape:", comp_grads)
         # print("indices shape:", indices.shape)
             # print("grads_tensor", grads_tensor.shape)

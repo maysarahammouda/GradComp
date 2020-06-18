@@ -6,7 +6,7 @@ from optimizer import SGD_Comp
 import argparse
 import time
 import numpy as np
-from utils import batch_generator, raw_data, get_num_parameters, save_model, repackage_hidden
+from utils import batch_generator, raw_data, get_num_parameters, save_model, repackage_hidden, generate_batch
 from model import LSTM
 import os
 import datetime
@@ -31,7 +31,7 @@ parser.add_argument('--num_layers', type=int, default=2, help='number of layers'
 parser.add_argument('--hidden_size', type=int, default=650, help='number of hidden units per layer (size of word embeddings)')
 parser.add_argument('--initial_lr', type=float, default=1.0, help='initial learning rate')
 parser.add_argument('--num_steps', type=int, default=35, help='number of LSTM steps')
-parser.add_argument('--accumulation_steps', type=int, default=4, help='accumulation steps / n-batch / number of workers')
+parser.add_argument('--num_workers', type=int, default=4, help='accumulation steps / n-batch / number of workers')
 parser.add_argument('--dp_keep_prob', type=float, default=0.5, help='dropout *keep* probability')
 parser.add_argument('--seed', type=int, default=1111, help='random seed')
 parser.add_argument('--use_gpu', action='store_false', default=False, help='use GPU for training')
@@ -50,26 +50,33 @@ num_layers = args.num_layers
 hidden_size = args.hidden_size
 initial_lr = args.initial_lr
 num_steps = args.num_steps
-accumulation_steps = args.accumulation_steps
+num_workers = args.num_workers
 dp_keep_prob = args.dp_keep_prob
 seed = args.seed
 use_gpu = args.use_gpu
 save = args.save
 
-# dataset_name = "test"
+dataset_name = "test"
 
-num_epochs = 1
-batch_size = 20
-accumulation_steps = 5
-log_interval = 10
-# num_steps = 35
+if dataset_name == "ptb":
+    num_epochs = 1
+    batch_size = 20
+    num_workers = 1
+    log_interval = 10
+    dp_keep_prob = 1
+    hidden_size = 400
+    initial_lr = 5.0
+    # num_steps = 35
 
-# if dataset_name == "test":
-#     batch_size = 8
-#     accumulation_steps = 2
-#     hidden_size = 30
-#     num_steps = 2
-#     log_interval = 1
+if dataset_name == "test":
+    num_epochs = 1
+    batch_size = 4
+    num_workers = 2
+    hidden_size = 30
+    num_steps = 2
+    log_interval = 1
+    dp_keep_prob = 1
+    initial_lr = 7.0
 
 ################################# Functions' definitions  #################################
 
@@ -87,8 +94,8 @@ def run_epoch(model, data, is_train=False, lr=1.0):
     """
 
     criterion = nn.CrossEntropyLoss()
-    # optimizer = SGD_Comp(model.parameters(), compressor=TopKCompressor(compress_ratio=0.001), num_workers=accumulation_steps, lr=lr)
-    optimizer = SGD(model.parameters(), lr=lr)
+    # optimizer = SGD_Comp(model.parameters(), compressor=TopKCompressor(compress_ratio=0.001), num_workers=num_workers, lr=lr)
+    optimizer = SGD_Comp(model.parameters(), lr=lr)
 
     if is_train:
         model.train()
@@ -102,18 +109,22 @@ def run_epoch(model, data, is_train=False, lr=1.0):
     costs = 0.0
     iters = 0
 
-    for batch_idx, (input, target) in enumerate(batch_generator(data, model.batch_size, model.num_steps)):
-        # model.zero_grad()
+    for batch_idx, (input, target) in enumerate(generate_batch(data, model.batch_size, model.num_steps, num_workers)):
+        model.zero_grad()
         inputs = Variable(torch.from_numpy(input.astype(np.int64)).transpose(0, 1).contiguous())
         targets = Variable(torch.from_numpy(target.astype(np.int64)).transpose(0, 1).contiguous())
         hidden = repackage_hidden(hidden)
         outputs, hidden = model(inputs, hidden)     # predictions = model(inputs)  # Forward pass
-
+        print("\nbatch_idx#",batch_idx)
+        # print("inputs",inputs.type)
+        # print("outputs",outputs)
+        print("targets",targets)
+        # print("targets",targets)
         labels = torch.squeeze(targets.view(-1, model.batch_size * model.num_steps))    # previously tt
         predictions = outputs.view(-1, model.vocab_size)
-
+        print("labels",labels)
         loss = criterion(predictions, labels)    # loss = loss_function(predictions, labels)
-        # loss = loss / accumulation_steps
+        # loss = loss / num_workers
 
         costs += float(loss.data) * model.num_steps
         iters += model.num_steps
@@ -123,10 +134,10 @@ def run_epoch(model, data, is_train=False, lr=1.0):
             # model.zero_grad()
             # optimizer.zero_grad()  # set all weight grads from previous training iters to 0
             loss.backward()
-            # torch.nn.utils.clip_grad_norm_(model.parameters(), 0.25)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 0.25)
             # optimizer.compress_grads()
 
-            if (batch_idx+1) % accumulation_steps == 0:
+            if (batch_idx+1) % num_workers == 0:
                 # print("\n***batch_idx -- n workers***:",batch_idx+1)
                 optimizer.step()
                 model.zero_grad()
@@ -136,6 +147,7 @@ def run_epoch(model, data, is_train=False, lr=1.0):
                 batch_idx * 100.0 / epoch_size, np.exp(costs / iters), iters * model.batch_size / (time.time() - start_time)))
                 # logging the loss values to wandb
                 wandb.log({"loss": loss})
+        # break
     return np.exp(costs / iters)
 
 ################################# Main Code  #################################
@@ -171,28 +183,28 @@ if __name__ == "__main__":
 
         train_ppl = run_epoch(model, train_data, True, lr)
         print('\nTrain perplexity at epoch {}: {:8.2f}'.format(epoch, train_ppl))
-
-        valid_ppl = run_epoch(model, valid_data)
-        print('\nValidation perplexity at epoch {}: {:8.2f}'.format(epoch, valid_ppl))
+        #
+        # valid_ppl = run_epoch(model, valid_data)
+        # print('\nValidation perplexity at epoch {}: {:8.2f}'.format(epoch, valid_ppl))
 
         # logging the ppl values to wandb
-        wandb.log({"Train perplexity": train_ppl})
-        wandb.log({"Validation perplexity": valid_ppl})
-
-    print("="*50)
-    print("|"," "*18,"Testing"," "*19,"|")
-    print("="*50)
-
-    model.batch_size = 1 # to make sure we process all the data
-    test_ppl = run_epoch(model, test_data)
-    print('\nTest Perplexity: {:8.2f}'.format(test_ppl))
-
-    # logging the ppl values to wandb
-    wandb.log({"Test perplexity": test_ppl})
-    total_num_params, trainable_params, non_trainable_params = get_num_parameters(model)
-    wandb.log({"Number of parameters": total_num_params})
-    wandb.log({"Trainable Parameters": trainable_params})
-    wandb.log({"Non-Trainable Parameters": non_trainable_params})
+        # wandb.log({"Train perplexity": train_ppl})
+    #     wandb.log({"Validation perplexity": valid_ppl})
+    #
+    # print("="*50)
+    # print("|"," "*18,"Testing"," "*19,"|")
+    # print("="*50)
+    #
+    # model.batch_size = 1 # to make sure we process all the data
+    # test_ppl = run_epoch(model, test_data)
+    # print('\nTest Perplexity: {:8.2f}'.format(test_ppl))
+    #
+    # # logging the ppl values to wandb
+    # wandb.log({"Test perplexity": test_ppl})
+    # total_num_params, trainable_params, non_trainable_params = get_num_parameters(model)
+    # wandb.log({"Number of parameters": total_num_params})
+    # wandb.log({"Trainable Parameters": trainable_params})
+    # wandb.log({"Non-Trainable Parameters": non_trainable_params})
 
     # summary(model,input_size=(batch_size,num_steps,95))
 
