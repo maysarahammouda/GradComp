@@ -6,7 +6,7 @@ from optimizer import SGD_Comp
 import argparse
 import time
 import numpy as np
-from utils import batch_generator, raw_data, get_num_parameters, save_model, repackage_hidden, generate_batch
+from utils import batch_generator, raw_data, get_num_parameters, save_model, repackage_hidden, generate_batch, generate_batch_, generate_batch2
 from model import LSTM
 import os
 import datetime
@@ -70,8 +70,8 @@ if dataset_name == "ptb":
 
 if dataset_name == "test":
     num_epochs = 1
-    batch_size = 4
-    num_workers = 2
+    batch_size = 2
+    num_workers = 4
     hidden_size = 30
     num_steps = 2
     log_interval = 1
@@ -106,23 +106,23 @@ def run_epoch(model, data, is_train=False, lr=1.0):
     start_time = time.time()
     hidden = model.init_hidden()
 
-    costs = 0.0
-    iters = 0
+    costs, iters = 0.0, 0
 
-    for batch_idx, (input, target) in enumerate(generate_batch(data, model.batch_size, model.num_steps, num_workers)):
-        model.zero_grad()
-        inputs = Variable(torch.from_numpy(input.astype(np.int64)).transpose(0, 1).contiguous())
-        targets = Variable(torch.from_numpy(target.astype(np.int64)).transpose(0, 1).contiguous())
+    for batch_idx, (input, target) in enumerate(generate_batch_(data, model.batch_size, model.num_steps, num_workers)):
+        # model.zero_grad()
+        # print("\nbatch_idx#",batch_idx)
+        # inputs = Variable(torch.from_numpy(input.astype(np.int64)).transpose(0, 1).contiguous())
+        # targets = Variable(torch.from_numpy(target.astype(np.int64)).transpose(0, 1).contiguous())
+        inputs = torch.from_numpy(input.astype(np.int64)).contiguous()
+        targets = torch.from_numpy(target.astype(np.int64)).contiguous()
+        # print("inputs",inputs)
+        # print("targets",targets)
         hidden = repackage_hidden(hidden)
         outputs, hidden = model(inputs, hidden)     # predictions = model(inputs)  # Forward pass
-        print("\nbatch_idx#",batch_idx)
-        # print("inputs",inputs.type)
-        # print("outputs",outputs)
-        print("targets",targets)
-        # print("targets",targets)
+
         labels = torch.squeeze(targets.view(-1, model.batch_size * model.num_steps))    # previously tt
         predictions = outputs.view(-1, model.vocab_size)
-        print("labels",labels)
+        # print("labels",labels)
         loss = criterion(predictions, labels)    # loss = loss_function(predictions, labels)
         # loss = loss / num_workers
 
@@ -143,8 +143,8 @@ def run_epoch(model, data, is_train=False, lr=1.0):
                 model.zero_grad()
 
             if batch_idx % (epoch_size // log_interval) == log_interval:    #### 10   10
-                print("Percentage Done: {:2f}%    |  Perplexity: {:8.2f}     |   Speed: {:8.2f} wps".format(
-                batch_idx * 100.0 / epoch_size, np.exp(costs / iters), iters * model.batch_size / (time.time() - start_time)))
+                # print("Percentage Done: {:2f}%    |  Perplexity: {:8.2f}     |   Speed: {:8.2f} wps".format(
+                # batch_idx * 100.0 / epoch_size, np.exp(costs / iters), iters * model.batch_size / (time.time() - start_time)))
                 # logging the loss values to wandb
                 wandb.log({"loss": loss})
         # break
@@ -183,28 +183,28 @@ if __name__ == "__main__":
 
         train_ppl = run_epoch(model, train_data, True, lr)
         print('\nTrain perplexity at epoch {}: {:8.2f}'.format(epoch, train_ppl))
-        #
-        # valid_ppl = run_epoch(model, valid_data)
-        # print('\nValidation perplexity at epoch {}: {:8.2f}'.format(epoch, valid_ppl))
 
-        # logging the ppl values to wandb
-        # wandb.log({"Train perplexity": train_ppl})
-    #     wandb.log({"Validation perplexity": valid_ppl})
-    #
-    # print("="*50)
-    # print("|"," "*18,"Testing"," "*19,"|")
-    # print("="*50)
-    #
-    # model.batch_size = 1 # to make sure we process all the data
-    # test_ppl = run_epoch(model, test_data)
-    # print('\nTest Perplexity: {:8.2f}'.format(test_ppl))
-    #
-    # # logging the ppl values to wandb
-    # wandb.log({"Test perplexity": test_ppl})
-    # total_num_params, trainable_params, non_trainable_params = get_num_parameters(model)
-    # wandb.log({"Number of parameters": total_num_params})
-    # wandb.log({"Trainable Parameters": trainable_params})
-    # wandb.log({"Non-Trainable Parameters": non_trainable_params})
+        valid_ppl = run_epoch(model, valid_data)
+        print('\nValidation perplexity at epoch {}: {:8.2f}'.format(epoch, valid_ppl))
+
+        #logging the ppl values to wandb
+        wandb.log({"Train perplexity": train_ppl})
+        wandb.log({"Validation perplexity": valid_ppl})
+
+    print("="*50)
+    print("|"," "*18,"Testing"," "*19,"|")
+    print("="*50)
+
+    model.batch_size = 1 # to make sure we process all the data
+    test_ppl = run_epoch(model, test_data)
+    print('\nTest Perplexity: {:8.2f}'.format(test_ppl))
+
+    # logging the ppl values to wandb
+    wandb.log({"Test perplexity": test_ppl})
+    total_num_params, trainable_params, non_trainable_params = get_num_parameters(model)
+    wandb.log({"Number of parameters": total_num_params})
+    wandb.log({"Trainable Parameters": trainable_params})
+    wandb.log({"Non-Trainable Parameters": non_trainable_params})
 
     # summary(model,input_size=(batch_size,num_steps,95))
 
