@@ -125,16 +125,20 @@ def _log_training_results (epoch, batch, lr, log_interval, num_fullSeq, num_seq,
         if (batch == num_seq - 1) and (last_update_worker != 0):
             cur_loss = total_loss / iters
             elapsed = time.time() - start_time
+            train_ppl = math.exp(cur_loss)
             print('| epoch {:3d} | {:5d}/{:5d} batches | lr {:02.4f} | ms/batch {:5.2f} | loss {:5.2f} | ppl {:8.2f}'
                     .format(epoch, batch, num_seq, lr, elapsed * 1000 / (log_interval - args.nworker + last_update_worker),
-                    cur_loss, math.exp(cur_loss)))
-
+                    cur_loss, train_ppl))
+            # logging the ppl values to wandb
+            wandb.log({"Train perplexity": train_ppl})
         # normal log
         else:
             cur_loss = total_loss / iters
             elapsed = time.time() - start_time
+            train_ppl = math.exp(cur_loss)
             print('| epoch {:3d} | {:5d}/{:5d} batches | lr {:02.4f} | ms/batch {:5.2f} | loss {:5.2f} | ppl {:8.2f}'
-                    .format(epoch, batch, num_seq, lr, elapsed * 1000 / log_interval, cur_loss, math.exp(cur_loss)))
-
+                    .format(epoch, batch, num_seq, lr, elapsed * 1000 / log_interval, cur_loss, train_ppl))
+            # logging the ppl values to wandb
+            wandb.log({"Train perplexity": train_ppl})
         # total_loss = 0
         start_time = time.time()

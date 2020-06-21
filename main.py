@@ -96,17 +96,17 @@ if __name__ == '__main__':
         #         prm.data = optimizer.state[prm]['ax'].clone()
 
         val_loss = evaluate(model, vocab_size, valid_data, criterion, args)
-
+        val_ppl = math.exp(val_loss)
         print('-' * 89)
         print('| end of epoch {:3d} | time: {:5.2f}s | valid loss {:5.2f} | valid ppl {:8.2f}'
-                .format(epoch, (time.time() - epoch_start_time), val_loss, math.exp(val_loss)))
+                .format(epoch, (time.time() - epoch_start_time), val_loss, val_ppl))
         print('-' * 89)
 
         # for prm in model.parameters():
         #     prm.data = tmp[prm].clone()
+
         # logging the ppl values to wandb
-        # wandb.log({"Train perplexity": train_ppl})
-        # wandb.log({"Validation perplexity": valid_ppl})
+        wandb.log({"Validation perplexity": val_ppl})
 
     print("="*50)
     print("|"," "*18,"Testing"," "*19,"|")
@@ -114,13 +114,14 @@ if __name__ == '__main__':
 
     # Run the model on the test data
     test_loss = evaluate(model, vocab_size, test_data, criterion, args)
+    test_ppl = math.exp(test_loss)
     print('-' * 89)
     print('| End of training | test loss {:5.2f} | test ppl {:8.2f}'.format(
-        test_loss, math.exp(test_loss)))
+        test_loss, test_ppl))
     print('-' * 89)
 
     # logging the ppl values to wandb
-    # wandb.log({"Test perplexity": test_ppl})
+    wandb.log({"Test perplexity": test_ppl})
 
     # logging the number of parameters values to wandb
     total_num_params, trainable_params, non_trainable_params = get_num_parameters(model)
