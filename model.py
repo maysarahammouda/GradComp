@@ -1,43 +1,40 @@
 import torch.nn as nn
-from torch.autograd import Variable
 
 class LSTM(nn.Module):
-    """
-    This class creats a simple LSTM Language Model.
-    """
-    def __init__(self, embedding_dim, num_steps, batch_size, vocab_size, num_layers, dp_keep_prob):
+    """Container module with an encoder, a recurrent module, and a decoder."""
+
+    def __init__(self, vocab_size, batch_size, embedding_size, hidden_size, num_layers, dropout_rate, num_step):
         super(LSTM, self).__init__()
-        self.embedding_dim = embedding_dim
-        self.num_steps = num_steps
-        self.batch_size = batch_size
+        self.drop = nn.Dropout(dropout_rate)
         self.vocab_size = vocab_size
-        self.dp_keep_prob = dp_keep_prob
+        self.batch_size = batch_size
+        self.embedding_size = embedding_size
+        self.hidden_size = hidden_size
         self.num_layers = num_layers
-        self.dropout = nn.Dropout(1 - dp_keep_prob)
-        self.word_embeddings = nn.Embedding(vocab_size, embedding_dim)
-        self.lstm = nn.LSTM(input_size=embedding_dim, hidden_size=embedding_dim,
-                                num_layers=num_layers, dropout=1 - dp_keep_prob)
-        self.sm_fc = nn.Linear(in_features=embedding_dim, out_features=vocab_size)
+        self.dropout_rate = dropout_rate
+        self.num_step = num_step
+        self.word_embeddings = nn.Embedding(vocab_size, embedding_size)
+        self.lstm = nn.LSTM(input_size=embedding_size, hidden_size=hidden_size,
+                                num_layers=num_layers, dropout=dropout_rate)
+        self.fc = nn.Linear(in_features=hidden_size, out_features=vocab_size)
+
         self.init_weights()
 
-
     def init_weights(self):
-        init_range = 0.1
-        self.word_embeddings.weight.data.uniform_(-init_range, init_range)
-        self.sm_fc.bias.data.fill_(0.0)
-        self.sm_fc.weight.data.uniform_(-init_range, init_range)
+        initrange = 0.1
+        self.word_embeddings.weight.data.uniform_(-initrange, initrange)
+        self.fc.bias.data.zero_()
+        self.fc.weight.data.uniform_(-initrange, initrange)
+
+    def init_hidden(self, batch_size):
+        weight = next(self.parameters())
+        return (weight.new_zeros(self.num_layers, batch_size, self.hidden_size),
+                    weight.new_zeros(self.num_layers, batch_size, self.hidden_size))
 
 
-    def init_hidden(self):
-        weight = next(self.parameters()).data
-        return (Variable(weight.new(self.num_layers, self.batch_size, self.embedding_dim).zero_()),
-                Variable(weight.new(self.num_layers, self.batch_size, self.embedding_dim).zero_()))
-                # torch.zeros(self.num_layers, self.batch_size, self.embedding_dim)
-
-
-    def forward(self, inputs, hidden):
-        embeds = self.dropout(self.word_embeddings(inputs))
-        lstm_out, hidden = self.lstm(embeds, hidden)
-        lstm_out = self.dropout(lstm_out)
-        logits = self.sm_fc(lstm_out.view(-1, self.embedding_dim))
-        return logits.view(self.num_steps, self.batch_size, self.vocab_size), hidden
+    def forward(self, input, hidden):
+        emb = self.drop(self.word_embeddings(input))
+        output, hidden = self.lstm(emb, hidden)
+        output = self.drop(output)
+        logits = self.fc(output.view(-1, self.hidden_size))
+        return logits.view(output.shape[0], output.shape[1], self.vocab_size), hidden

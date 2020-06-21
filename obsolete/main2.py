@@ -6,8 +6,8 @@ from optimizer import SGD_Comp
 import argparse
 import time
 import numpy as np
-from utils import batch_generator, raw_data, get_num_parameters, save_model, repackage_hidden, generate_batch, generate_batch_, generate_batch2
-from utils import batchify, get_batch
+from utils import batch_generator, raw_data, get_num_parameters, save_model, repackage_hidden
+from utils import batchify, get_batch, batchify_dan, get_batch_dan
 from model import LSTM
 import os
 import datetime
@@ -27,13 +27,17 @@ import data_load
 parser = argparse.ArgumentParser(description='A simple LSTM Language Model')
 parser.add_argument('--data', type=str, default='datasets', help='location of the data corpus')
 parser.add_argument('--dataset_name', type=str, default='ptb', help='name of the dataset')
-parser.add_argument('--num_epochs', type=int, default=2, help='number of epochs')
-parser.add_argument('--batch_size', type=int, default=20, metavar='N', help='batch size')
+parser.add_argument('--num_epochs', type=int, default=1, help='number of epochs')
+
+parser.add_argument('--num_workers', type=int, default=2, help='accumulation steps / n-batch / number of workers')
+parser.add_argument('--batch_size', type=int, default=4, metavar='N', help='batch size')
+parser.add_argument('--batch_size_train', type=int, default=4, metavar='N', help='batch size')
+parser.add_argument('--batch_size_test', type=int, default=1, metavar='N', help='batch size for test data')
+
 parser.add_argument('--num_layers', type=int, default=2, help='number of layers')
 parser.add_argument('--hidden_size', type=int, default=650, help='number of hidden units per layer (size of word embeddings)')
 parser.add_argument('--initial_lr', type=float, default=1.0, help='initial learning rate')
-parser.add_argument('--bptt', type=int, default=35, help='number of LSTM steps / bptt parameter')
-parser.add_argument('--num_workers', type=int, default=4, help='accumulation steps / n-batch / number of workers')
+parser.add_argument('--seq_length', type=int, default=2, help='number of LSTM steps / bptt parameter')
 parser.add_argument('--dp_keep_prob', type=float, default=0.5, help='dropout *keep* probability')
 parser.add_argument('--seed', type=int, default=1111, help='random seed')
 parser.add_argument('--use_gpu', action='store_false', default=False, help='use GPU for training')
@@ -57,30 +61,10 @@ dp_keep_prob = args.dp_keep_prob
 seed = args.seed
 use_gpu = args.use_gpu
 save = args.save
-bptt = args.bptt
+seq_length = args.seq_length
 
 dataset_name = "test"
 
-if dataset_name == "ptb":
-    num_epochs = 1
-    batch_size = 20
-    num_workers = 1
-    log_interval = 10
-    dp_keep_prob = 1
-    hidden_size = 400
-    initial_lr = 5.0
-    # num_steps = 35
-
-if dataset_name == "test":
-    num_epochs = 1
-    batch_size = 4
-    num_workers = 2
-    hidden_size = 30
-    bptt = 2
-    num_steps = 2
-    log_interval = 1
-    dp_keep_prob = 1
-    initial_lr = 7.0
 
 ################################# Functions' definitions  #################################
 
@@ -107,34 +91,40 @@ def run_epoch(model, data, is_train=False, lr=1.0):
     else:
         model.eval()
 
-    epoch_size = ((len(data) // model.batch_size) - 1) // args.bptt   # For visualization
+    epoch_size = ((len(data) // model.batch_size) - 1) // args.seq_length   # For visualization
     start_time = time.time()
     hidden = model.init_hidden()
 
     costs, iters = 0.0, 0
 
-    for batch, i in enumerate(range(0, data.size(0) - 1, bptt)):
-        inputs, targets = get_batch(args, data, i, bptt)
-        hidden = repackage_hidden(hidden)
-        outputs, hidden = model(inputs, hidden)
+    # for batch_idx, i in enumerate(range(0, data.size(0) - 1, args.seq_length)):
+    for batch_idx in range(epoch_size * args.num_workers):
 
-        loss = criterion(outputs.view(-1, vocab_size), targets)
-        # print("predictions",outputs.view(-1, vocab_size))
-        costs += loss.item() * model.num_steps
-        iters += model.num_steps
+        worker = batch_idx % args.num_workers
+        print("batch_idx", batch_idx)
 
-        if is_train:
-            # print("\nbatch##", batch_idx+1)
-            # model.zero_grad()
-            # optimizer.zero_grad()  # set all weight grads from previous training iters to 0
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 0.25)
-            # optimizer.compress_grads()
-
-            if (batch+1) % num_workers == 0:
-                # print("\n***batch_idx -- n workers***:",batch_idx+1)
-                optimizer.step()
-                model.zero_grad()
+        print("worker", worker)
+        inputs, targets = get_batch_dan(data, batch_idx, worker, args)
+        # hidden = repackage_hidden(hidden)
+        # outputs, hidden = model(inputs, hidden)
+        #
+        # loss = criterion(outputs.view(-1, vocab_size), targets)
+        # # print("predictions",outputs.view(-1, vocab_size))
+        # costs += loss.item() * model.num_steps
+        # iters += model.num_steps
+        #
+        # if is_train:
+        #     # print("\nbatch##", batch_idx+1)
+        #     # model.zero_grad()
+        #     # optimizer.zero_grad()  # set all weight grads from previous training iters to 0
+        #     loss.backward()
+        #     torch.nn.utils.clip_grad_norm_(model.parameters(), 0.25)
+        #     # optimizer.compress_grads()
+        #
+        #     if (batch+1) % num_workers == 0:
+        #         # print("\n***batch_idx -- n workers***:",batch_idx+1)
+        #         optimizer.step()
+        #         model.zero_grad()
 
             # if batch % (epoch_size // log_interval) == log_interval:    #### 10   10
                 # print("Percentage Done: {:2f}%    |  Perplexity: {:8.2f}     |   Speed: {:8.2f} wps".format(
@@ -142,7 +132,8 @@ def run_epoch(model, data, is_train=False, lr=1.0):
                 # logging the loss values to wandb
                 # wandb.log({"loss": loss})
         # break
-    return np.exp(costs / iters)
+    # return np.exp(costs / iters)
+    return
 
 ################################# Main Code  #################################
 
@@ -173,7 +164,7 @@ if __name__ == "__main__":
     # vocab_size = len(word_to_id)
     # print('Vocabluary size: {}'.format(vocab_size))
 
-    model = LSTM(embedding_dim=hidden_size, num_steps=num_steps, batch_size=batch_size,
+    model = LSTM(embedding_dim=hidden_size, num_steps=seq_length, batch_size=batch_size,
                   vocab_size=vocab_size, num_layers=num_layers, dp_keep_prob=dp_keep_prob)
     device = torch.device("cuda" if use_gpu else "cpu")
     model.to(device)
