@@ -1,1 +1,42 @@
-2020-06-21 04:05:07,609 DEBUG   MainThread:18484 [wandb_config.py:_load_defaults():129] wandb dir not provided, skipping defaults
+2020-06-21 04:24:55,000 DEBUG   MainThread:5986 [wandb_config.py:_load_defaults():133] no defaults not found in config-defaults.yaml
+2020-06-21 04:24:55,445 DEBUG   MainThread:5986 [meta.py:_setup_code_git():49] probe for git information
+2020-06-21 04:24:55,466 DEBUG   MainThread:5986 [run_manager.py:__init__():547] Initialized sync for bs128_nhid650/3jgbu3jv
+2020-06-21 04:24:55,470 INFO    MainThread:5986 [run_manager.py:wrap_existing_process():1147] wrapping existing process 5974
+2020-06-21 04:24:55,470 WARNING MainThread:5986 [io_wrap.py:register():104] SIGWINCH handler was not None: <Handlers.SIG_DFL: 0>
+2020-06-21 04:24:55,547 INFO    MainThread:5986 [run_manager.py:init_run():926] system metrics and metadata threads started
+2020-06-21 04:24:55,547 INFO    MainThread:5986 [run_manager.py:init_run():965] upserting run before process can begin, waiting at most 10 seconds
+2020-06-21 04:24:55,770 INFO    Thread-15 :5986 [run_manager.py:_upsert_run():1054] saving pip packages
+2020-06-21 04:24:55,773 INFO    Thread-15 :5986 [run_manager.py:_upsert_run():1056] initializing streaming files api
+2020-06-21 04:24:55,774 INFO    Thread-15 :5986 [run_manager.py:_upsert_run():1063] unblocking file change observer, beginning sync with W&B servers
+2020-06-21 04:24:55,775 INFO    MainThread:5986 [run_manager.py:wrap_existing_process():1164] informing user process we are ready to proceed
+2020-06-21 04:24:55,782 INFO    MainThread:5986 [run_manager.py:_sync_etc():1296] entering loop for messages from user process
+2020-06-21 04:24:56,168 INFO    Thread-4  :5986 [run_manager.py:_on_file_modified():692] file/dir modified: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/config.yaml
+2020-06-21 04:24:56,329 INFO    Thread-4  :5986 [run_manager.py:_on_file_created():681] file/dir created: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/output.log
+2020-06-21 04:24:56,329 INFO    Thread-4  :5986 [run_manager.py:_on_file_created():681] file/dir created: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/wandb-metadata.json
+2020-06-21 04:24:56,330 INFO    Thread-4  :5986 [run_manager.py:_on_file_created():681] file/dir created: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/requirements.txt
+2020-06-21 04:25:03,170 INFO    Thread-4  :5986 [run_manager.py:_on_file_modified():692] file/dir modified: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/output.log
+2020-06-21 04:25:04,170 INFO    Thread-4  :5986 [run_manager.py:_on_file_modified():692] file/dir modified: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/output.log
+2020-06-21 04:25:04,170 INFO    Thread-4  :5986 [run_manager.py:_on_file_created():681] file/dir created: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/wandb-summary.json
+2020-06-21 04:25:04,171 INFO    Thread-4  :5986 [run_manager.py:_on_file_created():681] file/dir created: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/media/graph/graph_0_summary_d5dfd5bf.graph.json
+2020-06-21 04:25:04,171 INFO    Thread-4  :5986 [run_manager.py:_on_file_created():681] file/dir created: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/media
+2020-06-21 04:25:04,172 INFO    Thread-4  :5986 [run_manager.py:_on_file_created():681] file/dir created: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/media/graph
+2020-06-21 04:25:12,174 INFO    Thread-4  :5986 [run_manager.py:_on_file_modified():692] file/dir modified: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/wandb-metadata.json
+2020-06-21 04:25:24,180 INFO    Thread-4  :5986 [run_manager.py:_on_file_created():681] file/dir created: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/wandb-events.jsonl
+2020-06-21 04:25:28,182 INFO    Thread-4  :5986 [run_manager.py:_on_file_modified():692] file/dir modified: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/wandb-metadata.json
+2020-06-21 04:25:44,190 INFO    Thread-4  :5986 [run_manager.py:_on_file_modified():692] file/dir modified: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/wandb-metadata.json
+2020-06-21 04:25:45,714 INFO    MainThread:5986 [run_manager.py:_sync_etc():1319] received message from user process: {"exitcode": 1}
+2020-06-21 04:25:45,715 INFO    MainThread:5986 [run_manager.py:_sync_etc():1406] closing log streams and sending exitcode to W&B
+2020-06-21 04:25:45,716 INFO    MainThread:5986 [run_manager.py:shutdown():1070] shutting down system stats and metadata service
+2020-06-21 04:25:46,192 INFO    Thread-4  :5986 [run_manager.py:_on_file_modified():692] file/dir modified: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/wandb-events.jsonl
+2020-06-21 04:25:46,193 INFO    Thread-4  :5986 [run_manager.py:_on_file_modified():692] file/dir modified: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/output.log
+2020-06-21 04:25:46,194 INFO    Thread-4  :5986 [run_manager.py:_on_file_modified():692] file/dir modified: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/wandb-history.jsonl
+2020-06-21 04:25:46,195 INFO    Thread-4  :5986 [run_manager.py:_on_file_modified():692] file/dir modified: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/wandb-summary.json
+2020-06-21 04:25:46,609 INFO    MainThread:5986 [run_manager.py:shutdown():1084] stopping streaming files and file change observer
+2020-06-21 04:25:47,194 INFO    Thread-4  :5986 [run_manager.py:_on_file_modified():692] file/dir modified: /afs/inf.ed.ac.uk/user/s18/s1837964/GradComp/wandb/run-20200621_032454-3jgbu3jv/wandb-metadata.json
+2020-06-21 04:25:49,618 INFO    MainThread:5986 [run_manager.py:_sync_etc():1425] rendering summary
+2020-06-21 04:25:49,621 INFO    MainThread:5986 [run_manager.py:_sync_etc():1457] syncing files to cloud storage
+2020-06-21 04:25:49,622 INFO    MainThread:5986 [run_manager.py:_sync_etc():1466] syncing complete: https://app.wandb.ai/maysara/bs128_nhid650/runs/3jgbu3jv
+200621_032454-3jgbu3jv/wandb-metadata.json
+2020-06-21 04:25:49,618 INFO    MainThread:5986 [3jgbu3jv:run_manager.py:_sync_etc():1425] rendering summary
+2020-06-21 04:25:49,621 INFO    MainThread:5986 [3jgbu3jv:run_manager.py:_sync_etc():1457] syncing files to cloud storage
+2020-06-21 04:25:49,622 INFO    MainThread:5986 [3jgbu3jv:run_manager.py:_sync_etc():1466] syncing complete: https://app.wandb.ai/maysara/bs128_nhid650/runs/3jgbu3jv
