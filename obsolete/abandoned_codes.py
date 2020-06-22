@@ -9,10 +9,27 @@
       # print ("grad[0]+grad[1]:", grad[0]+grad[1])
       # print("(grad[0]+grad[1]).shape:", (grad[0]+grad[1]).shape)
 
+# to count how many non-zero elements we have
+print((comp_grads != 0).sum(dim=0))
+
 
         a = torch.cat((inputs,inputs),0)
         print("in", a)
 
+# if 't0' in optimizer.param_groups[0]:
+#     tmp = {}
+#     for prm in model.parameters():
+#         tmp[prm] = prm.data.clone()
+#         prm.data = optimizer.state[prm]['ax'].clone()
+
+# for prm in model.parameters():
+#     prm.data = tmp[prm].clone()
+
+
+    # print('number of full sequence', num_fullSeq)
+    # print('last sequence length', last_seqLen)
+    # print('number of sequence', num_seq)
+    # print('last update worker', last_update_worker)
 
 def generate_batch2(raw_data, batch_size, num_steps, num_workers):
     """

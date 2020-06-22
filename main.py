@@ -9,10 +9,10 @@ import torch.nn as nn
 from torch.optim import SGD
 
 from model import LSTM
+from model_eval import train, evaluate
 from utils import get_num_parameters, save_model, repackage_hidden, str2bool, check_cuda
 from batch_generation import create_datasets
-from model_eval import train, evaluate
-from model import LSTM
+
 
 from optimizer import SGD_Comp
 from compressor.none import NoneCompressor
@@ -24,9 +24,9 @@ from compressor.onebit import OneBitCompressor
 
 parser = argparse.ArgumentParser(description='A simple LSTM Language Model')
 parser.add_argument('--data', type=str, default='../datasets/test', help='location of the data corpus')
-parser.add_argument('--embsize', type=int, default=200, help='size of word embeddings')
-parser.add_argument('--nhid', type=int, default=200, help='number of hidden units per layer')
-parser.add_argument('--nlayers', type=int, default=2, help='number of layers')
+parser.add_argument('--emb_size', type=int, default=200, help='size of word embeddings')
+parser.add_argument('--num_hid', type=int, default=200, help='number of hidden units per layer')
+parser.add_argument('--num_layers', type=int, default=2, help='number of layers')
 parser.add_argument('--init_lr', type=float, default=1.0, help='initial learning rate')
 parser.add_argument('--epochs', type=int, default=1, help='number of epochs')
 parser.add_argument('--batch_size', type=int, default=20, metavar='N', help='batch size')
@@ -41,7 +41,8 @@ parser.add_argument('--save', type=str, default='/saved_models/', help='path to 
 parser.add_argument('--clip', type=float, default=0.25, help='gradient clipping')
 parser.add_argument('--exp_name', type=str, help='name of the experiment')
 parser.add_argument('--project_name', type=str, help='name of the project')
-parser.add_argument('--nworker', type=int, default=1, help='number of workers')
+parser.add_argument('--num_workers', type=int, default=1, help='number of workers')
+parser.add_argument('--compress_ratio', type=float, default=1.0, help='compress ratio for the compression techniques')
 args = parser.parse_args()
 
 ################################# Main Code #################################
@@ -62,8 +63,8 @@ if __name__ == '__main__':
     train_data, valid_data, test_data, vocab_size = create_datasets(args, device)
 
     # Build the model
-    model = LSTM(vocab_size=vocab_size, batch_size=args.batch_size, embedding_size= args.embsize,
-                hidden_size=args.nhid, num_layers=args.nlayers, dropout_rate=args.dropout, num_step=args.bptt)
+    model = LSTM(vocab_size=vocab_size, batch_size=args.batch_size, embedding_size= args.emb_size,
+                hidden_size=args.num_hid, num_layers=args.num_layers, dropout_rate=args.dropout, num_step=args.bptt)
     model.to(device)
 
     # To log histograms of parameters and gradients values
@@ -75,7 +76,10 @@ if __name__ == '__main__':
     m_flat_lr = 6.0             # number of epochs before decaying the learning rate
 
     criterion = nn.CrossEntropyLoss()   # criterion is default average by minibatch(size(0))
-    optimizer = SGD(model.parameters(), lr=lr)
+    compressor = TopKCompressor(compress_ratio=args.compress_ratio)
+    # compressor = NoneCompressor()
+    optimizer = SGD_Comp(model.parameters(), compressor=compressor, isNoneCompressor=False, num_workers=args.num_workers, lr=lr)
+    # optimizer = SGD(model.parameters(), lr=lr)
 
     print("="*50)
     print("|"," "*18,"Training"," "*18,"|")
@@ -88,45 +92,19 @@ if __name__ == '__main__':
 
         epoch_start_time = time.time()
         train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, args)
-
-        # if 't0' in optimizer.param_groups[0]:
-        #     tmp = {}
-        #     for prm in model.parameters():
-        #         tmp[prm] = prm.data.clone()
-        #         prm.data = optimizer.state[prm]['ax'].clone()
-
-        val_loss = evaluate(model, vocab_size, valid_data, criterion, args)
-        val_ppl = math.exp(val_loss)
-        print('-' * 89)
-        print('| end of epoch {:3d} | time: {:5.2f}s | valid loss {:5.2f} | valid ppl {:8.2f}'
-                .format(epoch, (time.time() - epoch_start_time), val_loss, val_ppl))
-        print('-' * 89)
-
-        # for prm in model.parameters():
-        #     prm.data = tmp[prm].clone()
-
-        # logging the ppl values to wandb
-        wandb.log({"Validation perplexity": val_ppl})
+        evaluate(model, vocab_size, valid_data, criterion, epoch, epoch_start_time, args, False)
 
     print("="*50)
     print("|"," "*18,"Testing"," "*19,"|")
     print("="*50)
 
     # Run the model on the test data
-    test_loss = evaluate(model, vocab_size, test_data, criterion, args)
-    test_ppl = math.exp(test_loss)
-    print('-' * 89)
-    print('| End of training | test loss {:5.2f} | test ppl {:8.2f}'.format(
-        test_loss, test_ppl))
-    print('-' * 89)
-
-    # logging the ppl values to wandb
-    wandb.log({"Test perplexity": test_ppl})
+    evaluate(model, vocab_size, test_data, criterion, epoch, epoch_start_time, args, True)
 
     # logging the number of parameters values to wandb
-    total_num_params, trainable_params, non_trainable_params = get_num_parameters(model)
-    wandb.log({"Number of parameters": total_num_params})
-    wandb.log({"Trainable Parameters": trainable_params})
-    wandb.log({"Non-Trainable Parameters": non_trainable_params})
+    # total_num_params, trainable_params, non_trainable_params = get_num_parameters(model)
+    # wandb.log({"Number of parameters": total_num_params})
+    # wandb.log({"Trainable Parameters": trainable_params})
+    # wandb.log({"Non-Trainable Parameters": non_trainable_params})
 
     print("\n======================== Done! ========================")
