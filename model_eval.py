@@ -6,9 +6,22 @@ import numpy as np
 import argparse
 from batch_generation import get_batch
 from utils import repackage_hidden
+from memory.none import NoneMemory
+from memory.residual import ResidualMemory
+from compressor.topk import TopKCompressor
+from compressor.randomk import RandomKCompressor
+from compressor.onebit import OneBitCompressor
+from compressor.none import NoneCompressor
 
 
-def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, args):
+def grad_dic_init(model, device):
+    compressed_grad_dic = {}
+    for name, param in model.state_dict().items():
+        compressed_grad_dic[name] = torch.zeros(param.shape).to(device)
+    return compressed_grad_dic
+
+
+def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device, args, curr_compressor=NoneCompressor(), curr_memory=NoneMemory()):
     """
     This function runs the model on training data.
     It turns on the training mode, which in turn enables dropout.
@@ -40,9 +53,12 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, args):
 
     last_update_worker = num_seq % args.num_workers
 
-    log_interval = int(args.log_interval * args.num_workers * args.batch_size)  # too much
+    log_interval = int(args.log_interval * args.num_workers * args.batch_size)
 
-    for batch, i in enumerate(range(0, train_data.size(0) - 1, args.bptt)):     #range(start, stop, step) # or range(1, train_data.size(0))
+    compressed_grad_dic = grad_dic_init(model, device)
+
+    for batch, i in enumerate(range(0, train_data.size(0) - 1, args.bptt)):
+
         data, targets = get_batch(train_data, i, args)  # i = batch * bptt
 
         print("\nBatch#", batch)
@@ -65,17 +81,42 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, args):
         total_loss += loss.item() * current_seqLen * current_nworker    # was origionally total_loss += loss.data.item() * args.bptt
         iters += current_seqLen     # was origonally iters += args.bptt
 
+        worker_id = batch % args.num_workers
+        model.zero_grad()
+
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)   # To prevent the exploding gradient problem.
         # optimizer.compress_grads()
 
+        for name, param in model.named_parameters():
+            # compress and save residual
+            tensor = curr_memory.compensate(param.grad, name, worker_id=worker_id)
+            tensor_comp, ctx = curr_compressor.compress(tensor, name)
+            curr_memory.update(tensor, name, curr_compressor, tensor_comp, ctx, worker_id=worker_id)
+            # print('param shape:',param.shape)
+            # print('decompressed param shape', tensor_decomp.shape)
+
+            # decompress and add on central node
+            tensor_decomp = curr_compressor.decompress(tensor_comp, ctx)
+
+            compressed_grad_dic[name].add_(tensor_decomp)
+
+
         if (((batch + 1) % args.num_workers == 0) or (batch == num_seq - 1)):
 
-            optimizer.step()
+            for name, param in model.state_dict().items():
+                # model.state_dict()[name].copy_(compressed_grad_dic[name])
+                # print(model.state_dict())
+                param.data.add_(compressed_grad_dic[name], alpha=-lr)
+
+            compressed_grad_dic = grad_dic_init(model, device)
+            # optimizer.step()
             model.zero_grad()
 
             # log training result
             _log_training_results (epoch, batch, lr, log_interval, num_fullSeq, num_seq, last_update_worker, total_loss, iters, start_time, args)
+            # total_loss = 0
+            start_time = time.time()
     return
 
 
@@ -142,16 +183,12 @@ def _log_training_results (epoch, batch, lr, log_interval, num_fullSeq, num_seq,
         # logging the train ppl values to wandb
         wandb.log({"Train perplexity": train_ppl})
 
-        # last update
         if (batch == num_seq - 1) and (last_update_worker != 0):
             print('| epoch {:3d} | {:5d}/{:5d} batches | lr {:02.4f} | ms/batch {:5.2f} | loss {:5.2f} | ppl {:8.2f}'
                     .format(epoch, batch, num_seq, lr, elapsed * 1000 / (log_interval - args.num_workers + last_update_worker),
                     current_loss, train_ppl))
 
-        # normal log
         else:
 
             print('| epoch {:3d} | {:5d}/{:5d} batches | lr {:02.4f} | ms/batch {:5.2f} | loss {:5.2f} | ppl {:8.2f}'
                     .format(epoch, batch, num_seq, lr, elapsed * 1000 / log_interval, current_loss, train_ppl))
-        # total_loss = 0
-        start_time = time.time()

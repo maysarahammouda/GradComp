@@ -19,6 +19,8 @@ from compressor.none import NoneCompressor
 from compressor.topk import TopKCompressor
 from compressor.randomk import RandomKCompressor
 from compressor.onebit import OneBitCompressor
+from memory.none import NoneMemory
+from memory.residual import ResidualMemory
 
 ################################# Command Line Arguments  #################################
 
@@ -76,10 +78,12 @@ if __name__ == '__main__':
     m_flat_lr = 6.0             # number of epochs before decaying the learning rate
 
     criterion = nn.CrossEntropyLoss()   # criterion is default average by minibatch(size(0))
-    compressor = TopKCompressor(compress_ratio=args.compress_ratio)
-    # compressor = NoneCompressor()
-    optimizer = SGD_Comp(model.parameters(), compressor=compressor, isNoneCompressor=False, num_workers=args.num_workers, lr=lr)
-    # optimizer = SGD(model.parameters(), lr=lr)
+    # compressor = RandomKCompressor(compress_ratio=args.compress_ratio)
+    memory = ResidualMemory(n_worker=args.num_workers)
+    memory = NoneMemory()
+    compressor = NoneCompressor()
+    # optimizer = SGD_Comp(model.parameters(), compressor=compressor, isNoneCompressor=False, num_workers=args.num_workers, lr=lr)
+    optimizer = SGD(model.parameters(), lr=lr)
 
     print("="*50)
     print("|"," "*18,"Training"," "*18,"|")
@@ -91,7 +95,8 @@ if __name__ == '__main__':
         lr = lr * lr_decay
 
         epoch_start_time = time.time()
-        train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, args)
+        train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device, args,
+                compressor, memory)
         evaluate(model, vocab_size, valid_data, criterion, epoch, epoch_start_time, args, False)
 
     print("="*50)

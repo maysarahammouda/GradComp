@@ -9,7 +9,6 @@ from compressor.topk import TopKCompressor
 from compressor.randomk import RandomKCompressor
 from compressor.onebit import OneBitCompressor
 from compressor.none import NoneCompressor
-
 from itertools import chain
 
 
@@ -54,10 +53,7 @@ class SGD_Comp(Optimizer):
             for p in group['params']:
                 grads.append(p.grad.view(-1))
         grads_tensor = torch.cat(grads)
-        # print((grads_tensor != 0).sum(dim=0))
 
-        # comp_grads_tensors is a list that contains two tensors: the
-        # compressed gradients and the indicies of these compressed gradients
         if self.isNoneCompressor:
             return grads_tensor
         else:
@@ -84,31 +80,28 @@ class SGD_Comp(Optimizer):
         comp_grads_tensors, ctx = SGD_Comp.compress_grads(self)
         comp_grads, indices = comp_grads_tensors
         decomp_grads = self.compressor.decompress(comp_grads_tensors, ctx)
-        # print(decomp_grads.type)
 
-        # print(type(self.param_groups))
-        # print(self.param_groups[0])
-
+        c = []
         for group in self.param_groups:
 
-            c = []
-            # c = group.view(-1)
-            # print(len(c))
             for p in group['params']:
-                # p = p.view(-1)
-                p = p.flatten()
+                p = p.flatten()    # or  p = p.view(-1)
+                torch.zeros_like(p).scatter()
                 for i in p:
                     c.append(i)
-        # print("C is generated")
                 # torch.tensor(c).add_(decomp_grads, alpha=-self.lr)
         # for i, p in enumerate(c):
         #     p.add_(decomp_grads[i], alpha=-self.lr)
         for i, d_p in zip(indices,comp_grads):
             c[i].add_(d_p, alpha=-self.lr)
-            # print("hi")
 
-        self.acc_comp_grads = {}
+        # self.acc_comp_grads = {}  #for multiple workers
         return loss
+
+
+
+
+
 
 # @torch.no_grad()
 # def step(self, closure=None):
@@ -181,3 +174,7 @@ class SGD_Comp(Optimizer):
 #     return
     # summed_tensor_compressed = HorovodAllreduce.apply(tensor_compressed, average, name, op)
     # return self.compressor.decompress(summed_tensor_compressed, ctx)
+    # print((grads_tensor != 0).sum(dim=0))
+    # print(type(self.param_groups))
+    # print(self.param_groups[0])
+    # print(decomp_grads.type)
