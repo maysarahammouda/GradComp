@@ -1,12 +1,12 @@
-2020-06-22 18:42:42,164 DEBUG   MainThread:35476 [wandb_config.py:_load_defaults():133] no defaults not found in config-defaults.yaml
-2020-06-22 18:42:42,195 DEBUG   MainThread:35476 [meta.py:_setup_code_git():49] probe for git information
-2020-06-22 18:42:42,303 DEBUG   MainThread:35476 [run_manager.py:__init__():547] Initialized sync for test/r99k7mq0
-2020-06-22 18:42:42,308 INFO    MainThread:35476 [run_manager.py:wrap_existing_process():1147] wrapping existing process 27708
-2020-06-22 18:42:42,434 INFO    MainThread:35476 [run_manager.py:init_run():926] system metrics and metadata threads started
-2020-06-22 18:42:42,434 INFO    MainThread:35476 [run_manager.py:wrap_existing_process():1164] informing user process we are ready to proceed
-2020-06-22 18:42:42,434 INFO    MainThread:35476 [run_manager.py:_sync_etc():1296] entering loop for messages from user process
-2020-06-22 18:42:42,754 INFO    MainThread:35476 [run_manager.py:_sync_etc():1319] received message from user process: {"exitcode": 0}
-2020-06-22 18:42:42,755 INFO    MainThread:35476 [run_manager.py:_sync_etc():1406] closing log streams and sending exitcode to W&B
-2020-06-22 18:42:42,755 INFO    MainThread:35476 [run_manager.py:shutdown():1070] shutting down system stats and metadata service
-2020-06-22 18:42:43,175 INFO    Thread-7  :35476 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\dryrun-20200622_174240-r99k7mq0\wandb-history.jsonl
-2020-06-22 18:42:43,175 INFO    Thread-7  :35476 [r99k7mq0:run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\dryrun-20200622_174240-r99k7mq0\wandb-history.jsonl
+2020-06-23 04:48:54,354 DEBUG   MainThread:2928 [wandb_config.py:_load_defaults():133] no defaults not found in config-defaults.yaml
+2020-06-23 04:48:54,393 DEBUG   MainThread:2928 [meta.py:_setup_code_git():49] probe for git information
+2020-06-23 04:48:54,502 DEBUG   MainThread:2928 [run_manager.py:__init__():547] Initialized sync for test/8ruza33f
+2020-06-23 04:48:54,506 INFO    MainThread:2928 [run_manager.py:wrap_existing_process():1147] wrapping existing process 39728
+2020-06-23 04:48:54,625 INFO    MainThread:2928 [run_manager.py:init_run():926] system metrics and metadata threads started
+2020-06-23 04:48:54,625 INFO    MainThread:2928 [run_manager.py:wrap_existing_process():1164] informing user process we are ready to proceed
+2020-06-23 04:48:54,625 INFO    MainThread:2928 [run_manager.py:_sync_etc():1296] entering loop for messages from user process
+2020-06-23 04:48:54,862 INFO    MainThread:2928 [run_manager.py:_sync_etc():1319] received message from user process: {"exitcode": 0}
+2020-06-23 04:48:54,863 INFO    MainThread:2928 [run_manager.py:_sync_etc():1406] closing log streams and sending exitcode to W&B
+2020-06-23 04:48:54,863 INFO    MainThread:2928 [run_manager.py:shutdown():1070] shutting down system stats and metadata service
+2020-06-23 04:48:55,374 INFO    Thread-7  :2928 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\dryrun-20200623_034853-8ruza33f\wandb-history.jsonl
+2020-06-23 04:48:55,374 INFO    Thread-7  :2928 [8ruza33f:run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\ltopuser\GradComp\wandb\dryrun-20200623_034853-8ruza33f\wandb-history.jsonl

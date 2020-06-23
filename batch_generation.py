@@ -7,12 +7,12 @@ import data_loader
 def create_datasets (args, device):
         corpus = data_loader.Corpus(args.data)
         vocab_size = len(corpus.dictionary)
-        print('Vocabluary size: {}'.format(vocab_size))
+        # print('Vocabluary size: {}'.format(vocab_size))
         train_data = batchify(corpus.train, args.batch_size, device)
         valid_data = batchify(corpus.valid, args.eval_batch_size, device)
         test_data = batchify(corpus.test, args.test_batch_size, device)
         return train_data, valid_data, test_data, vocab_size
-        
+
 
 def batchify(data, bsz, device):
     # Work out how cleanly we can divide the dataset into bsz parts.

@@ -1,3 +1,7 @@
+if (((batch + 1) % args.num_workers == 0 and batch > 0) or (batch == num_seq - 1)):
+
+
+
 # for param in model.parameters():
       #     grad.append(param.grad.view(-1))
       # print ("grad length:", len(grad))
