@@ -1,5 +1,4 @@
 import torch
-
 from compressor.compressor import Compressor
 
 

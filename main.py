@@ -10,17 +10,19 @@ from torch.optim import SGD
 
 from model import LSTM
 from model_eval import train, evaluate
-from utils import get_num_parameters, save_model, repackage_hidden, str2bool, check_cuda
 from batch_generation import create_datasets
-
+from utils import get_num_parameters, save_model, repackage_hidden, str2bool, check_cuda
 
 from optimizer import SGD_Comp
+from memory.none import NoneMemory
+from compressor.dgc import DgcCompressor
+from memory.residual import ResidualMemory
 from compressor.none import NoneCompressor
 from compressor.topk import TopKCompressor
 from compressor.randomk import RandomKCompressor
 from compressor.onebit import OneBitCompressor
-from memory.none import NoneMemory
-from memory.residual import ResidualMemory
+from compressor.terngrad import TernGradCompressor
+from compressor.threshold import ThresholdCompressor
 
 ################################# Command Line Arguments  #################################
 
@@ -45,51 +47,75 @@ parser.add_argument('--exp_name', type=str, help='name of the experiment')
 parser.add_argument('--project_name', type=str, help='name of the project')
 parser.add_argument('--num_workers', type=int, default=1, help='number of workers')
 parser.add_argument('--compress_ratio', type=float, default=1.0, help='compress ratio for the compression techniques')
+parser.add_argument('--compressor', type=str, help='the name of the compression technique')
+parser.add_argument('--memory', type=str, help='the name of the memory technique')
 args = parser.parse_args()
 
 ################################# Main Code #################################
 
 if __name__ == '__main__':
-    # Set the random seed manually.
+    # Setting the random seed manually.
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
 
     # Initializing wabdb
     wandb.init(name=args.exp_name, project=args.project_name)
 
-    # Check if there is any GPU available
+    # Checking if there is any GPU available.
     check_cuda(args)
     device = torch.device("cuda" if args.use_gpu else "cpu")
 
-    # Load data and creat training, validation, and test data
+    # Loading data and creating training, validation, and test data.
     train_data, valid_data, test_data, vocab_size = create_datasets(args, device)
 
-    # Build the model
+    # Building the model.
     model = LSTM(vocab_size=vocab_size, batch_size=args.batch_size, embedding_size= args.emb_size,
                 hidden_size=args.num_hid, num_layers=args.num_layers, dropout_rate=args.dropout, num_step=args.bptt)
     model.to(device)
 
-    # To log histograms of parameters and gradients values
+    # Logging histograms of parameters and gradients values.
     wandb.watch(model, log="all")   #Valid options for the log argument are: "gradients", "parameters", "all", or None.
 
-    # Learning rate configuration
+    # Learning rate configuration.
     lr = args.init_lr
     lr_decay_factor = 1 / 1.2   # decay factor for learning rate
     m_flat_lr = 6.0             # number of epochs before decaying the learning rate
 
     criterion = nn.CrossEntropyLoss()   # criterion is default average by minibatch(size(0))
-    # compressor = RandomKCompressor(compress_ratio=args.compress_ratio)
-    memory = ResidualMemory(n_worker=args.num_workers)
-    memory = NoneMemory()
-    compressor = NoneCompressor()
-    # optimizer = SGD_Comp(model.parameters(), compressor=compressor, isNoneCompressor=False, num_workers=args.num_workers, lr=lr)
+
+    # Choosing the compression algorithm.
+    if args.compressor == "none":
+        compressor = NoneCompressor()
+    elif args.compressor == "topk":
+        compressor = TopKCompressor(compress_ratio=args.compress_ratio)
+    elif args.compressor == "randomk":
+        compressor = RandomKCompressor(compress_ratio=args.compress_ratio)
+    elif args.compressor == "onebit":
+        compressor = OneBitCompressor()
+    elif args.compressor == "dgc":
+        compressor = DgcCompressor(compress_ratio=args.compress_ratio)
+    elif args.compressor == "terngrad":
+        compressor = TernGradCompressor()
+    elif args.compressor == "threshold":
+        compressor = ThresholdCompressor(threshold=0.1)
+    else:
+        raise Exception("Please choose an appropriate compression algorithm...")
+
+    # Choosing the memory technique.
+    if args.memory == "none":
+        memory = NoneMemory()
+    elif args.memory == "residual":
+        memory = ResidualMemory(n_worker=args.num_workers)
+    else:
+        raise Exception("Please choose an appropriate memory technique...")
+
     optimizer = SGD(model.parameters(), lr=lr)
 
     print("="*50)
     print("|"," "*18,"Training"," "*18,"|")
     print("="*50)
 
-    # Run the model on the training and validation data
+    # Running the model on the training and validation data
     for epoch in range(1, args.epochs + 1):
         lr_decay = lr_decay_factor ** max(epoch - m_flat_lr, 0)
         lr = lr * lr_decay
@@ -103,13 +129,13 @@ if __name__ == '__main__':
     print("|"," "*18,"Testing"," "*19,"|")
     print("="*50)
 
-    # Run the model on the test data
+    # Running the model on the test data
     evaluate(model, vocab_size, test_data, criterion, epoch, epoch_start_time, args, True)
 
     # logging the number of parameters values to wandb
-    # total_num_params, trainable_params, non_trainable_params = get_num_parameters(model)
-    # wandb.log({"Number of parameters": total_num_params})
-    # wandb.log({"Trainable Parameters": trainable_params})
+    total_num_params, trainable_params, non_trainable_params = get_num_parameters(model)
+    wandb.log({"Number of parameters": total_num_params})
+    wandb.log({"Trainable Parameters": trainable_params})
     # wandb.log({"Non-Trainable Parameters": non_trainable_params})
 
     print("\n======================== Done! ========================")

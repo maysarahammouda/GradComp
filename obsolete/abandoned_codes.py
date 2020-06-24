@@ -1,6 +1,6 @@
 if (((batch + 1) % args.num_workers == 0 and batch > 0) or (batch == num_seq - 1)):
 
-
+    # optimizer = SGD_Comp(model.parameters(), compressor=compressor, isNoneCompressor=False, num_workers=args.num_workers, lr=lr)
 
 # for param in model.parameters():
       #     grad.append(param.grad.view(-1))

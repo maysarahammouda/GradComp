@@ -1,13 +1,13 @@
-2020-06-23 19:26:35,516 DEBUG   MainThread:11296 [wandb_config.py:_load_defaults():133] no defaults not found in config-defaults.yaml
-2020-06-23 19:26:36,155 DEBUG   MainThread:11296 [meta.py:_setup_code_git():49] probe for git information
-2020-06-23 19:26:36,531 DEBUG   MainThread:11296 [run_manager.py:__init__():547] Initialized sync for test/13phjatg
-2020-06-23 19:26:36,539 INFO    Thread-7  :11296 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\dryrun-20200623_182633-13phjatg\wandb-metadata.json
-2020-06-23 19:26:36,539 INFO    MainThread:11296 [run_manager.py:wrap_existing_process():1147] wrapping existing process 20156
-2020-06-23 19:26:36,681 INFO    MainThread:11296 [run_manager.py:init_run():926] system metrics and metadata threads started
-2020-06-23 19:26:36,689 INFO    MainThread:11296 [run_manager.py:wrap_existing_process():1164] informing user process we are ready to proceed
-2020-06-23 19:26:36,697 INFO    MainThread:11296 [run_manager.py:_sync_etc():1296] entering loop for messages from user process
-2020-06-23 19:26:37,488 INFO    MainThread:11296 [run_manager.py:_sync_etc():1319] received message from user process: {"exitcode": 0}
-2020-06-23 19:26:37,488 INFO    MainThread:11296 [run_manager.py:_sync_etc():1406] closing log streams and sending exitcode to W&B
-2020-06-23 19:26:37,488 INFO    MainThread:11296 [run_manager.py:shutdown():1070] shutting down system stats and metadata service
-37,488 INFO    MainThread:11296 [13phjatg:run_manager.py:_sync_etc():1406] closing log streams and sending exitcode to W&B
-2020-06-23 19:26:37,488 INFO    MainThread:11296 [13phjatg:run_manager.py:shutdown():1070] shutting down system stats and metadata service
+2020-06-24 04:42:38,094 DEBUG   MainThread:12512 [wandb_config.py:_load_defaults():133] no defaults not found in config-defaults.yaml
+2020-06-24 04:42:38,762 DEBUG   MainThread:12512 [meta.py:_setup_code_git():49] probe for git information
+2020-06-24 04:42:38,898 DEBUG   MainThread:12512 [run_manager.py:__init__():547] Initialized sync for test/18h3d0xq
+2020-06-24 04:42:38,903 INFO    MainThread:12512 [run_manager.py:wrap_existing_process():1147] wrapping existing process 28428
+2020-06-24 04:42:39,054 INFO    MainThread:12512 [run_manager.py:init_run():926] system metrics and metadata threads started
+2020-06-24 04:42:39,055 INFO    MainThread:12512 [run_manager.py:wrap_existing_process():1164] informing user process we are ready to proceed
+2020-06-24 04:42:39,055 INFO    MainThread:12512 [run_manager.py:_sync_etc():1296] entering loop for messages from user process
+2020-06-24 04:42:39,170 INFO    Thread-7  :12512 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\dryrun-20200624_034235-18h3d0xq\config.yaml
+2020-06-24 04:42:40,517 INFO    MainThread:12512 [run_manager.py:_sync_etc():1319] received message from user process: {"exitcode": 0}
+2020-06-24 04:42:40,518 INFO    MainThread:12512 [run_manager.py:_sync_etc():1406] closing log streams and sending exitcode to W&B
+2020-06-24 04:42:40,518 INFO    MainThread:12512 [run_manager.py:shutdown():1070] shutting down system stats and metadata service
+run_manager.py:_sync_etc():1406] closing log streams and sending exitcode to W&B
+2020-06-24 04:42:40,518 INFO    MainThread:12512 [18h3d0xq:run_manager.py:shutdown():1070] shutting down system stats and metadata service

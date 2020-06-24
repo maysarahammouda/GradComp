@@ -15,6 +15,10 @@ from compressor.none import NoneCompressor
 
 
 def grad_dic_init(model, device):
+    """
+    This is a helper function that initializes a dictionary of tensors with zeros.
+    The tensors in the dictionary will have the same shape as the parameter tensors.
+    """
     compressed_grad_dic = {}
     for name, param in model.state_dict().items():
         compressed_grad_dic[name] = torch.zeros(param.shape).to(device)
@@ -55,6 +59,7 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device
 
     log_interval = int(args.log_interval * args.num_workers * args.batch_size)
 
+    # initializing a dictionary of tensors for the compressed gradients
     compressed_grad_dic = grad_dic_init(model, device)
 
     for batch, i in enumerate(range(0, train_data.size(0) - 1, args.bptt)):
