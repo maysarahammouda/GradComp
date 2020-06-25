@@ -9,8 +9,8 @@ class TernGradCompressor(Compressor):
         tensor = tensor.flatten()
 
         std = (tensor - torch.mean(tensor)) ** 2
-        std = torch.sqrt(torch.mean(std))
-        c = 2.5 * std.item()
+        std = torch.sqrt(torch.mean(std))   # the standard deviation of the gradients
+        c = 2.5 * std.item()    # the 2.5 is a hyperparameter to be elected, 2.5 was chosen for CIFAR-10/MNIST/ImageNet
         gradient = torch.clamp(tensor, -c, c)   # Gradient clipping
         abs_gradient = gradient.abs()
         scalar = abs_gradient.max()         # equation.2 in the paper (St)

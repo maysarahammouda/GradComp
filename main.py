@@ -148,5 +148,6 @@ if __name__ == '__main__':
     wandb.log({"Number of parameters": total_num_params})
     wandb.log({"Trainable Parameters": trainable_params})
     # wandb.log({"Non-Trainable Parameters": non_trainable_params})
+    # model.save(os.path.join(wandb.run.dir, "model.h5"))
 
     print("\n======================== Done! ========================")
