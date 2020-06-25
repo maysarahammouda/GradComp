@@ -41,7 +41,7 @@ class TopKCompressor(Compressor):
     This sparsification algorithms chooses the top (highest absolute magnitude)
     gradients and communicates them.
     """
-
+    
     def __init__(self, compress_ratio):
         super().__init__()
         self.compress_ratio = compress_ratio

@@ -22,7 +22,10 @@ from compressor.topk import TopKCompressor
 from compressor.randomk import RandomKCompressor
 from compressor.onebit import OneBitCompressor
 from compressor.terngrad import TernGradCompressor
-from compressor.threshold import ThresholdCompressor
+from compressor.signsgd import SignSGDCompressor
+from compressor.signum import SignumCompressor
+from compressor.efsignsgd import EFSignSGDCompressor
+from compressor.qsgd import QSGDCompressor
 
 ################################# Command Line Arguments  #################################
 
@@ -98,6 +101,14 @@ if __name__ == '__main__':
         compressor = TernGradCompressor()
     elif args.compressor == "threshold":
         compressor = ThresholdCompressor(threshold=0.1)
+    elif args.compressor == "signsgd":
+        compressor = SignSGDCompressor()
+    elif args.compressor == "signum":
+        compressor = SignumCompressor(momentum=0.1)
+    elif args.compressor == "efsignsgd":
+        compressor = EFSignSGDCompressor(lr=lr)
+    elif args.compressor == "qsgd":
+        compressor = QSGDCompressor(quantum_num=0.1)
     else:
         raise Exception("Please choose an appropriate compression algorithm...")
 

@@ -106,13 +106,12 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device
 
             compressed_grad_dic[name].add_(tensor_decomp)
 
-
+        # This part acts like the parameter server where the grads get accumulated / averaged
         if (((batch + 1) % args.num_workers == 0) or (batch == num_seq - 1)):
 
             for name, param in model.state_dict().items():
-                # model.state_dict()[name].copy_(compressed_grad_dic[name])
-                # print(model.state_dict())
                 param.data.add_(compressed_grad_dic[name], alpha=-lr)
+                # param.data.add_(compressed_grad_dic[name] / args.num_workers, alpha=-lr)
 
             compressed_grad_dic = grad_dic_init(model, device)
             # optimizer.step()

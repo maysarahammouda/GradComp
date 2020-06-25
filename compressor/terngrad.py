@@ -13,7 +13,7 @@ class TernGradCompressor(Compressor):
         c = 2.5 * std.item()
         gradient = torch.clamp(tensor, -c, c)
         abs_gradient = gradient.abs()
-        scalar = abs_gradient.max()
+        scalar = abs_gradient.max()         # equation.2 in the paper (St)
 
         sign_gradient = gradient.sign() * scalar
         rnd_sample = torch.empty_like(tensor).uniform_(0, scalar.item())
@@ -24,7 +24,13 @@ class TernGradCompressor(Compressor):
 
         return tensor_compressed, shape
 
+
     def decompress(self, tensor_compressed, shape):
+        """
+        This function decompress  the gradients by restoring the origional values
+        from the compressed tensors, which contain the terngrad gradients and the
+        scalar values for these gradients, and the origional shape.
+        """
         tensor_compressed, scalar = tensor_compressed
         sign = tensor_compressed.type(torch.float32)
         tensor_decompressed = sign * scalar
