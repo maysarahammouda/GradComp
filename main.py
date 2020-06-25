@@ -81,8 +81,8 @@ if __name__ == '__main__':
 
     # Learning rate configuration.
     lr = args.init_lr
-    lr_decay_factor = 1 / 1.2   # decay factor for learning rate
-    m_flat_lr = 6.0             # number of epochs before decaying the learning rate
+    # lr_decay_factor = 1 / 1.0   # decay factor for learning rate
+    # m_flat_lr = 6.0             # number of epochs before decaying the learning rate
 
     criterion = nn.CrossEntropyLoss()   # criterion is default average by minibatch(size(0))
 
@@ -128,8 +128,8 @@ if __name__ == '__main__':
 
     # Running the model on the training and validation data
     for epoch in range(1, args.epochs + 1):
-        lr_decay = lr_decay_factor ** max(epoch - m_flat_lr, 0)
-        lr = lr * lr_decay
+        # lr_decay = lr_decay_factor ** max(epoch - m_flat_lr, 0)
+        # lr = lr * lr_decay
 
         epoch_start_time = time.time()
         train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device, args,

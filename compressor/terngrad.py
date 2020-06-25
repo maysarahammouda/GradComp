@@ -11,7 +11,7 @@ class TernGradCompressor(Compressor):
         std = (tensor - torch.mean(tensor)) ** 2
         std = torch.sqrt(torch.mean(std))
         c = 2.5 * std.item()
-        gradient = torch.clamp(tensor, -c, c)
+        gradient = torch.clamp(tensor, -c, c)   # Gradient clipping
         abs_gradient = gradient.abs()
         scalar = abs_gradient.max()         # equation.2 in the paper (St)
 
