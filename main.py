@@ -36,6 +36,7 @@ parser.add_argument('--emb_size', type=int, default=200, help='size of word embe
 parser.add_argument('--num_hid', type=int, default=200, help='number of hidden units per layer')
 parser.add_argument('--num_layers', type=int, default=2, help='number of layers')
 parser.add_argument('--init_lr', type=float, default=1.0, help='initial learning rate')
+parser.add_argument('--lr_decay', type=float, default=0.0, help='learning rate decay factor')
 parser.add_argument('--epochs', type=int, default=1, help='number of epochs')
 parser.add_argument('--batch_size', type=int, default=20, metavar='N', help='batch size')
 parser.add_argument('--eval_batch_size', type=int, default=10, metavar='N', help='evaluation batch size')
@@ -82,8 +83,8 @@ if __name__ == '__main__':
 
     # Learning rate configuration.
     lr = args.init_lr
-    # lr_decay_factor = 1 / 1.0   # decay factor for learning rate
-    # m_flat_lr = 6.0             # number of epochs before decaying the learning rate
+    lr_decay_factor = 1 / (1+args.lr_decay)   # decay factor for learning rate
+    m_flat_lr = 6.0           # number of epochs before decaying the learning rate
 
     criterion = nn.CrossEntropyLoss()   # criterion is default average by minibatch(size(0))
 
@@ -129,8 +130,8 @@ if __name__ == '__main__':
 
     # Running the model on the training and validation data
     for epoch in range(1, args.epochs + 1):
-        # lr_decay = lr_decay_factor ** max(epoch - m_flat_lr, 0)
-        # lr = lr * lr_decay
+        lr_decay = lr_decay_factor ** max(epoch - m_flat_lr, 0)
+        lr = lr * lr_decay
 
         epoch_start_time = time.time()
         train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device, args,
