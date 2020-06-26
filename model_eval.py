@@ -66,7 +66,7 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device
 
         data, targets = get_batch(train_data, i, args)  # i = batch * bptt
 
-        print("\nBatch#", batch)
+        # print("\nBatch#", batch)
 
         # Detaching the hidden state from how it was previously produced.
         # Otherwise, the model would try to backpropagat all the way to the start of the dataset.
@@ -155,7 +155,7 @@ def evaluate(model, vocab_size, data_source, criterion, epoch, epoch_start_time,
         if is_test == False:
             val_ppl = math.exp(loss)
             # logging the validation ppl values to wandb
-            wandb.log({"Validation perplexity": val_ppl})
+            wandb.log({"Validation perplexity": val_ppl}, step=epoch)
 
             print('-' * 89)
             print('| end of epoch {:3d} | time: {:5.2f}s | valid loss {:5.2f} | valid ppl {:8.2f}'
@@ -165,7 +165,7 @@ def evaluate(model, vocab_size, data_source, criterion, epoch, epoch_start_time,
         if is_test == True:
             test_ppl = math.exp(loss)
             # logging the test ppl values to wandb
-            wandb.log({"Test perplexity": test_ppl})
+            wandb.log({"Test perplexity": test_ppl}, step=epoch)
 
             print('-' * 89)
             print('| End of training | test loss {:5.2f} | test ppl {:8.2f}'.format(
@@ -185,7 +185,7 @@ def _log_training_results (epoch, batch, lr, log_interval, num_fullSeq, num_seq,
         train_ppl = math.exp(current_loss)
 
         # logging the train ppl values to wandb
-        wandb.log({"Train perplexity": train_ppl})
+        wandb.log({"Train perplexity": train_ppl}, step=epoch)
 
         if (batch == num_seq - 1) and (last_update_worker != 0):
             print('| epoch {:3d} | {:5d}/{:5d} batches | lr {:02.4f} | ms/batch {:5.2f} | loss {:5.2f} | ppl {:8.2f}'
