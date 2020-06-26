@@ -11,7 +11,8 @@ from torch.optim import SGD
 from model import LSTM
 from model_eval import train, evaluate
 from batch_generation import create_datasets
-from utils import get_num_parameters, save_model, repackage_hidden, str2bool, check_cuda
+from utils import get_num_parameters, save_model, repackage_hidden, str2bool
+from utils import check_cuda, log_args
 
 from optimizer import SGD_Comp
 from memory.none import NoneMemory
@@ -144,10 +145,12 @@ if __name__ == '__main__':
     evaluate(model, vocab_size, test_data, criterion, epoch, epoch_start_time, args, True)
 
     # logging the number of parameters values to wandb
-    total_num_params, trainable_params, non_trainable_params = get_num_parameters(model)
-    wandb.log({"Number of parameters": total_num_params})
-    wandb.log({"Trainable Parameters": trainable_params})
-    # wandb.log({"Non-Trainable Parameters": non_trainable_params})
+    get_num_parameters(model)
+
+    # Logging all the command line arguments to wandb
+    log_args(args)
+
+    # Saving the model
     # model.save(os.path.join(wandb.run.dir, "model.h5"))
 
     print("\n======================== Done! ========================")

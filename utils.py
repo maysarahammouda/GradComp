@@ -5,6 +5,7 @@ import numpy as np
 import datetime
 import torch
 import re
+import wandb
 # import pprint
 
 
@@ -21,7 +22,16 @@ def get_num_parameters(model):
         if param.requires_grad_:
             trainable_params += np.prod(param.shape)
         non_trainable_params = total_num_params - trainable_params
-    return total_num_params, trainable_params, non_trainable_params
+    wandb.log({"Number of parameters": total_num_params})
+    wandb.log({"Trainable Parameters": trainable_params})
+    # wandb.log({"Non-Trainable Parameters": non_trainable_params})
+    return
+
+
+def log_args(args):
+    for arg in vars(args):
+        wandb.log({arg:getattr(args, arg)})
+    return
 
 
 def save_model(save, model):
