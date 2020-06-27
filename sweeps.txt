@@ -1,1 +1,3 @@
-wandb agent maysara/bs128_nhid650_drop0.5_compress_decay0/f3h19qeh
+wandb agent maysara/terngrad_c_effect/in10rspk
+
+wandb agent maysara/topk_compress_ratio_effect/qcuapujt
