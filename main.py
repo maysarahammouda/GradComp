@@ -54,6 +54,7 @@ parser.add_argument('--num_workers', type=int, default=1, help='number of worker
 parser.add_argument('--compress_ratio', type=float, default=1.0, help='compress ratio for the compression techniques')
 parser.add_argument('--compressor', type=str, help='the name of the compression technique')
 parser.add_argument('--memory', type=str, help='the name of the memory technique')
+parser.add_argument('--c', type=float, default=10, help='terngrad parameter')
 args = parser.parse_args()
 
 ################################# Main Code #################################
