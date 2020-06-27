@@ -3,39 +3,6 @@ import torch
 from compressor.compressor import Compressor
 
 
-def sparsify(tensor, compress_ratio):
-    """
-    This function performs "sparsification" for "tensor".
-    It decides on the number of elements to keep based on the "compress_ratio".
-    Args:
-        tensor: the tensor we need to sparsify.
-        compress_ratio: the percentage of the number of elements we want to keep.
-    Return:
-        the values and indices for the choosen elements.
-    """
-    tensor = tensor.flatten()
-    numel = tensor.numel()
-    k = max(1, int(numel * compress_ratio))
-    indices = torch.randperm(numel, device=tensor.device)[:k]
-    values = tensor[indices]
-    return values, indices
-
-def desparsify(tensors, numel):
-    """
-    This function re-shapes the sparsified values into the same shape as the
-    origional tensor. This would make dealing with these values easier.
-    Args:
-        tensor: the tensor we need to desparsify.
-        numel: the total number of elements in the origional tensor.
-    Returns:
-        The desparsified tensor
-    """
-    values, indices = tensors
-    tensor_decompressed = torch.zeros(numel, dtype=values.dtype, layout=values.layout, device=values.device)
-    tensor_decompressed.scatter_(0, indices, values)
-    return tensor_decompressed
-
-
 class RandomKCompressor(Compressor):
     """
     This sparsification algorithms chooses some random gradients and communicates them.
@@ -66,3 +33,37 @@ class RandomKCompressor(Compressor):
         numel, shape = ctx
         tensor_decompressed = desparsify(tensors, numel)
         return tensor_decompressed.view(shape)
+
+
+def sparsify(tensor, compress_ratio):
+    """
+    This function performs "sparsification" for "tensor".
+    It decides on the number of elements to keep based on the "compress_ratio".
+    Args:
+        tensor: the tensor we need to sparsify.
+        compress_ratio: the percentage of the number of elements we want to keep.
+    Return:
+        the values and indices for the choosen elements.
+    """
+    tensor = tensor.flatten()
+    numel = tensor.numel()
+    k = max(1, int(numel * compress_ratio))
+    indices = torch.randperm(numel, device=tensor.device)[:k]
+    values = tensor[indices]
+    return values, indices
+
+
+def desparsify(tensors, numel):
+    """
+    This function re-shapes the sparsified values into the same shape as the
+    origional tensor. This would make dealing with these values easier.
+    Args:
+        tensor: the tensor we need to desparsify.
+        numel: the total number of elements in the origional tensor.
+    Returns:
+        The desparsified tensor
+    """
+    values, indices = tensors
+    tensor_decompressed = torch.zeros(numel, dtype=values.dtype, layout=values.layout, device=values.device)
+    tensor_decompressed.scatter_(0, indices, values)
+    return tensor_decompressed

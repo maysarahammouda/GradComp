@@ -1,58 +1,53 @@
-2020-06-27 03:24:07,919 DEBUG   MainThread:18716 [wandb_config.py:_load_defaults():133] no defaults not found in config-defaults.yaml
-2020-06-27 03:24:08,733 DEBUG   MainThread:18716 [meta.py:_setup_code_git():49] probe for git information
-2020-06-27 03:24:08,840 DEBUG   MainThread:18716 [meta.py:setup():104] code probe starting
-2020-06-27 03:24:08,840 DEBUG   MainThread:18716 [meta.py:setup():108] non time limited probe of code
-2020-06-27 03:24:08,840 DEBUG   MainThread:18716 [meta.py:_setup_code_program():58] save program starting
-2020-06-27 03:24:08,840 DEBUG   MainThread:18716 [meta.py:_setup_code_program():60] save program starting: C:/Users/Maysara/GradComp\.\main.py
-2020-06-27 03:24:08,842 DEBUG   MainThread:18716 [meta.py:_setup_code_program():68] save program saved: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\code\main.py
-2020-06-27 03:24:08,842 DEBUG   MainThread:18716 [meta.py:_setup_code_program():70] save program
-2020-06-27 03:24:08,872 DEBUG   MainThread:18716 [meta.py:setup():124] code probe done
-2020-06-27 03:24:08,883 DEBUG   MainThread:18716 [run_manager.py:__init__():547] Initialized sync for test/3fb7ajcn
-2020-06-27 03:24:08,891 INFO    MainThread:18716 [run_manager.py:wrap_existing_process():1147] wrapping existing process 26448
-2020-06-27 03:24:09,009 INFO    MainThread:18716 [run_manager.py:init_run():926] system metrics and metadata threads started
-2020-06-27 03:24:09,009 INFO    MainThread:18716 [run_manager.py:init_run():965] upserting run before process can begin, waiting at most 10 seconds
-2020-06-27 03:24:09,156 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\config.yaml
-2020-06-27 03:24:09,266 INFO    Thread-21 :18716 [run_manager.py:_upsert_run():1050] saving patches
-2020-06-27 03:24:09,840 INFO    Thread-21 :18716 [run_manager.py:_upsert_run():1054] saving pip packages
-2020-06-27 03:24:09,842 INFO    Thread-21 :18716 [run_manager.py:_upsert_run():1056] initializing streaming files api
-2020-06-27 03:24:09,845 INFO    Thread-21 :18716 [run_manager.py:_upsert_run():1063] unblocking file change observer, beginning sync with W&B servers
-2020-06-27 03:24:09,846 INFO    MainThread:18716 [run_manager.py:wrap_existing_process():1164] informing user process we are ready to proceed
-2020-06-27 03:24:09,852 INFO    MainThread:18716 [run_manager.py:_sync_etc():1296] entering loop for messages from user process
-2020-06-27 03:24:10,136 INFO    Thread-8  :18716 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-metadata.json
-2020-06-27 03:24:10,137 INFO    Thread-8  :18716 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\output.log
-2020-06-27 03:24:10,137 INFO    Thread-8  :18716 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\code\main.py
-2020-06-27 03:24:10,138 INFO    Thread-8  :18716 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\code
-2020-06-27 03:24:10,149 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\config.yaml
-2020-06-27 03:24:10,160 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\output.log
-2020-06-27 03:24:10,167 INFO    Thread-8  :18716 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\diff.patch
-2020-06-27 03:24:10,169 INFO    Thread-8  :18716 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\requirements.txt
-2020-06-27 03:24:11,151 INFO    Thread-8  :18716 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-summary.json
-2020-06-27 03:24:11,158 INFO    Thread-8  :18716 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\media\graph\graph_0_summary_f2475421.graph.json
-2020-06-27 03:24:11,159 INFO    Thread-8  :18716 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\media
-2020-06-27 03:24:11,159 INFO    Thread-8  :18716 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\media\graph
-2020-06-27 03:24:12,153 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-summary.json
-2020-06-27 03:24:12,164 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-history.jsonl
-2020-06-27 03:24:13,156 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-summary.json
-2020-06-27 03:24:13,192 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-history.jsonl
-2020-06-27 03:24:14,159 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-summary.json
-2020-06-27 03:24:14,230 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-history.jsonl
-2020-06-27 03:24:15,161 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-summary.json
-2020-06-27 03:24:15,170 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-history.jsonl
-2020-06-27 03:24:16,162 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-summary.json
-2020-06-27 03:24:16,251 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-history.jsonl
-2020-06-27 03:24:16,964 INFO    MainThread:18716 [run_manager.py:_sync_etc():1319] received message from user process: {"exitcode": 0}
-2020-06-27 03:24:16,965 INFO    MainThread:18716 [run_manager.py:_sync_etc():1406] closing log streams and sending exitcode to W&B
-2020-06-27 03:24:16,965 INFO    MainThread:18716 [run_manager.py:shutdown():1070] shutting down system stats and metadata service
-2020-06-27 03:24:17,164 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-summary.json
-2020-06-27 03:24:17,206 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\output.log
-2020-06-27 03:24:17,207 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-history.jsonl
-2020-06-27 03:24:17,207 INFO    Thread-8  :18716 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-events.jsonl
-2020-06-27 03:24:18,059 INFO    MainThread:18716 [run_manager.py:shutdown():1084] stopping streaming files and file change observer
-2020-06-27 03:24:18,167 INFO    Thread-8  :18716 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-metadata.json
-2020-06-27 03:24:19,367 INFO    MainThread:18716 [run_manager.py:_sync_etc():1425] rendering summary
-2020-06-27 03:24:19,425 INFO    MainThread:18716 [run_manager.py:_sync_etc():1457] syncing files to cloud storage
-2020-06-27 03:24:19,939 INFO    MainThread:18716 [run_manager.py:_sync_etc():1466] syncing complete: https://app.wandb.ai/maysara/test/runs/3fb7ajcn
-:18716 [3fb7ajcn:run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_022405-3fb7ajcn\wandb-metadata.json
-2020-06-27 03:24:19,367 INFO    MainThread:18716 [3fb7ajcn:run_manager.py:_sync_etc():1425] rendering summary
-2020-06-27 03:24:19,425 INFO    MainThread:18716 [3fb7ajcn:run_manager.py:_sync_etc():1457] syncing files to cloud storage
-2020-06-27 03:24:19,939 INFO    MainThread:18716 [3fb7ajcn:run_manager.py:_sync_etc():1466] syncing complete: https://app.wandb.ai/maysara/test/runs/3fb7ajcn
+2020-06-27 22:19:04,303 DEBUG   MainThread:22628 [wandb_config.py:_load_defaults():133] no defaults not found in config-defaults.yaml
+2020-06-27 22:19:05,107 DEBUG   MainThread:22628 [meta.py:_setup_code_git():49] probe for git information
+2020-06-27 22:19:05,224 DEBUG   MainThread:22628 [meta.py:setup():104] code probe starting
+2020-06-27 22:19:05,224 DEBUG   MainThread:22628 [meta.py:setup():108] non time limited probe of code
+2020-06-27 22:19:05,224 DEBUG   MainThread:22628 [meta.py:_setup_code_program():58] save program starting
+2020-06-27 22:19:05,224 DEBUG   MainThread:22628 [meta.py:_setup_code_program():60] save program starting: C:/Users/Maysara/GradComp\.\main.py
+2020-06-27 22:19:05,241 DEBUG   MainThread:22628 [meta.py:_setup_code_program():68] save program saved: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\code\main.py
+2020-06-27 22:19:05,241 DEBUG   MainThread:22628 [meta.py:_setup_code_program():70] save program
+2020-06-27 22:19:05,242 DEBUG   MainThread:22628 [meta.py:setup():124] code probe done
+2020-06-27 22:19:05,253 DEBUG   MainThread:22628 [run_manager.py:__init__():547] Initialized sync for test/mvdognxa
+2020-06-27 22:19:05,261 INFO    MainThread:22628 [run_manager.py:wrap_existing_process():1147] wrapping existing process 25068
+2020-06-27 22:19:05,375 INFO    MainThread:22628 [run_manager.py:init_run():926] system metrics and metadata threads started
+2020-06-27 22:19:05,376 INFO    MainThread:22628 [run_manager.py:init_run():965] upserting run before process can begin, waiting at most 10 seconds
+2020-06-27 22:19:05,524 INFO    Thread-8  :22628 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\config.yaml
+2020-06-27 22:19:05,628 INFO    Thread-21 :22628 [run_manager.py:_upsert_run():1050] saving patches
+2020-06-27 22:19:06,167 INFO    Thread-21 :22628 [run_manager.py:_upsert_run():1054] saving pip packages
+2020-06-27 22:19:06,168 INFO    Thread-21 :22628 [run_manager.py:_upsert_run():1056] initializing streaming files api
+2020-06-27 22:19:06,174 INFO    Thread-21 :22628 [run_manager.py:_upsert_run():1063] unblocking file change observer, beginning sync with W&B servers
+2020-06-27 22:19:06,175 INFO    MainThread:22628 [run_manager.py:wrap_existing_process():1164] informing user process we are ready to proceed
+2020-06-27 22:19:06,196 INFO    MainThread:22628 [run_manager.py:_sync_etc():1296] entering loop for messages from user process
+2020-06-27 22:19:06,406 INFO    Thread-8  :22628 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\code\main.py
+2020-06-27 22:19:06,407 INFO    Thread-8  :22628 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\output.log
+2020-06-27 22:19:06,408 INFO    Thread-8  :22628 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\wandb-metadata.json
+2020-06-27 22:19:06,409 INFO    Thread-8  :22628 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\code
+2020-06-27 22:19:06,536 INFO    Thread-8  :22628 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\output.log
+2020-06-27 22:19:06,537 INFO    Thread-8  :22628 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\config.yaml
+2020-06-27 22:19:06,545 INFO    Thread-8  :22628 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\requirements.txt
+2020-06-27 22:19:06,546 INFO    Thread-8  :22628 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\diff.patch
+2020-06-27 22:19:07,539 INFO    Thread-8  :22628 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\wandb-history.jsonl
+2020-06-27 22:19:07,551 INFO    Thread-8  :22628 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\wandb-summary.json
+2020-06-27 22:19:07,564 INFO    Thread-8  :22628 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\media\graph\graph_0_summary_f6537fd0.graph.json
+2020-06-27 22:19:07,565 INFO    Thread-8  :22628 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\media\graph
+2020-06-27 22:19:07,565 INFO    Thread-8  :22628 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\media
+2020-06-27 22:19:08,542 INFO    Thread-8  :22628 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\wandb-summary.json
+2020-06-27 22:19:08,558 INFO    Thread-8  :22628 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\wandb-history.jsonl
+2020-06-27 22:19:09,544 INFO    Thread-8  :22628 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\wandb-summary.json
+2020-06-27 22:19:09,556 INFO    Thread-8  :22628 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\wandb-history.jsonl
+2020-06-27 22:19:09,791 INFO    MainThread:22628 [run_manager.py:_sync_etc():1319] received message from user process: {"exitcode": 0}
+2020-06-27 22:19:09,792 INFO    MainThread:22628 [run_manager.py:_sync_etc():1406] closing log streams and sending exitcode to W&B
+2020-06-27 22:19:09,793 INFO    MainThread:22628 [run_manager.py:shutdown():1070] shutting down system stats and metadata service
+2020-06-27 22:19:10,391 INFO    MainThread:22628 [run_manager.py:shutdown():1084] stopping streaming files and file change observer
+2020-06-27 22:19:10,547 INFO    Thread-8  :22628 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\wandb-summary.json
+2020-06-27 22:19:10,556 INFO    MainThread:22628 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\output.log
+2020-06-27 22:19:10,556 INFO    MainThread:22628 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\wandb-metadata.json
+2020-06-27 22:19:10,557 INFO    MainThread:22628 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\wandb-history.jsonl
+2020-06-27 22:19:10,557 INFO    MainThread:22628 [run_manager.py:_on_file_created():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\wandb-events.jsonl
+2020-06-27 22:19:11,853 INFO    MainThread:22628 [run_manager.py:_sync_etc():1425] rendering summary
+2020-06-27 22:19:11,881 INFO    MainThread:22628 [run_manager.py:_sync_etc():1457] syncing files to cloud storage
+2020-06-27 22:19:12,641 INFO    MainThread:22628 [run_manager.py:_sync_etc():1466] syncing complete: https://app.wandb.ai/maysara/test/runs/mvdognxa
+reated():681] file/dir created: C:\Users\Maysara\GradComp\wandb\run-20200627_211902-mvdognxa\wandb-events.jsonl
+2020-06-27 22:19:11,853 INFO    MainThread:22628 [mvdognxa:run_manager.py:_sync_etc():1425] rendering summary
+2020-06-27 22:19:11,881 INFO    MainThread:22628 [mvdognxa:run_manager.py:_sync_etc():1457] syncing files to cloud storage
+2020-06-27 22:19:12,641 INFO    MainThread:22628 [mvdognxa:run_manager.py:_sync_etc():1466] syncing complete: https://app.wandb.ai/maysara/test/runs/mvdognxa

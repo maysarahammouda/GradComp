@@ -96,10 +96,8 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device
         for name, param in model.named_parameters():
             # compress and save residual
             tensor = curr_memory.compensate(param.grad, name, worker_id=worker_id)
-            tensor_comp, ctx = curr_compressor.compress(tensor, name, cc = args.c)
+            tensor_comp, ctx = curr_compressor.compress(tensor, name)
             curr_memory.update(tensor, name, curr_compressor, tensor_comp, ctx, worker_id=worker_id)
-            # print('param shape:',param.shape)
-            # print('decompressed param shape', tensor_decomp.shape)
 
             # decompress and add on central node
             tensor_decomp = curr_compressor.decompress(tensor_comp, ctx)

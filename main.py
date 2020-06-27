@@ -54,7 +54,7 @@ parser.add_argument('--num_workers', type=int, default=1, help='number of worker
 parser.add_argument('--compress_ratio', type=float, default=1.0, help='compress ratio for the compression techniques')
 parser.add_argument('--compressor', type=str, help='the name of the compression technique')
 parser.add_argument('--memory', type=str, help='the name of the memory technique')
-parser.add_argument('--c', type=float, default=10, help='terngrad parameter')
+parser.add_argument('--clip_const', type=float, default=10, help='terngrad parameter for gradient clipping')
 args = parser.parse_args()
 
 ################################# Main Code #################################
@@ -101,7 +101,7 @@ if __name__ == '__main__':
     elif args.compressor == "dgc":
         compressor = DgcCompressor(compress_ratio=args.compress_ratio)
     elif args.compressor == "terngrad":
-        compressor = TernGradCompressor()
+        compressor = TernGradCompressor(clip_const=args.clip_const)
     elif args.compressor == "threshold":
         compressor = ThresholdCompressor(threshold=0.1)
     elif args.compressor == "signsgd":
