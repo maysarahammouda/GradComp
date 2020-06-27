@@ -1,0 +1,1 @@
+wandb agent maysara/bs128_nhid650_drop0.5_compress_decay0/f3h19qeh
