@@ -51,10 +51,10 @@ parser.add_argument('--clip', type=float, default=0.25, help='gradient clipping'
 parser.add_argument('--exp_name', type=str, help='name of the experiment')
 parser.add_argument('--project_name', type=str, help='name of the project')
 parser.add_argument('--num_workers', type=int, default=1, help='number of workers')
-parser.add_argument('--compress_ratio', type=float, default=1.0, help='compress ratio for the compression techniques')
 parser.add_argument('--compressor', type=str, help='the name of the compression technique')
 parser.add_argument('--memory', type=str, help='the name of the memory technique')
-parser.add_argument('--clip_const', type=float, default=10, help='terngrad parameter for gradient clipping')
+parser.add_argument('--compress_ratio', type=float, default=1.0, help='compress ratio for the compression techniques - topk')
+parser.add_argument('--clip_const', type=float, default=17.1, help='terngrad parameter for gradient clipping')
 args = parser.parse_args()
 
 ################################# Main Code #################################
