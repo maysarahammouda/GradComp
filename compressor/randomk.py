@@ -9,6 +9,7 @@ class RandomKCompressor(Compressor):
     """
 
     def __init__(self, compress_ratio):
+        super().__init__()
         self.global_step = 0
         self.compress_ratio = compress_ratio
 
@@ -20,7 +21,6 @@ class RandomKCompressor(Compressor):
         h = sum(bytes(name, encoding='utf8'), self.global_step)
         self.global_step += 1
         torch.manual_seed(h)
-
         tensors = sparsify(tensor, self.compress_ratio)
         ctx = tensor.numel(), tensor.size()
         return tensors, ctx

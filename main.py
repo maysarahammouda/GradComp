@@ -27,6 +27,7 @@ from compressor.signsgd import SignSGDCompressor
 from compressor.signum import SignumCompressor
 from compressor.efsignsgd import EFSignSGDCompressor
 from compressor.qsgd import QSGDCompressor
+from compressor.adacomp import AdaCompCompressor
 
 ################################# Command Line Arguments  #################################
 
@@ -55,6 +56,7 @@ parser.add_argument('--compressor', type=str, help='the name of the compression 
 parser.add_argument('--memory', type=str, help='the name of the memory technique')
 parser.add_argument('--compress_ratio', type=float, default=1.0, help='compress ratio for the compression techniques - topk')
 parser.add_argument('--clip_const', type=float, default=17.1, help='terngrad parameter for gradient clipping')
+parser.add_argument('--comp_const', type=float, default=2, help='compensation constant for AdaComp')
 args = parser.parse_args()
 
 ################################# Main Code #################################
@@ -102,6 +104,8 @@ if __name__ == '__main__':
         compressor = DgcCompressor(compress_ratio=args.compress_ratio)
     elif args.compressor == "terngrad":
         compressor = TernGradCompressor(clip_const=args.clip_const)
+    elif args.compressor == "adacomp":
+        compressor = AdaCompCompressor(compensation_const=args.comp_const)
     elif args.compressor == "threshold":
         compressor = ThresholdCompressor(threshold=0.1)
     elif args.compressor == "signsgd":
@@ -119,7 +123,7 @@ if __name__ == '__main__':
     if args.memory == "none":
         memory = NoneMemory()
     elif args.memory == "residual":
-        memory = ResidualMemory(n_worker=args.num_workers)
+        memory = ResidualMemory(num_workers=args.num_workers)
     else:
         raise Exception("Please choose an appropriate memory technique...")
 

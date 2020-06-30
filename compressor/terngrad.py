@@ -7,10 +7,8 @@ class TernGradCompressor(Compressor):
     This quantization algorithms quantizes the gradients to a ternarty vector
     with values {-1,0,+1}.
     Args:
-        clip_const: a hyperparameter that decides on the gradients to be clipped.
-                    it is task-dependant. For CIFAR-10/MNIST/ImageNet, it was
-                    chosen to be 2.5 (as per the paper).
-                    In PTB LM, values between 9.7 and 19 gave the best results.
+        clip_const: a hyperparameter that decides on the gradients to be
+                    clipped. it is task-dependant. For CIFAR-10/MNIST/ImageNet, it was chosen to be 2.5 (as per the paper). In PTB LM, values between 9.7 and 19 gave the best results.
     """
 
     def __init__(self, clip_const):
@@ -58,11 +56,11 @@ class TernGradCompressor(Compressor):
         sign_gradient[rnd_sample >= abs_gradient] = 0
         ternarized_grads = sign_gradient.sign()     # {-1,0,+1}
 
-        tensor_compressed = ternarized_grads.type(torch.int8), scalar.flatten()
+        compressed_tensor = ternarized_grads.type(torch.int8), scalar.flatten()
 
-        return tensor_compressed, shape
+        return compressed_tensor, shape
 
-    def decompress(self, tensor_compressed, shape):
+    def decompress(self, compressed_tensor, shape):
         """
         This function decompress  the gradients by restoring the origional values
         from the compressed tensors.
@@ -71,10 +69,10 @@ class TernGradCompressor(Compressor):
                                and the scalar value for these gradients.
             shape: the origional shape of the gradients' tensor.
         Returns:
-            tensor_decompressed: the decompressed tensor, in the same shape as 
+            tensor_decompressed: the decompressed tensor, in the same shape as
             the origonal gradients' tensor.
         """
-        tensor_compressed, scalar = tensor_compressed
+        tensor_compressed, scalar = compressed_tensor
         sign = tensor_compressed.type(torch.float32)
         tensor_decompressed = sign * scalar
         return tensor_decompressed.view(shape)

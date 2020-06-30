@@ -14,18 +14,7 @@ from compressor.onebit import OneBitCompressor
 from compressor.none import NoneCompressor
 
 
-def grad_dic_init(model, device):
-    """
-    This is a helper function that initializes a dictionary of tensors with zeros.
-    The tensors in the dictionary will have the same shape as the parameter tensors.
-    """
-    compressed_grad_dic = {}
-    for name, param in model.state_dict().items():
-        compressed_grad_dic[name] = torch.zeros(param.shape).to(device)
-    return compressed_grad_dic
-
-
-def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device, args, curr_compressor=NoneCompressor(), curr_memory=NoneMemory()):
+def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device, args, compressor=NoneCompressor(), memory=NoneMemory()):
     """
     This function runs the model on training data.
     It turns on the training mode, which in turn enables dropout.
@@ -87,20 +76,20 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device
         iters += current_seqLen     # was origonally iters += args.bptt
 
         worker_id = batch % args.num_workers
-        model.zero_grad()
 
+        model.zero_grad()
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)   # To prevent the exploding gradient problem.
         # optimizer.compress_grads()
 
         for name, param in model.named_parameters():
             # compress and save residual
-            tensor = curr_memory.compensate(param.grad, name, worker_id=worker_id)
-            tensor_comp, ctx = curr_compressor.compress(tensor, name)
-            curr_memory.update(tensor, name, curr_compressor, tensor_comp, ctx, worker_id=worker_id)
+            tensor = memory.compensate(param.grad, name, worker_id=worker_id)
+            tensor_comp, ctx = compressor.compress(param.grad, tensor, name)
+            memory.update(tensor, name, compressor, tensor_comp, ctx, worker_id=worker_id)
 
             # decompress and add on central node
-            tensor_decomp = curr_compressor.decompress(tensor_comp, ctx)
+            tensor_decomp = compressor.decompress(tensor_comp, ctx)
 
             compressed_grad_dic[name].add_(tensor_decomp)
 
@@ -170,6 +159,17 @@ def evaluate(model, vocab_size, data_source, criterion, epoch, epoch_start_time,
                 loss, test_ppl))
             print('-' * 89)
     return
+
+
+def grad_dic_init(model, device):
+    """
+    This is a helper function that initializes a dictionary of tensors with zeros.
+    The tensors in the dictionary will have the same shape as the parameter tensors.
+    """
+    compressed_grad_dic = {}
+    for name, param in model.state_dict().items():
+        compressed_grad_dic[name] = torch.zeros(param.shape).to(device)
+    return compressed_grad_dic
 
 
 def _log_training_results (epoch, batch, lr, log_interval, num_fullSeq, num_seq, last_update_worker, total_loss, iters, start_time, args ):
