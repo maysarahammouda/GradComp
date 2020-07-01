@@ -25,10 +25,11 @@ class TernGradCompressor(Compressor):
                 gradients, and multiply them with the scalars from Step.2.
             4. Multiply with a Bernoulli distribution (either 1 or 0 for each gradient).
         Args:
-            tensor: the tensor we need to quantize.
+            tensor: the tensor we need to quantize (after compensation by the
+                    residual memory -if applicable-).
             name: the name of the experiment (not used here).
         Returns:
-            tensor_compressed: a tensor that contain the ternarized gradients
+            compressed_tensor: a tensor that contain the ternarized gradients
                                and the scalar value for these gradients.
             shape: the origional shape of the gradients' tensor.
         """

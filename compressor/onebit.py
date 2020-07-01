@@ -27,5 +27,5 @@ class OneBitCompressor(Compressor):
     def decompress(self, tensor_compressed, shape):
         mask0, mean0, mean1 = tensor_compressed
         tensor_decompressed = mask0 * mean0 + ~mask0 * mean1
-        tensor_decompressed = tensor_decompressed.view(shape)
-        return tensor_decompressed
+        # tensor_decompressed = tensor_decompressed.view(shape)
+        return tensor_decompressed.view(shape)

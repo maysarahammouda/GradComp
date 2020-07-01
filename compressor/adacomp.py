@@ -7,8 +7,7 @@ class AdaCompCompressor(Compressor):
     This quantization algorithms quantizes the gradients to a ternarty vector
     with values {-1,0,+1}.
     Args:
-        clip_const: a hyperparameter that decides on the gradients to be
-                    clipped. it is task-dependant. For CIFAR-10/MNIST/ImageNet, it was chosen to be 2.5 (as per the paper). In PTB LM, values between 9.7 and 19 gave the best results.
+        compensation_const: a hyperparameter that decides on the
     """
 
     def __init__(self, compensation_const):
@@ -25,28 +24,32 @@ class AdaCompCompressor(Compressor):
                 gradients, and multiply them with the scalars from Step.2.
             4. Multiply with a Bernoulli distribution (either 1 or 0 for each gradient).
         Args:
-            tensor: the tensor we need to quantize (after compernsation by the
+            grads: the gradients of the parameter group under consideration.
+            tensor: the tensor we need to compress (after compensation by the
                     residual memory -if applicable-).
             name: the name of the experiment (not used here).
         Returns:
             tensor_compressed: a tensor that contain the ternarized gradients
                                and the scalar value for these gradients.
-            shape: the origional shape of the gradients' tensor.
+            ctx: the context tensor (the number of elements and the size of the
+                 origonal gradients' tensor).
         """
         ctx = tensor.numel(), tensor.size()
         grads = grads.flatten()
         tensor_G = tensor.flatten()
         tensor_H = tensor_G + self.compensation_const * grads
-
+        print("tensor_G", tensor_G)
+        print("tensor_H", tensor_H)
         # Step.1: getting the maximum norm of all gradients.
         abs_gradient = tensor_G.abs()
         g_max = abs_gradient.max()
+        print("g_max", g_max)
 
         # Step.2:
-        mask = tensor_H >= g_max
-        compressed_tensor = tensor_H[mask]
+        mask = tensor_H.abs() >= g_max
+        compressed_tensor = tensor_H[mask]  # << these might also be quantized ....
         indices = torch.nonzero(mask)
-        # print("compressed_tensor", compressed_tensor.size())
+        print("compressed_tensor", compressed_tensor)
         # print("indices", indices.flatten().size())
 
         tensors = compressed_tensor, indices.flatten()

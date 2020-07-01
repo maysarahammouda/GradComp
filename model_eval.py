@@ -85,7 +85,10 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device
         for name, param in model.named_parameters():
             # compress and save residual
             tensor = memory.compensate(param.grad, name, worker_id=worker_id)
-            tensor_comp, ctx = compressor.compress(param.grad, tensor, name)
+            if args.compressor == "adacomp":
+                tensor_comp, ctx = compressor.compress(param.grad, tensor, name)
+            else:
+                tensor_comp, ctx = compressor.compress(tensor, name)
             memory.update(tensor, name, compressor, tensor_comp, ctx, worker_id=worker_id)
 
             # decompress and add on central node

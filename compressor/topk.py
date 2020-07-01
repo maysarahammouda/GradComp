@@ -23,7 +23,7 @@ class TopKCompressor(Compressor):
             name: the name of the experiment (not used here).
         Returns:
             tensors: the compressed gradients' tensors.
-            ctx: the context (the number of elements and the size of the compressed
+            ctx: the context (the number of elements and the size of the origional
                     gradients' tensor).
         """
         tensors = sparsify(tensor, self.compress_ratio)
