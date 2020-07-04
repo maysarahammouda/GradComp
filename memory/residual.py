@@ -1,3 +1,9 @@
+################################################################################
+# This implementation was inspired by the implementation in GRACE open-source  #
+# framework:                                                                   #
+#                 (https://github.com/sands-lab/grace)                         #
+################################################################################
+
 from memory.Memory import Memory
 
 class ResidualMemory(Memory):

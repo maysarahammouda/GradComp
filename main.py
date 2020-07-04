@@ -59,6 +59,8 @@ parser.add_argument('--clip_const', type=float, default=17.1, help='terngrad par
 parser.add_argument('--comp_const', type=float, default=2, help='compensation constant for AdaComp')
 args = parser.parse_args()
 
+args.num_hid = args.emb_size
+
 ################################# Main Code #################################
 
 if __name__ == '__main__':

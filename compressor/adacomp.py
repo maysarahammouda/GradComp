@@ -1,3 +1,11 @@
+#########################################################################################
+# This implementation was created from scratch with a minor inspiration from Horovod's  #
+# Gradient compression implementation:                                                  #
+# (https://github.com/horovod/horovod/tree/31f1f700b8fa6d3b6df284e291e302593fbb4fa3)    #
+# and GRACE open-source framework:                                                      #
+#                           (https://github.com/sands-lab/grace)                        #
+#########################################################################################
+
 import torch
 from compressor.compressor import Compressor
 
@@ -13,6 +21,7 @@ class AdaCompCompressor(Compressor):
     def __init__(self, compensation_const):
         super().__init__()
         self.compensation_const = compensation_const
+
 
     def compress(self, grads, tensor, name):
         """
@@ -56,10 +65,11 @@ class AdaCompCompressor(Compressor):
 
         return tensors, ctx
 
+
     def decompress(self, tensors, ctx):
         """
-        This function decompress by filling empty slots with zeros and reshape
-        back using the original shape.
+        This function decompress the compressed tensor by filling empty slots
+        with zeros and reshape back using the original shape.
         Args:
             tensors: the compressed gradients' tensors.
             ctx: the context (the number of elements and the size of the compressed
