@@ -17,8 +17,8 @@ class TernGradCompressor(Compressor):
     """
     This quantization algorithms quantizes the gradients to a ternarty vector
     with values {-1,0,+1}.
-    This is an unbiased, it does not need require the use of any memory to
-    converge, unlike the biased algorithms which require the use of memory.
+    This is an unbiased, it does not require the use of any memory to converge,
+    unlike the biased algorithms which require the use of memory.
 
     Args:
         clip_const: a hyperparameter that decides on the gradients to be
@@ -58,6 +58,8 @@ class TernGradCompressor(Compressor):
             compressed_tensor: a tensor that contain the ternarized gradients
                                and the scalar value for the origional gradients.
             shape: the shape of the origional gradients' tensor.
+            compression_ratio: the amount of compression we get after compressing
+                                the gradients.
         """
         shape = tensor.size()
         tensor = tensor.flatten()
@@ -85,7 +87,9 @@ class TernGradCompressor(Compressor):
 
         compressed_tensor = ternarized_grads.type(torch.int8), scalar.flatten()
 
-        return compressed_tensor, shape
+        compression_ratio = 16
+
+        return compressed_tensor, shape, compression_ratio
 
 
     def decompress(self, compressed_tensor, shape):

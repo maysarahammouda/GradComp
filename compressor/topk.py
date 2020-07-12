@@ -21,6 +21,8 @@ class TopKCompressor(Compressor):
     def __init__(self, compress_ratio):
         super().__init__()
         self.compress_ratio = compress_ratio
+        self.total_compressed = 0
+        self.total_origional = 0
 
     def compress(self, tensor, name):
         """
@@ -36,7 +38,13 @@ class TopKCompressor(Compressor):
         """
         tensors = sparsify(tensor, self.compress_ratio)
         ctx = tensor.numel(), tensor.size()
-        return tensors, ctx
+
+        self.total_origional += tensor.numel()
+        self.total_compressed += tensors[0].numel()
+        compression_ratio = self.total_origional / self.total_compressed
+
+        return tensors, ctx, 32
+
 
     def decompress(self, tensors, ctx):
         """

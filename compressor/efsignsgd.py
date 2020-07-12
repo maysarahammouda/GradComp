@@ -57,6 +57,8 @@ class EFSignSGDCompressor(Compressor):
             tensor_compressed: a tensor that contain the quantized gradients
                                and the mean value for the origional gradients.
             shape: the shape of the origional gradients' tensor.
+            compression_ratio: the amount of compression we get after compressing
+                                the gradients.
         """
         shape = tensor.size()
         tensor = tensor.flatten()
@@ -65,7 +67,9 @@ class EFSignSGDCompressor(Compressor):
         mean = tensor.abs().mean()
         tensor_compressed = mean, sign_encode.type(torch.uint8)
 
-        return tensor_compressed, shape
+        compression_ratio = 32
+
+        return tensor_compressed, shape, compression_ratio
 
 
     def decompress(self, tensor_compressed, shape):
