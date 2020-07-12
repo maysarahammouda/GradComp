@@ -1,3 +1,10 @@
+#########################################################################################
+# This implementation was inspired by Horovod's Gradient compression implementation:    #
+# (https://github.com/horovod/horovod/tree/31f1f700b8fa6d3b6df284e291e302593fbb4fa3)    #
+# and GRACE open-source framework:                                                      #
+#                   (https://github.com/sands-lab/grace)                                #
+#########################################################################################
+
 import torch
 from compressor.compressor import Compressor
 
@@ -6,6 +13,7 @@ class TopKCompressor(Compressor):
     """
     This sparsification algorithms chooses the top (highest absolute magnitude)
     gradients and communicates them.
+
     Args:
         compress_ratio: the ratio of the gradients to be kept.
     """
@@ -13,6 +21,8 @@ class TopKCompressor(Compressor):
     def __init__(self, compress_ratio):
         super().__init__()
         self.compress_ratio = compress_ratio
+        self.total_compressed = 0
+        self.total_origional = 0
 
     def compress(self, tensor, name):
         """
@@ -28,12 +38,18 @@ class TopKCompressor(Compressor):
         """
         tensors = sparsify(tensor, self.compress_ratio)
         ctx = tensor.numel(), tensor.size()
-        return tensors, ctx
+
+        self.total_origional += tensor.numel()
+        self.total_compressed += tensors[0].numel()
+        compression_ratio = self.total_origional / self.total_compressed
+
+        return tensors, ctx, 32
+
 
     def decompress(self, tensors, ctx):
         """
-        This function decompress by filling empty slots with zeros and reshape
-        back using the original shape.
+        This function decompress the compressed tensor by filling empty slots
+        with zeros and reshape back using the original shape.
         Args:
             tensors: the compressed gradients' tensors.
             ctx: the context (the number of elements and the size of the compressed

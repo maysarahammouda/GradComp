@@ -86,9 +86,10 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device
             # compress and save residual
             tensor = memory.compensate(param.grad, name, worker_id=worker_id)
             if args.compressor == "adacomp":
-                tensor_comp, ctx = compressor.compress(param.grad, tensor, name)
+                global compression_ratio
+                tensor_comp, ctx, compression_ratio = compressor.compress(param.grad, tensor, name)
             else:
-                tensor_comp, ctx = compressor.compress(tensor, name)
+                tensor_comp, ctx, compression_ratio = compressor.compress(tensor, name)
             memory.update(tensor, name, compressor, tensor_comp, ctx, worker_id=worker_id)
 
             # decompress and add on central node
@@ -111,6 +112,7 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device
             _log_training_results (epoch, batch, lr, log_interval, num_fullSeq, num_seq, last_update_worker, total_loss, iters, start_time, args)
             # total_loss = 0
             start_time = time.time()
+
     return
 
 
@@ -147,20 +149,21 @@ def evaluate(model, vocab_size, data_source, criterion, epoch, epoch_start_time,
             # logging the validation ppl values to wandb
             wandb.log({"Validation perplexity": val_ppl}, step=epoch)
 
-            print('-' * 89)
+            print('-' * 92)
             print('| end of epoch {:3d} | time: {:5.2f}s | valid loss {:5.2f} | valid ppl {:8.2f}'
                     .format(epoch, (time.time() - epoch_start_time), loss, val_ppl))
-            print('-' * 89)
+            print('-' * 92)
 
         if is_test == True:
             test_ppl = math.exp(loss)
             # logging the test ppl values to wandb
             wandb.log({"Test perplexity": test_ppl}, step=epoch)
 
-            print('-' * 89)
-            print('| End of training | test loss {:5.2f} | test ppl {:8.2f}'.format(
-                loss, test_ppl))
-            print('-' * 89)
+            print('-' * 92)
+            print('| End of training | test loss {:5.2f} | test ppl {:8.2f}  | compression ratio {:5.2f} '.format(
+                loss, test_ppl, compression_ratio))
+            print('-' * 92)
+            print("AdaComp Compression_Ratio", compression_ratio)
     return
 
 

@@ -1,65 +1,78 @@
+#########################################################################################
+# This implementation was created from scratch with a minor inspiration from Horovod's  #
+# Gradient compression implementation:                                                  #
+# (https://github.com/horovod/horovod/tree/31f1f700b8fa6d3b6df284e291e302593fbb4fa3)    #
+# and GRACE open-source framework:                                                      #
+#                           (https://github.com/sands-lab/grace)                        #
+#########################################################################################
+
 import torch
 from compressor.compressor import Compressor
 
 
 class AdaCompCompressor(Compressor):
     """
-    This quantization algorithms quantizes the gradients to a ternarty vector
-    with values {-1,0,+1}.
+    This is an adaptive algorithm that can compress all types of layers without
+    notable performance degradation. It universally adapts the compression rate
+    based on the layer type, batch size, and the data available in the batch.
     Args:
-        compensation_const: a hyperparameter that decides on the
+        compensation_const: a hyperparameter that controls the amount of data
+                            to be communicated.
     """
 
     def __init__(self, compensation_const):
         super().__init__()
         self.compensation_const = compensation_const
+        self.total_compressed = 0
+        self.total_origional = 0
 
     def compress(self, grads, tensor, name):
         """
-        This function ternarizes the gradients (makes them take values {-1,0,-1}).
+        This function sparsifies the gradients as per the AdaComp algorithm.
         Steps:
-            1. Perform gradient clipping.
-            2. Get the maximum norm (abs value) of all the gradients.
-            3. Get the signs of all gradients, to keep the directions of the
-                gradients, and multiply them with the scalars from Step.2.
-            4. Multiply with a Bernoulli distribution (either 1 or 0 for each gradient).
+            1. Get the maximum norm (abs value) of all the gradients.
+            2. Communicate only the values which satisfy the condition:
+                |H(index)| >= g_max
         Args:
             grads: the gradients of the parameter group under consideration.
             tensor: the tensor we need to compress (after compensation by the
                     residual memory -if applicable-).
             name: the name of the experiment (not used here).
         Returns:
-            tensor_compressed: a tensor that contain the ternarized gradients
-                               and the scalar value for these gradients.
-            ctx: the context tensor (the number of elements and the size of the
-                 origonal gradients' tensor).
+            tensors: the compressed gradients' tensors.
+            ctx: the context (the number of elements and the size of the origional
+                    gradients' tensor).
+            compression_ratio: the amount of compression we get after compressing
+                                the gradients.
         """
         ctx = tensor.numel(), tensor.size()
+
         grads = grads.flatten()
         tensor_G = tensor.flatten()
         tensor_H = tensor_G + self.compensation_const * grads
-        print("tensor_G", tensor_G)
-        print("tensor_H", tensor_H)
+
         # Step.1: getting the maximum norm of all gradients.
         abs_gradient = tensor_G.abs()
         g_max = abs_gradient.max()
-        print("g_max", g_max)
 
         # Step.2:
         mask = tensor_H.abs() >= g_max
         compressed_tensor = tensor_H[mask]  # << these might also be quantized ....
         indices = torch.nonzero(mask)
-        print("compressed_tensor", compressed_tensor)
-        # print("indices", indices.flatten().size())
 
         tensors = compressed_tensor, indices.flatten()
 
-        return tensors, ctx
+        self.total_origional += tensor_G.numel()
+        self.total_compressed += compressed_tensor.numel()
+        compression_ratio = self.total_origional / self.total_compressed
+
+        return tensors, ctx, compression_ratio
+
 
     def decompress(self, tensors, ctx):
         """
-        This function decompress by filling empty slots with zeros and reshape
-        back using the original shape.
+        This function decompress the compressed tensor by filling empty slots
+        with zeros and reshape back using the original shape.
         Args:
             tensors: the compressed gradients' tensors.
             ctx: the context (the number of elements and the size of the compressed
