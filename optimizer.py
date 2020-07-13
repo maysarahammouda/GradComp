@@ -7,7 +7,6 @@ import torch
 from torch.optim.optimizer import Optimizer, required
 from compressor.topk import TopKCompressor
 from compressor.randomk import RandomKCompressor
-from compressor.onebit import OneBitCompressor
 from compressor.none import NoneCompressor
 from itertools import chain
 

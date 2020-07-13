@@ -10,8 +10,9 @@ from memory.none import NoneMemory
 from memory.residual import ResidualMemory
 from compressor.topk import TopKCompressor
 from compressor.randomk import RandomKCompressor
-from compressor.onebit import OneBitCompressor
 from compressor.none import NoneCompressor
+from compressor.efsign_topk import EFSignTopKCompressor
+
 
 
 def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device, args, compressor=NoneCompressor(), memory=NoneMemory()):
@@ -163,7 +164,7 @@ def evaluate(model, vocab_size, data_source, criterion, epoch, epoch_start_time,
             print('| End of training | test loss {:5.2f} | test ppl {:8.2f}  | compression ratio {:5.2f} '.format(
                 loss, test_ppl, compression_ratio))
             print('-' * 92)
-            print("AdaComp Compression_Ratio", compression_ratio)
+            wandb.log({"Compression Ratio": compression_ratio}, step=epoch)
     return
 
 

@@ -16,37 +16,33 @@ from utils import check_cuda, log_args
 
 from optimizer import SGD_Comp
 from memory.none import NoneMemory
-from compressor.dgc import DgcCompressor
 from memory.residual import ResidualMemory
 from compressor.none import NoneCompressor
 from compressor.topk import TopKCompressor
 from compressor.randomk import RandomKCompressor
-from compressor.onebit import OneBitCompressor
 from compressor.terngrad import TernGradCompressor
-from compressor.signsgd import SignSGDCompressor
-from compressor.signum import SignumCompressor
 from compressor.efsignsgd import EFSignSGDCompressor
-from compressor.qsgd import QSGDCompressor
 from compressor.adacomp import AdaCompCompressor
+from compressor.efsign_topk import EFSignTopKCompressor
 
 ################################# Command Line Arguments  #################################
 
 parser = argparse.ArgumentParser(description='A simple LSTM Language Model')
 parser.add_argument('--data', type=str, default='../datasets/test', help='location of the data corpus')
-parser.add_argument('--emb_size', type=int, default=200, help='size of word embeddings')
-parser.add_argument('--num_hid', type=int, default=200, help='number of hidden units per layer')
+parser.add_argument('--emb_size', type=int, default=700, help='size of word embeddings')
+parser.add_argument('--num_hid', type=int, default=700, help='number of hidden units per layer')
 parser.add_argument('--num_layers', type=int, default=2, help='number of layers')
 parser.add_argument('--init_lr', type=float, default=1.0, help='initial learning rate')
 parser.add_argument('--lr_decay', type=float, default=0.0, help='learning rate decay factor')
-parser.add_argument('--epochs', type=int, default=1, help='number of epochs')
-parser.add_argument('--batch_size', type=int, default=20, metavar='N', help='batch size')
+parser.add_argument('--epochs', type=int, default=70, help='number of epochs')
+parser.add_argument('--batch_size', type=int, default=128, metavar='N', help='batch size')
 parser.add_argument('--eval_batch_size', type=int, default=10, metavar='N', help='evaluation batch size')
 parser.add_argument('--test_batch_size', type=int, default=10, metavar='N', help='test batch size')
 parser.add_argument('--bptt', type=int, default=35, help='number of LSTM steps')
-parser.add_argument('--dropout', type=float, default=1, help='dropout applied to layers (0 = no dropout)')
+parser.add_argument('--dropout', type=float, default=0.5, help='dropout applied to layers (0 = no dropout)')
 parser.add_argument('--seed', type=int, default=1111, help='random seed')
-parser.add_argument('--use_gpu', type=str2bool ,default=False, help='use CUDA. When debug it is False.')
-parser.add_argument('--log_interval', type=int, default=2, metavar='N', help='report interval')
+parser.add_argument('--use_gpu', type=str2bool ,default=True, help='use CUDA. When debug it is False.')
+parser.add_argument('--log_interval', type=int, default=1, metavar='N', help='report interval')
 parser.add_argument('--save', type=str, default='/saved_models/', help='path to save the final model')
 parser.add_argument('--clip', type=float, default=0.25, help='gradient clipping')
 parser.add_argument('--exp_name', type=str, help='name of the experiment')
@@ -56,7 +52,7 @@ parser.add_argument('--compressor', type=str, help='the name of the compression 
 parser.add_argument('--memory', type=str, help='the name of the memory technique')
 parser.add_argument('--compress_ratio', type=float, default=1.0, help='compress ratio for the compression techniques - topk')
 parser.add_argument('--clip_const', type=float, default=17.1, help='terngrad parameter for gradient clipping')
-parser.add_argument('--comp_const', type=float, default=2, help='compensation constant for AdaComp')
+parser.add_argument('--comp_const', type=float, default=3, help='compensation constant for AdaComp')
 args = parser.parse_args()
 
 args.num_hid = args.emb_size
@@ -98,26 +94,15 @@ if __name__ == '__main__':
         compressor = NoneCompressor()
     elif args.compressor == "topk":
         compressor = TopKCompressor(compress_ratio=args.compress_ratio)
-    elif args.compressor == "randomk":
-        compressor = RandomKCompressor(compress_ratio=args.compress_ratio)
-    elif args.compressor == "onebit":
-        compressor = OneBitCompressor()
-    elif args.compressor == "dgc":
-        compressor = DgcCompressor(compress_ratio=args.compress_ratio)
+
     elif args.compressor == "terngrad":
         compressor = TernGradCompressor(clip_const=args.clip_const)
     elif args.compressor == "adacomp":
         compressor = AdaCompCompressor(compensation_const=args.comp_const)
-    elif args.compressor == "threshold":
-        compressor = ThresholdCompressor(threshold=0.1)
-    elif args.compressor == "signsgd":
-        compressor = SignSGDCompressor()
-    elif args.compressor == "signum":
-        compressor = SignumCompressor(momentum=0.1)
     elif args.compressor == "efsignsgd":
         compressor = EFSignSGDCompressor(lr=lr)
-    elif args.compressor == "qsgd":
-        compressor = QSGDCompressor(quantum_num=0.1)
+    elif args.compressor == "efsigntopk":
+        compressor = EFSignTopKCompressor(compress_ratio=args.compress_ratio)
     else:
         raise Exception("Please choose an appropriate compression algorithm...")
 
