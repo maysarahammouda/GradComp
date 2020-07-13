@@ -1,13 +1,13 @@
-2020-07-13 11:39:11,465 DEBUG   MainThread:24796 [wandb_config.py:_load_defaults():133] no defaults not found in config-defaults.yaml
-2020-07-13 11:39:12,189 DEBUG   MainThread:24796 [meta.py:_setup_code_git():49] probe for git information
-2020-07-13 11:39:12,306 DEBUG   MainThread:24796 [run_manager.py:__init__():547] Initialized sync for GradComp/2u4ar8o8
-2020-07-13 11:39:12,312 INFO    MainThread:24796 [run_manager.py:wrap_existing_process():1147] wrapping existing process 9120
-2020-07-13 11:39:12,435 INFO    MainThread:24796 [run_manager.py:init_run():926] system metrics and metadata threads started
-2020-07-13 11:39:12,440 INFO    MainThread:24796 [run_manager.py:wrap_existing_process():1164] informing user process we are ready to proceed
-2020-07-13 11:39:12,445 INFO    MainThread:24796 [run_manager.py:_sync_etc():1296] entering loop for messages from user process
-2020-07-13 11:39:12,611 INFO    Thread-9  :24796 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\dryrun-20200713_103909-2u4ar8o8\config.yaml
-2020-07-13 11:39:17,022 INFO    MainThread:24796 [run_manager.py:_sync_etc():1319] received message from user process: {"exitcode": 0}
-2020-07-13 11:39:17,023 INFO    MainThread:24796 [run_manager.py:_sync_etc():1406] closing log streams and sending exitcode to W&B
-2020-07-13 11:39:17,024 INFO    MainThread:24796 [run_manager.py:shutdown():1070] shutting down system stats and metadata service
+2020-07-13 13:22:04,116 DEBUG   MainThread:28240 [wandb_config.py:_load_defaults():133] no defaults not found in config-defaults.yaml
+2020-07-13 13:22:04,825 DEBUG   MainThread:28240 [meta.py:_setup_code_git():49] probe for git information
+2020-07-13 13:22:04,944 DEBUG   MainThread:28240 [run_manager.py:__init__():547] Initialized sync for GradComp/1am73iv1
+2020-07-13 13:22:04,950 INFO    MainThread:28240 [run_manager.py:wrap_existing_process():1147] wrapping existing process 17376
+2020-07-13 13:22:05,078 INFO    MainThread:28240 [run_manager.py:init_run():926] system metrics and metadata threads started
+2020-07-13 13:22:05,087 INFO    MainThread:28240 [run_manager.py:wrap_existing_process():1164] informing user process we are ready to proceed
+2020-07-13 13:22:05,096 INFO    MainThread:28240 [run_manager.py:_sync_etc():1296] entering loop for messages from user process
+2020-07-13 13:22:05,236 INFO    Thread-9  :28240 [run_manager.py:_on_file_modified():692] file/dir modified: C:\Users\Maysara\GradComp\wandb\dryrun-20200713_122202-1am73iv1\config.yaml
+2020-07-13 13:22:06,202 INFO    MainThread:28240 [run_manager.py:_sync_etc():1319] received message from user process: {"exitcode": 1}
+2020-07-13 13:22:06,203 INFO    MainThread:28240 [run_manager.py:_sync_etc():1406] closing log streams and sending exitcode to W&B
+2020-07-13 13:22:06,204 INFO    MainThread:28240 [run_manager.py:shutdown():1070] shutting down system stats and metadata service
 run_manager.py:_sync_etc():1406] closing log streams and sending exitcode to W&B
-2020-07-13 11:39:17,024 INFO    MainThread:24796 [2u4ar8o8:run_manager.py:shutdown():1070] shutting down system stats and metadata service
+2020-07-13 13:22:06,204 INFO    MainThread:28240 [1am73iv1:run_manager.py:shutdown():1070] shutting down system stats and metadata service
