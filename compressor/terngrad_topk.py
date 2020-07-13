@@ -9,7 +9,7 @@ import torch
 from compressor.compressor import Compressor
 
 
-class EFSignTopKCompressor(Compressor):
+class TerngradTopKCompressor(Compressor):
     """
     This sparsification algorithms chooses the top (highest absolute magnitude)
     gradients and communicates them.
@@ -18,9 +18,10 @@ class EFSignTopKCompressor(Compressor):
         compress_ratio: the ratio of the gradients to be kept.
     """
 
-    def __init__(self, compress_ratio):
+    def __init__(self, compress_ratio, clip_const):
         super().__init__()
         self.compress_ratio = compress_ratio
+        self.clip_const = clip_const
         self.total_compressed = 0
         self.total_origional = 0
 
@@ -39,15 +40,19 @@ class EFSignTopKCompressor(Compressor):
                                 the gradients.
         """
         values, indices = sparsify(tensor, self.compress_ratio)
-        quant_tensors, shape = quantize(values)
+        # print("grad", tensor.numel())
+        # print("comp", values.size())
+        quant_tensors, shape = quantize(values, self.clip_const)
         tensors = quant_tensors, indices
 
         ctx = tensor.numel(), tensor.size(), shape
 
         self.total_origional += tensor.numel()
+        # print(self.total_origional)
         self.total_compressed += values.numel()
-        compression_ratio = (self.total_origional / self.total_compressed) * 32
-
+        # print(self.total_compressed)
+        compression_ratio = (self.total_origional / self.total_compressed) * 16
+        # print(compression_ratio)
         return tensors, ctx, compression_ratio
 
 
@@ -90,7 +95,7 @@ def sparsify(tensor, compress_ratio):
     return values, indices
 
 
-def quantize(tensor):
+def quantize(tensor, clip_const):
     """
     This method compresses the gradients based on their signs. If the
     value of the gradient is greater than or equal to zero, the value will
@@ -112,9 +117,30 @@ def quantize(tensor):
     """
     shape = tensor.size()
     tensor = tensor.flatten()
-    sign_encode = tensor >= 0
-    mean = tensor.abs().mean()
-    quantized_tensor = mean, sign_encode.type(torch.uint8)
+
+    # Step.1: clipping the gradients.
+    # equation(21) in the paper.
+    std = (tensor - torch.mean(tensor)) ** 2
+    std = torch.sqrt(torch.mean(std))   # the standard deviation of the gradients
+    c = clip_const * std.item()
+    gradient = torch.clamp(tensor, -c, c)
+
+    # Step.2: getting the maximum norm of all gradients.
+    # equation(2) in the paper (St)
+    abs_gradient = gradient.abs()
+    scalar = abs_gradient.max()
+
+    # Step.3: getting the signs of all gradients and multiplying with the
+    # scalar from Step.2.
+    sign_gradient = gradient.sign() * scalar
+
+    # Step.4: multiplying with a Bernoulli distribution (either 0 or 1).
+    rnd_sample = torch.empty_like(tensor).uniform_(0, scalar.item())
+    sign_gradient[rnd_sample >= abs_gradient] = 0
+    ternarized_grads = sign_gradient.sign()     # {-1,0,+1}
+
+    quantized_tensor = ternarized_grads.type(torch.int8), scalar.flatten()
+
     return quantized_tensor, shape
 
 
@@ -132,11 +158,10 @@ def dequantize(quantized_tensor, shape):
         tensor_decompressed: the decompressed tensor, in the same shape as
         the origonal gradients' tensor.
     """
-    mean, sign_encode = quantized_tensor
-    sign_decode = sign_encode.type(torch.float32) * 2 - 1
-    sign_decode = mean * sign_decode
-    dequantized_tensor = sign_decode.view(shape)
-    return dequantized_tensor
+    tensor_compressed, scalar = quantized_tensor
+    sign = tensor_compressed.type(torch.float32)
+    dequantized_tensor = sign * scalar
+    return dequantized_tensor.view(shape)
 
 
 def desparsify(tensors, numel):

@@ -24,6 +24,7 @@ from compressor.terngrad import TernGradCompressor
 from compressor.efsignsgd import EFSignSGDCompressor
 from compressor.adacomp import AdaCompCompressor
 from compressor.efsign_topk import EFSignTopKCompressor
+from compressor.terngrad_topk import TerngradTopKCompressor
 
 ################################# Command Line Arguments  #################################
 
@@ -103,6 +104,8 @@ if __name__ == '__main__':
         compressor = EFSignSGDCompressor(lr=lr)
     elif args.compressor == "efsigntopk":
         compressor = EFSignTopKCompressor(compress_ratio=args.compress_ratio)
+    elif args.compressor == "terngradtopk":
+        compressor = TerngradTopKCompressor(compress_ratio=args.compress_ratio, clip_const=args.clip_const)
     else:
         raise Exception("Please choose an appropriate compression algorithm...")
 
