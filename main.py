@@ -27,11 +27,12 @@ from compressor.efsign_topk import EFSignTopKCompressor
 from compressor.terngrad_topk import TerngradTopKCompressor
 from compressor.efsign_adacomp import EFSignAdaCompCompressor
 from compressor.terngrad_adacomp import TerngradAdaCompCompressor
+from compressor.variance_based import VarianceBasedCompressor
 
 ################################# Command Line Arguments  #################################
 
 parser = argparse.ArgumentParser(description='A simple LSTM Language Model')
-parser.add_argument('--data', type=str, default='../datasets/test', help='location of the data corpus')
+parser.add_argument('--data', type=str, default='../datasets/ptb', help='location of the data corpus')
 parser.add_argument('--emb_size', type=int, default=700, help='size of word embeddings')
 parser.add_argument('--num_hid', type=int, default=700, help='number of hidden units per layer')
 parser.add_argument('--num_layers', type=int, default=2, help='number of layers')
@@ -56,6 +57,8 @@ parser.add_argument('--memory', type=str, help='the name of the memory technique
 parser.add_argument('--compress_ratio', type=float, default=1.0, help='compress ratio for the compression techniques - topk')
 parser.add_argument('--clip_const', type=float, default=17.1, help='terngrad parameter for gradient clipping')
 parser.add_argument('--comp_const', type=float, default=3, help='compensation constant for AdaComp')
+parser.add_argument('--alpha', type=float, default=1, help='hyperparameter for variance-based algorithm')
+
 args = parser.parse_args()
 
 args.num_hid = args.emb_size
@@ -112,6 +115,9 @@ if __name__ == '__main__':
         compressor = EFSignAdaCompCompressor(compensation_const=args.comp_const)
     elif args.compressor == "terngradadacomp":
         compressor = TerngradAdaCompCompressor(compensation_const=args.comp_const, clip_const=args.clip_const)
+    elif args.compressor == "varbased":
+        compressor = VarianceBasedCompressor(alpha=args.alpha, batch_size=args.batch_size)
+
     else:
         raise Exception("Please choose an appropriate compression algorithm...")
 
