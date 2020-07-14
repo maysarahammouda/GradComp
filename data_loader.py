@@ -22,10 +22,17 @@ class Dictionary(object):
 class Corpus(object):
     def __init__(self, path):
         self.dictionary = Dictionary()
-        #adjust for PTB data set ['ptb.train.txt', 'ptb.valid.txt', 'ptb.test.txt']
-        self.train = self.tokenize(os.path.join(path, 'test.train.txt'))
-        self.valid = self.tokenize(os.path.join(path, 'test.valid.txt'))
-        self.test = self.tokenize(os.path.join(path, 'test.test.txt'))
+        print(path)
+        if path == '../datasets/ptb':
+            self.train = self.tokenize(os.path.join(path, 'ptb.train.txt'))
+            self.valid = self.tokenize(os.path.join(path, 'ptb.valid.txt'))
+            self.test = self.tokenize(os.path.join(path, 'ptb.test.txt'))
+        elif path == '../datasets/test':
+            self.train = self.tokenize(os.path.join(path, 'test.train.txt'))
+            self.valid = self.tokenize(os.path.join(path, 'test.valid.txt'))
+            self.test = self.tokenize(os.path.join(path, 'test.test.txt'))
+
+
 
     def tokenize(self, path):
         """Tokenizes a text file."""
