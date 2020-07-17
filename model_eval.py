@@ -86,8 +86,8 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device
         for name, param in model.named_parameters():
             # compress and save residual
             tensor = memory.compensate(param.grad, name, worker_id=worker_id)
+            global compression_ratio
             if args.compressor == "adacomp" or args.compressor == "efsignadacomp" or args.compressor == "terngradadacomp":
-                global compression_ratio
                 tensor_comp, ctx, compression_ratio = compressor.compress(param.grad, tensor, name)
             else:
                 tensor_comp, ctx, compression_ratio = compressor.compress(tensor, name)
@@ -191,6 +191,7 @@ def _log_training_results (epoch, batch, lr, log_interval, num_fullSeq, num_seq,
 
         # logging the train ppl values to wandb
         wandb.log({"Train perplexity": train_ppl}, step=epoch)
+        wandb.log({"curr epoch": epoch}, step=epoch)
 
         if (batch == num_seq - 1) and (last_update_worker != 0):
             print('| epoch {:3d} | {:5d}/{:5d} batches | lr {:02.4f} | ms/batch {:5.2f} | loss {:5.2f} | ppl {:8.2f}'
