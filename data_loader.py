@@ -22,7 +22,6 @@ class Dictionary(object):
 class Corpus(object):
     def __init__(self, path):
         self.dictionary = Dictionary()
-        print(path)
         if path == '../datasets/ptb':
             self.train = self.tokenize(os.path.join(path, 'ptb.train.txt'))
             self.valid = self.tokenize(os.path.join(path, 'ptb.valid.txt'))

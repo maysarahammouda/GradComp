@@ -27,7 +27,6 @@ from compressor.efsign_topk import EFSignTopKCompressor
 from compressor.terngrad_topk import TerngradTopKCompressor
 from compressor.efsign_adacomp import EFSignAdaCompCompressor
 from compressor.terngrad_adacomp import TerngradAdaCompCompressor
-from compressor.variance_based import VarianceBasedCompressor
 
 ################################# Command Line Arguments  #################################
 
@@ -57,8 +56,6 @@ parser.add_argument('--memory', type=str, help='the name of the memory technique
 parser.add_argument('--compress_ratio', type=float, default=1.0, help='compress ratio for the compression techniques - topk')
 parser.add_argument('--clip_const', type=float, default=17.1, help='terngrad parameter for gradient clipping')
 parser.add_argument('--comp_const', type=float, default=3, help='compensation constant for AdaComp')
-parser.add_argument('--alpha', type=float, default=1, help='hyperparameter for variance-based algorithm')
-
 args = parser.parse_args()
 
 args.num_hid = args.emb_size
@@ -115,9 +112,6 @@ if __name__ == '__main__':
         compressor = EFSignAdaCompCompressor(compensation_const=args.comp_const)
     elif args.compressor == "terngradadacomp":
         compressor = TerngradAdaCompCompressor(compensation_const=args.comp_const, clip_const=args.clip_const)
-    elif args.compressor == "varbased":
-        compressor = VarianceBasedCompressor(alpha=args.alpha, batch_size=args.batch_size)
-
     else:
         raise Exception("Please choose an appropriate compression algorithm...")
 
@@ -134,6 +128,9 @@ if __name__ == '__main__':
     print("="*50)
     print("|"," "*18,"Training"," "*18,"|")
     print("="*50)
+
+    #Timing the execution
+    # start_time = time.time()
 
     # Running the model on the training and validation data
     for epoch in range(1, args.epochs + 1):
@@ -160,5 +157,8 @@ if __name__ == '__main__':
 
     # Saving the model
     # model.save(os.path.join(wandb.run.dir, "model.h5"))
+    # end_time = time.time()
+    # print("Total Excution Time:", end_time)
+    # wandb.log({"Total Time": end_time})
 
     print("\n======================== Done! ========================")
