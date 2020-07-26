@@ -1,3 +1,0 @@
-wandb agent maysara/terngrad_c_effect/in10rspk
-
-wandb agent maysara/topk_compress_ratio_effect/qcuapujt

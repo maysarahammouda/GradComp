@@ -1,1 +1,0 @@
-{"graph_0": {"_type": "graph-file", "path": "media/graph/graph_0_summary_dc6b4086.graph.json", "sha256": "dc6b4086c70134d214349ca51095179115fc39c53c0c8836262484b4f3f53bf6", "size": 1040}, "loss": 3.6794230937957764, "_runtime": 3.353039264678955, "_step": 2, "_timestamp": 1592152333.103382, "Train perplexity": 37.88251232087321, "Validation perplexity": 33.101984372375725}
