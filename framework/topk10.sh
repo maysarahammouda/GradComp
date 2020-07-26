@@ -1,4 +1,4 @@
-#Different batch sizes - Topk_0.1
+#!/bin/sh
 python main.py --data ../datasets/ptb --num_layers 2 --init_lr 12 --bptt 36 --dropout 0.6482 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 32 --compressor topk --memory residual --exp_name topk_0.1_BS_32 --project_name batch_effect --compress_ratio 0.1
 
 python main.py --data ../datasets/ptb --num_layers 2 --init_lr 17 --bptt 36 --dropout 0.6482 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 64 --compressor topk --memory residual --exp_name topk_0.1_BS_64 --project_name batch_effect --compress_ratio 0.1
