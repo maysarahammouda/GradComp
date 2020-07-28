@@ -70,7 +70,7 @@ class EFSignAdaCompCompressor(Compressor):
 
         print("Origional Tensor:", tensor.numel())
         print("Sparsified Tensor:", sparsified_tensor.numel())
-        print("Quantized Tensor:", quant_tensors.numel())
+        print("Quantized Tensor:", quant_tensors[1].numel())
         print("Index Tensor:", indices.numel())
         print("Compression Ratio:", compression_ratio)
 
