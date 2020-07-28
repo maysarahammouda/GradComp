@@ -108,3 +108,19 @@ python main.py --data ../datasets/ptb --num_layers 2 --init_lr 5.0 --bptt 20 --d
 
 #Top-K_EF-EF_SignSGD
 python main.py --data ../datasets/ptb --num_layers 2 --init_lr 20.0 --bptt 43 --dropout 0.7003 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor efsigntopk --compress_ratio 0.001 --memory residual --exp_name EF_SignSGD_TopK_0.001 --project_name hybrid
+
+python main.py --data ../datasets/ptb --num_layers 2 --init_lr 20.0 --bptt 43 --dropout 0.7003 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor efsigntopk --compress_ratio 0.01 --memory residual --exp_name EF_SignSGD_TopK_0.01 --project_name hybrid
+
+python main.py --data ../datasets/ptb --num_layers 2 --init_lr 20.0 --bptt 43 --dropout 0.7003 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor efsigntopk --compress_ratio 0.1 --memory residual --exp_name EF_SignSGD_TopK_0.1 --project_name hybrid
+
+python main.py --data ../datasets/ptb --num_layers 2 --init_lr 7.0 --bptt 15 --dropout 0.4928 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor efsignadacomp --memory residual --comp_const 2.35 --exp_name EF-SignSGD_AdaComp --project_name hybrid
+
+python main.py --data ../datasets/ptb --num_layers 2 --init_lr 21.0 --bptt 29 --dropout 0.6904 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor efsigntopk --compress_ratio 0.001 --memory residual --exp_name EF_SignSGD_TopK_0.001_2 --project_name hybrid
+
+python main.py --data ../datasets/ptb --num_layers 2 --init_lr 21.0 --bptt 29 --dropout 0.6904 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor efsigntopk --compress_ratio 0.01 --memory residual --exp_name EF_SignSGD_TopK_0.01_2 --project_name hybrid
+
+python main.py --data ../datasets/ptb --num_layers 2 --init_lr 21.0 --bptt 29 --dropout 0.6904 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor efsigntopk --compress_ratio 0.1 --memory residual --exp_name EF_SignSGD_TopK_0.1_2 --project_name hybrid
+
+python main.py --data ../datasets/ptb --num_layers 2 --init_lr 21.0 --bptt 29 --dropout 0.6904 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor efsignadacomp --memory residual --comp_const 2.35 --exp_name EF-SignSGD_AdaComp_2 --project_name hybrid
+
+python main.py --data ../datasets/ptb --num_layers 2 --init_lr 8 --bptt 11 --dropout 0.5729 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor efsignadacomp --memory residual --comp_const 2.35 --exp_name EF-SignSGD_AdaComp_best --project_name hybrid
