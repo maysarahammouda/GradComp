@@ -4,6 +4,10 @@
 
 ___
 
+### Here is a diagram that shows how the code files in the framework are connected:
+![framework](https://i.ibb.co/TTBNh0N/framework.png)
+___
+
 ## Installation
 You need to have Python 3 installed.
 
@@ -16,9 +20,6 @@ pip install -e .
 ```
 ___
 
-### Here is a diagram that shows how the code files in the framework are connected:
-![framework](https://i.ibb.co/TTBNh0N/framework.png)
-___
 
 ### The *datasets* folder contains the Penn Treebank (PTB) corpus. 
 
