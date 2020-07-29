@@ -1,7 +1,19 @@
 # Gradient Compression for Distributed Deep Learning
 
-#### This is an open-source framework that contains the whole code required for compressing language models. The framework is divided into several codes to make integrating any new parts very easy. 
+#### This is an open-source framework that contains the whole code required for compressing language models using PyTorch. The framework is divided into several files to make integrating any new parts very easy. 
 
+___
+
+## Installation
+You need to have Python 3 installed.
+
+Create a local environment and install the requirements:
+```bash
+python3 -m venv .env
+source .env/bin/activate
+pip install -r requirements.txt
+pip install -e .
+```
 ___
 
 ### Here is a diagram that shows how the code files in the framework are connected:
