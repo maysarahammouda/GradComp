@@ -4,7 +4,7 @@
 
 ___
 
-### Here is a diagram that shows how the codes in the framework are connected:
+### Here is a diagram that shows how the code files in the framework are connected:
 ![framework](https://i.ibb.co/TTBNh0N/framework.png)
 ___
 
