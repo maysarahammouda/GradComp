@@ -672,6 +672,6 @@ wandb agent maysara/random_search_4/t4tawjau    #topk_0.01
 wandb agent maysara/random_search_4/u34lwa4g    #topk_0.001
 wandb agent maysara/random_search_4/ccf37ip6    #Adacomp
 wandb agent maysara/random_search_4/5fry7g8w    #TernGrad
-
-
 wandb agent maysara/random_search_3/h14442tf    #topk_0.001
+
+python main.py --data ../datasets/ptb --num_layers 2 --init_lr 12.0 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --bptt 25 --dropout 0.5486 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor topk --compress_ratio 0.0001 --memory residual --exp_name TopK_0.0001 --project_name random_search
