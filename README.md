@@ -8,7 +8,7 @@ ___
 ![framework](https://i.ibb.co/TTBNh0N/framework.png)
 ___
 
-## Installation
+### Installation
 You need to have Python 3 installed.
 
 Create a local environment and install the requirements:
