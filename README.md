@@ -5,7 +5,7 @@
 ___
 
 ### Here is a diagram that shows how the codes in the framework are connected:
-![framework](https://i.ibb.co/1vprhFY/frameworks.jpg)
+![framework](https://i.ibb.co/RvbLVB8/framework.jpg)
 
 ___
 
