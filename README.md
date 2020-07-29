@@ -5,8 +5,7 @@
 ___
 
 ### Here is a diagram that shows how the codes in the framework are connected:
-![framework](https://i.ibb.co/RvbLVB8/framework.jpg)
-
+![framework](https://i.ibb.co/TTBNh0N/framework.png)
 ___
 
 ### The *datasets* folder contains the Penn Treebank (PTB) corpus. 
