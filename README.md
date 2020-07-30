@@ -21,23 +21,23 @@ pip install -e .
 ___
 
 
-### The *datasets* folder contains the Penn Treebank (PTB) corpus. 
+### The *`datasets`* folder contains the Penn Treebank (PTB) corpus. 
 
 ___
 
 ### The *framework* folder contains the following files:
-- **run.sh**: contains the command line code required to run the whole framework. (example below)
-- **main.py**: contains the main parts of the code and connects all the files together.
-- **model.py**: contains the LSTM model. (can be used to add any other models in the future)
-- **model_eval.py**: contains the training, evaluation, and testing code. It also contains the helper code to print the results.
-- **optimizer.py**: contains the modified optimizer. (this is currently abandoned and combined with the model_eval code)
-- **batch_generation.py**: contains the code for creating the batches from the input data.
-- **data_loader.py**: contains the code for reading the input files, tokenizing them, and creating the dictionary. 
-- **utils.py**: contains some helper functions that can be used with any other code in the framework.
+- **`run.sh`**: contains the command line code required to run the whole framework. (example below)
+- **`main.py`**: contains the main parts of the code and connects all the files together.
+- **`model.py`**: contains the LSTM model. (can be used to add any other models in the future)
+- **`model_eval.py`**: contains the training, evaluation, and testing code. It also contains the helper code to print the results.
+- **`optimizer.py`**: contains the modified optimizer. (this is currently abandoned and combined with the model_eval code)
+- **`batch_generation.py`**: contains the code for creating the batches from the input data.
+- **`data_loader.py`**: contains the code for reading the input files, tokenizing them, and creating the dictionary. 
+- **`utils.py`**: contains some helper functions that can be used with any other code in the framework.
 
 ___
 
-### The *compressor* folder contains the code for the following compressors:
+### The *`compressor`* folder contains the code for the following compressors:
 Sparsification | Quantization | Hybrid
 ------------ | ------------- | -------------
 Top-k | EF-SignSGD | Top-k & EF-SignSGD
@@ -47,7 +47,7 @@ Variance-Based compression | . | AdaComp & EF-SignSGD
 
 ___
 
-### The *memory* folder contains the residual memory and the "no memory" case.
+### The *`memory`* folder contains the residual memory and the "no memory" case.
 
 ___
 
