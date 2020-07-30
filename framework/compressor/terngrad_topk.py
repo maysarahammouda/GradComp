@@ -40,19 +40,16 @@ class TerngradTopKCompressor(Compressor):
                                 the gradients.
         """
         values, indices = sparsify(tensor, self.compress_ratio)
-        # print("grad", tensor.numel())
-        # print("comp", values.size())
+
         quant_tensors, shape = quantize(values, self.clip_const)
         tensors = quant_tensors, indices
 
         ctx = tensor.numel(), tensor.size(), shape
 
         self.total_origional += tensor.numel()
-        # print(self.total_origional)
-        self.total_compressed += values.numel()
-        # print(self.total_compressed)
-        compression_ratio = (self.total_origional / self.total_compressed) * 16
-        # print(compression_ratio)
+        self.total_compressed += sparsified_tensor.numel() * (1/16) + indices.numel()
+        compression_ratio = (self.total_origional / self.total_compressed)
+        
         return tensors, ctx, compression_ratio
 
 

@@ -66,8 +66,8 @@ class TerngradAdaCompCompressor(Compressor):
         ctx = tensor.numel(), tensor.size(), shape
 
         self.total_origional += tensor.numel()
-        self.total_compressed += sparsified_tensor.numel()
-        compression_ratio = (self.total_origional / self.total_compressed) * 32
+        self.total_compressed += sparsified_tensor.numel() * (1/16) + indices.numel()
+        compression_ratio = (self.total_origional / self.total_compressed)
 
         return tensors, ctx, compression_ratio
 
