@@ -24,7 +24,6 @@ class EFSignAdaCompCompressor(Compressor):
         self.total_compressed = 0
         self.total_origional = 0
 
-
     def compress(self, grads, tensor, name):
         """
         This function sparsifies the gradients as per the AdaComp algorithm.
@@ -44,15 +43,36 @@ class EFSignAdaCompCompressor(Compressor):
             compression_ratio: the amount of compression we get after compressing
                                 the gradients.
         """
-        values, indices = sparsify(grads, tensor, self.compensation_const)
-        quant_tensors, shape = quantize(values)
+        ctx = tensor.numel(), tensor.size()
+
+        grads = grads.flatten()
+        tensor_G = tensor.flatten()
+        tensor_H = tensor_G + self.compensation_const * grads
+
+        # Step.1: getting the maximum norm of all gradients.
+        abs_gradient = tensor_G.abs()
+        g_max = abs_gradient.max()
+
+        # Step.2:
+        mask = tensor_H.abs() >= g_max
+        sparsified_tensor = tensor_H[mask]
+        indices = torch.nonzero(mask)
+
+        quant_tensors, shape = quantize(sparsified_tensor)
+
         tensors = quant_tensors, indices.flatten()
 
         ctx = tensor.numel(), tensor.size(), shape
 
         self.total_origional += tensor.numel()
-        self.total_compressed += values.numel() * (1/32) + indices.numel()
+        self.total_compressed += sparsified_tensor.numel() * (1/32) + indices.numel()
         compression_ratio = (self.total_origional / self.total_compressed)
+
+        # print("Origional Tensor:", tensor.numel())
+        # print("Sparsified Tensor:", sparsified_tensor.numel())
+        # print("Quantized Tensor:", quant_tensors[1].numel())
+        # print("Index Tensor:", indices.numel())
+        # print("Compression Ratio:", compression_ratio)
 
         return tensors, ctx, compression_ratio
 
@@ -79,30 +99,21 @@ class EFSignAdaCompCompressor(Compressor):
         return tensor_decompressed.view(size)
 
 
-def sparsify(grads, tensor, compensation_const):
-    """
-    This function performs "sparsification" for "tensor".
-    It decides on the number of elements to keep based on the "compress_ratio".
-    Args:
-        tensor: the tensor we need to sparsify.
-        compress_ratio: the percentage of the number of elements we want to keep.
-    Return:
-        the values and indices for the choosen elements.
-    """
-    grads = grads.flatten()
-    tensor_G = tensor.flatten()
-    tensor_H = tensor_G + compensation_const * grads
-
-    # Step.1: getting the maximum norm of all gradients.
-    abs_gradient = tensor_G.abs()
-    g_max = abs_gradient.max()
-
-    # Step.2: applying the sparsification threshold.
-    mask = tensor_H.abs() >= g_max
-    sparsified_tensor = tensor_H[mask]
-    indices = torch.nonzero(mask)
-
-    return sparsified_tensor, indices
+# def sparsify(tensor, compress_ratio):
+#     """
+#     This function performs "sparsification" for "tensor".
+#     It decides on the number of elements to keep based on the "compress_ratio".
+#     Args:
+#         tensor: the tensor we need to sparsify.
+#         compress_ratio: the percentage of the number of elements we want to keep.
+#     Return:
+#         the values and indices for the choosen elements.
+#     """
+#     tensor = tensor.flatten()
+#     k = max(1, int(tensor.numel() * compress_ratio))
+#     _, indices = torch.topk(tensor.abs(), k)
+#     values = tensor[indices]
+#     return values, indices
 
 
 def quantize(tensor):

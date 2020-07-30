@@ -1,4 +1,4 @@
-python main.py --data ../datasets/test --num_layers 2 --init_lr 5.0 --lr_decay 0.0 --epochs 10 --eval_batch_size 5 --test_batch_size 5 --bptt 5 --dropout 0.5 --seed 1111 --log_interval 10 --clip 0.25 --use_gpu false --emb_size 20 --num_hid 20 --num_workers 1 --batch_size 8 --compressor adacmop --memory residual --comp_const 0.1 --compress_ratio 0.01 --clip_const 25
+python main.py --data ../datasets/test --num_layers 2 --init_lr 5.0 --lr_decay 0.0 --epochs 10 --eval_batch_size 5 --test_batch_size 5 --bptt 5 --dropout 0.5 --seed 1111 --log_interval 10 --clip 0.25 --use_gpu false --emb_size 20 --num_hid 20 --num_workers 1 --batch_size 8 --compressor efsignadacomp --memory residual --comp_const 0.1 --compress_ratio 0.01 --clip_const 25
 
 #1_worker
 python main.py --data ../datasets/ptb --num_layers 2 --init_lr 5.0 --epochs 50 --eval_batch_size 10 --test_batch_size 10 --bptt 35 --dropout 1 --seed 1111 --log_interval 10 --clip 0.25 --use_gpu true --emb_size 650 --nhid 650 --num_workers 1 --batch_size 128 --exp_name exp1_worker1 --project_name bs128_nhid650
