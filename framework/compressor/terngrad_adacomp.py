@@ -44,29 +44,14 @@ class TerngradAdaCompCompressor(Compressor):
             compression_ratio: the amount of compression we get after compressing
                                 the gradients.
         """
-        ctx = tensor.numel(), tensor.size()
-
-        grads = grads.flatten()
-        tensor_G = tensor.flatten()
-        tensor_H = tensor_G + self.compensation_const * grads
-
-        # Step.1: getting the maximum norm of all gradients.
-        abs_gradient = tensor_G.abs()
-        g_max = abs_gradient.max()
-
-        # Step.2:
-        mask = tensor_H.abs() >= g_max
-        sparsified_tensor = tensor_H[mask]
-        indices = torch.nonzero(mask)
-
-        quant_tensors, shape = quantize(sparsified_tensor, self.clip_const)
-
+        values, indices = sparsify(grads, tensor, self.compensation_const)
+        quant_tensors, shape = quantize(values, self.clip_const)
         tensors = quant_tensors, indices.flatten()
 
         ctx = tensor.numel(), tensor.size(), shape
 
         self.total_origional += tensor.numel()
-        self.total_compressed += sparsified_tensor.numel() * (1/16) + indices.numel()
+        self.total_compressed += values.numel() * (1/16) + indices.numel()
         compression_ratio = (self.total_origional / self.total_compressed)
 
         return tensors, ctx, compression_ratio
@@ -94,21 +79,30 @@ class TerngradAdaCompCompressor(Compressor):
         return tensor_decompressed.view(size)
 
 
-# def sparsify(tensor, compress_ratio):
-#     """
-#     This function performs "sparsification" for "tensor".
-#     It decides on the number of elements to keep based on the "compress_ratio".
-#     Args:
-#         tensor: the tensor we need to sparsify.
-#         compress_ratio: the percentage of the number of elements we want to keep.
-#     Return:
-#         the values and indices for the choosen elements.
-#     """
-#     tensor = tensor.flatten()
-#     k = max(1, int(tensor.numel() * compress_ratio))
-#     _, indices = torch.topk(tensor.abs(), k)
-#     values = tensor[indices]
-#     return values, indices
+def sparsify(grads, tensor, compensation_const):
+    """
+    This function performs "sparsification" for "tensor".
+    It decides on the number of elements to keep based on the "compress_ratio".
+    Args:
+        tensor: the tensor we need to sparsify.
+        compress_ratio: the percentage of the number of elements we want to keep.
+    Return:
+        the values and indices for the choosen elements.
+    """
+    grads = grads.flatten()
+    tensor_G = tensor.flatten()
+    tensor_H = tensor_G + compensation_const * grads
+
+    # Step.1: getting the maximum norm of all gradients.
+    abs_gradient = tensor_G.abs()
+    g_max = abs_gradient.max()
+
+    # Step.2: applying the sparsification threshold.
+    mask = tensor_H.abs() >= g_max
+    sparsified_tensor = tensor_H[mask]
+    indices = torch.nonzero(mask)
+
+    return sparsified_tensor, indices
 
 
 def quantize(tensor, clip_const):
@@ -144,10 +138,9 @@ def quantize(tensor, clip_const):
     # Step.2: getting the maximum norm of all gradients.
     # equation(2) in the paper (St)
     abs_gradient = gradient.abs()
-    print(abs_gradient)
-    print(abs_gradient.numel())
+    # print(abs_gradient)
+    # print(abs_gradient.numel())
     scalar = abs_gradient.max() if abs_gradient.numel() > 0 else torch.tensor([[0]])
-    print(scalar.type())
 
     # Step.3: getting the signs of all gradients and multiplying with the
     # scalar from Step.2.
@@ -155,6 +148,7 @@ def quantize(tensor, clip_const):
 
     # Step.4: multiplying with a Bernoulli distribution (either 0 or 1).
     rnd_sample = torch.empty_like(tensor).uniform_(0, scalar.item())
+    # print("rnd_sample:", rnd_sample.numel())
     sign_gradient[rnd_sample >= abs_gradient] = 0
     ternarized_grads = sign_gradient.sign()     # {-1,0,+1}
 
