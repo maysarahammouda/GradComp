@@ -25,7 +25,7 @@ ___
 
 ___
 
-### The *framework* folder contains the following files:
+### The *`framework`* folder contains the following files:
 - **`run.sh`**: contains the command line code required to run the whole framework. (example below)
 - **`main.py`**: contains the main parts of the code and connects all the files together.
 - **`model.py`**: contains the LSTM model. (can be used to add any other models in the future)
