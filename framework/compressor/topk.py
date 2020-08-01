@@ -39,6 +39,7 @@ class TopKCompressor(Compressor):
                                 the gradients.
         """
         values, indices = sparsify(tensor, self.compress_ratio)
+        tensors = values, indices.flatten()
         ctx = tensor.numel(), tensor.size()
 
         self.total_origional += tensor.numel()
