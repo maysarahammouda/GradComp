@@ -45,25 +45,14 @@ class AdaCompCompressor(Compressor):
             compression_ratio: the amount of compression we get after compressing
                                 the gradients.
         """
+
+        values, indices = sparsify(grads, tensor, self.compensation_const)
+        tensors = values, indices.flatten()
+
         ctx = tensor.numel(), tensor.size()
 
-        grads = grads.flatten()
-        tensor_G = tensor.flatten()
-        tensor_H = tensor_G + self.compensation_const * grads
-
-        # Step.1: getting the maximum norm of all gradients.
-        abs_gradient = tensor_G.abs()
-        g_max = abs_gradient.max()
-
-        # Step.2:
-        mask = tensor_H.abs() >= g_max
-        compressed_tensor = tensor_H[mask]  # << these might also be quantized ....
-        indices = torch.nonzero(mask)
-
-        tensors = compressed_tensor, indices.flatten()
-
-        self.total_origional += tensor_G.numel()
-        self.total_compressed += compressed_tensor.numel()
+        self.total_origional += tensor.numel()
+        self.total_compressed += values.numel() + indices.numel()
         compression_ratio = self.total_origional / self.total_compressed
 
         return tensors, ctx, compression_ratio
@@ -84,6 +73,32 @@ class AdaCompCompressor(Compressor):
         numel, shape = ctx
         tensor_decompressed = desparsify(tensors, numel)
         return tensor_decompressed.view(shape)
+
+
+def sparsify(grads, tensor, compensation_const):
+    """
+    This function performs "sparsification" for "tensor".
+    It decides on the number of elements to keep based on the "compress_ratio".
+    Args:
+        tensor: the tensor we need to sparsify.
+        compress_ratio: the percentage of the number of elements we want to keep.
+    Return:
+        the values and indices for the choosen elements.
+    """
+    grads = grads.flatten()
+    tensor_G = tensor.flatten()
+    tensor_H = tensor_G + compensation_const * grads
+
+    # Step.1: getting the maximum norm of all gradients.
+    abs_gradient = tensor_G.abs()
+    g_max = abs_gradient.max()
+
+    # Step.2: applying the sparsification threshold.
+    mask = tensor_H.abs() >= g_max
+    sparsified_tensor = tensor_H[mask]
+    indices = torch.nonzero(mask)
+
+    return sparsified_tensor, indices
 
 
 def desparsify(tensors, numel):

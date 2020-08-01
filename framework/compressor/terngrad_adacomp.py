@@ -140,7 +140,8 @@ def quantize(tensor, clip_const):
     abs_gradient = gradient.abs()
     # print(abs_gradient)
     # print(abs_gradient.numel())
-    scalar = abs_gradient.max() if abs_gradient.numel() > 0 else torch.tensor([[0]])
+    scalar = abs_gradient.max() if abs_gradient.numel() > 0 else torch.tensor(0)
+    print(scalar)
 
     # Step.3: getting the signs of all gradients and multiplying with the
     # scalar from Step.2.

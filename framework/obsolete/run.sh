@@ -124,3 +124,8 @@ python main.py --data ../datasets/ptb --num_layers 2 --init_lr 21.0 --bptt 29 --
 python main.py --data ../datasets/ptb --num_layers 2 --init_lr 21.0 --bptt 29 --dropout 0.6904 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor efsignadacomp --memory residual --comp_const 2.35 --exp_name EF-SignSGD_AdaComp_2 --project_name hybrid
 
 python main.py --data ../datasets/ptb --num_layers 2 --init_lr 8 --bptt 11 --dropout 0.5729 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor efsignadacomp --memory residual --comp_const 2.35 --exp_name EF-SignSGD_AdaComp_best --project_name hybrid
+
+
+python main.py --data ../datasets/ptb --num_layers 2 --init_lr 5.0 --bptt 20 --dropout 0.4854 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor terngradadacomp --memory residual --comp_const 2.35 --clip_const 26 --exp_name TernGrad_AdaComp --project_name hybrid
+
+python main.py --data ../datasets/ptb --num_layers 2 --init_lr 8.0 --bptt 11 --dropout 0.5729 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor terngradadacomp --memory residual --comp_const 2.35 --clip_const 26 --exp_name TernGrad_AdaComp --project_name hybrid

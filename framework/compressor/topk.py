@@ -38,11 +38,11 @@ class TopKCompressor(Compressor):
             compression_ratio: the amount of compression we get after compressing
                                 the gradients.
         """
-        tensors = sparsify(tensor, self.compress_ratio)
+        values, indices = sparsify(tensor, self.compress_ratio)
         ctx = tensor.numel(), tensor.size()
 
         self.total_origional += tensor.numel()
-        self.total_compressed += tensors[0].numel()
+        self.total_compressed += values.numel() + indices.numel()
         compression_ratio = self.total_origional / self.total_compressed
 
         return tensors, ctx, compression_ratio
