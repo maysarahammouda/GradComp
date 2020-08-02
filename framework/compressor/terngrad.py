@@ -76,7 +76,7 @@ class TernGradCompressor(Compressor):
         scalar = abs_gradient.max()
 
         # Step.3: getting the signs of all gradients and multiplying with the
-        # scalar from Step.2.
+        # scalar value from Step.2.
         sign_gradient = gradient.sign() * scalar
 
         # Step.4: multiplying with a Bernoulli distribution (either 0 or 1).
@@ -93,9 +93,9 @@ class TernGradCompressor(Compressor):
 
     def decompress(self, compressed_tensor, shape):
         """
-        This method decompress the compressed tensor by restoring an estimation
-        of the origional values from the compressed tensors using the signs and
-        the mean value of the gradients.
+        This method decompresses the compressed gradients by restoring an
+        estimation of the origional values using the signs and the mean value
+        of the gradients.
 
         Args:
             tensor_compressed: a tensor that contain the quantized gradients
