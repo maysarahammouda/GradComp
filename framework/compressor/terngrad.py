@@ -17,20 +17,19 @@ class TernGradCompressor(Compressor):
     """
     This quantization algorithms quantizes the gradients to a ternarty vector
     with values {-1,0,+1}.
-    This is an unbiased, it does not require the use of any memory to converge,
-    unlike the biased algorithms which require the use of memory.
+    This is an unbiased algorithm, it does not require the use of any memory to
+    converge, unlike the biased algorithms which require the use of memory.
 
     Args:
         clip_const: a hyperparameter that decides on the gradients to be
-                    clipped. it is task-dependant. For CIFAR-10/MNIST/ImageNet,
-                    it was chosen to be 2.5 (as per the paper). In PTB LM,
-                    values between 9.7 and 19 gave the best results.
+                    clipped. It is task-dependant. For CIFAR-10/MNIST/ImageNet,
+                    it was chosen to be 2.5 (as per the paper). For PTB Language
+                    Model, values between 44 and 68 gave the best results.
 
     For more information:
     https://dl.acm.org/doi/abs/10.5555/3294771.3294915
     http://papers.nips.cc/paper/6749-terngrad-ternary-gradients-to-reduce-commun
     ication-in-distributed-deep-learning
-
     """
 
     def __init__(self, clip_const):
@@ -40,13 +39,13 @@ class TernGradCompressor(Compressor):
 
     def compress(self, tensor, name):
         """
-        This method ternarizes the gradients (makes them take values {-1,0,-1}).
+        This method ternarizes the gradients (makes them take values {-1,0,+1}).
 
         Steps:
             1. Perform gradient clipping.
-            2. Get the maximum norm (abs value) of all the gradients.
+            2. Get the maximum norm (absolute value) of all the gradients.
             3. Get the signs of all gradients, to keep the directions of the
-                gradients, and multiply them with the scalars from Step.2.
+                gradients, and multiply them with the scalar value from Step.2.
             4. Multiply with a Bernoulli distribution (either 1 or 0 for each
                 gradient).
 
@@ -58,7 +57,7 @@ class TernGradCompressor(Compressor):
             compressed_tensor: a tensor that contain the ternarized gradients
                                and the scalar value for the origional gradients.
             shape: the shape of the origional gradients' tensor.
-            compression_ratio: the amount of compression we get after compressing
+            compression_ratio: the amount of compression we got after compressing
                                 the gradients.
         """
         shape = tensor.size()
