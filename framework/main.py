@@ -116,6 +116,8 @@ if __name__ == '__main__':
         compressor = TerngradAdaCompCompressor(compensation_const=args.comp_const, clip_const=args.clip_const)
     elif args.compressor == "varbased":
         compressor = VarianceBasedCompressor(alpha=args.alpha, batch_size=args.batch_size)
+    elif args.compressor == "adacomp2":
+        compressor = AdaCompCompressor2(compensation_const=args.comp_const)
     else:
         raise Exception("Please choose an appropriate compression algorithm...")
 

@@ -87,7 +87,7 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device
             # compress and save residual
             tensor = memory.compensate(param.grad, name, worker_id=worker_id)
             global compression_ratio
-            if args.compressor == "adacomp" or args.compressor == "efsignadacomp" or args.compressor == "terngradadacomp":
+            if args.compressor == "adacomp" or args.compressor == "efsignadacomp" or args.compressor == "terngradadacomp" or args.compressor == "adacomp2":
                 tensor_comp, ctx, compression_ratio = compressor.compress(param.grad, tensor, name)
             else:
                 tensor_comp, ctx, compression_ratio = compressor.compress(tensor, name)

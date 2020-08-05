@@ -173,8 +173,8 @@ def dequantize(quantized_tensor, shape):
         the origonal gradients' tensor.
     """
     tensor_compressed, scalar = quantized_tensor
-    sign = tensor_compressed.type(torch.float32)
-    dequantized_tensor = sign * scalar
+    sign = tensor_compressed.type(torch.float32).cuda()
+    dequantized_tensor = sign * scalar.cuda()
     return dequantized_tensor.view(shape)
 
 
