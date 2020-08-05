@@ -28,6 +28,7 @@ from compressor.terngrad_topk import TerngradTopKCompressor
 from compressor.efsign_adacomp import EFSignAdaCompCompressor
 from compressor.terngrad_adacomp import TerngradAdaCompCompressor
 from compressor.variance_based import VarianceBasedCompressor
+from compressor.adacomp2 import AdaCompCompressor2
 
 ################################# Command Line Arguments  #################################
 

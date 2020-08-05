@@ -191,7 +191,13 @@ python main.py --data ../datasets/ptb --num_layers 2 --init_lr 7.07 --bptt 43 --
 
 python main.py --data ../datasets/ptb --num_layers 2 --init_lr 56.6 --bptt 27 --dropout 0.6429 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 1024 --compressor none --memory none --exp_name No_Compression_BS_1024 --project_name No_Compressio_1024
 
+! python main.py --data ../datasets/ptb --num_layers 2 --init_lr 32 --bptt 24 --dropout 0.6514 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 2 --batch_size 512 --compressor none --memory none --exp_name No_Compression_2_workers --project_name No_Compressio_1024
 
+! python main.py --data ../datasets/ptb --num_layers 2 --init_lr 32 --bptt 24 --dropout 0.6514 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 4 --batch_size 256 --compressor none --memory none --exp_name No_Compression_4_workers --project_name No_Compressio_1024
+
+! python main.py --data ../datasets/ptb --num_layers 2 --init_lr 32 --bptt 24 --dropout 0.6514 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 8 --batch_size 128 --compressor none --memory none --exp_name No_Compression_8_workers --project_name No_Compressio_1024
+
+! python main.py --data ../datasets/ptb --num_layers 2 --init_lr 32 --bptt 24 --dropout 0.6514 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 16 --batch_size 64 --compressor none --memory none --exp_name No_Compression_16_workers --project_name No_Compressio_1024
 
 
 python main.py --data ../datasets/ptb --num_layers 2 --init_lr 20.0 --bptt 27 --dropout 0.6429 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor none --memory none --exp_name No_Compression --project_name training_time
@@ -219,3 +225,6 @@ python main.py --data ../datasets/ptb --num_layers 2 --init_lr 21.0 --bptt 29 --
 python main.py --data ../datasets/ptb --num_layers 2 --init_lr 10.0 --bptt 10 --dropout 0.7263 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor terngradtopk --clip_const 60 --compress_ratio 0.01 --memory residual --exp_name TernGrad_TopK_0.01 --project_name training_time
 
 python main.py --data ../datasets/ptb --num_layers 2 --init_lr 16.0 --bptt 10 --dropout 0.6861 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor terngradtopk --clip_const 60 --compress_ratio 0.001 --memory residual --exp_name TernGrad_TopK_0.001 --project_name training_time
+
+
+python main.py --data ../datasets/ptb --num_layers 2 --init_lr 8.0 --bptt 11 --dropout 0.5729 --lr_decay 0.0 --epochs 70 --eval_batch_size 10 --test_batch_size 10 --seed 1111 --log_interval 1 --clip 0.25 --use_gpu true --emb_size 700 --num_hid 700 --num_workers 1 --batch_size 128 --compressor adacomp2 --memory residual --comp_const 2.35 --exp_name AdaComp2_2.35_60 --project_name adacomp2
