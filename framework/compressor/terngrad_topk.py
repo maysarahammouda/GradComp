@@ -23,7 +23,7 @@ class TerngradTopKCompressor(Compressor):
         self.compress_ratio = compress_ratio
         self.clip_const = clip_const
         self.total_compressed = 0
-        self.total_origional = 0
+        self.total_original = 0
 
     def compress(self, tensor, name):
         """
@@ -34,7 +34,7 @@ class TerngradTopKCompressor(Compressor):
             name: the name of the experiment (not used here).
         Returns:
             tensors: the compressed gradients' tensors.
-            ctx: the context (the number of elements and the size of the origional
+            ctx: the context (the number of elements and the size of the original
                     gradients' tensor).
             compression_ratio: the amount of compression we get after compressing
                                 the gradients.
@@ -46,9 +46,9 @@ class TerngradTopKCompressor(Compressor):
 
         ctx = tensor.numel(), tensor.size(), shape
 
-        self.total_origional += tensor.numel()
+        self.total_original += tensor.numel()
         self.total_compressed += values.numel() * (1/16) + indices.numel()
-        compression_ratio = (self.total_origional / self.total_compressed)
+        compression_ratio = (self.total_original / self.total_compressed)
 
         return tensors, ctx, compression_ratio
 
@@ -107,8 +107,8 @@ def quantize(tensor, clip_const):
 
     Returns:
         tensor_compressed: a tensor that contain the quantized gradients
-                           and the mean value for the origional gradients.
-        shape: the shape of the origional gradients' tensor.
+                           and the mean value for the original gradients.
+        shape: the shape of the original gradients' tensor.
         compression_ratio: the amount of compression we get after compressing
                             the gradients.
     """
@@ -143,13 +143,13 @@ def quantize(tensor, clip_const):
 
 def dequantize(quantized_tensor, shape):
     """
-    This method decompress the compressed tensor by restoring the origional
+    This method decompress the compressed tensor by restoring the original
     values from the compressed tensors.
 
     Args:
         tensor_compressed: a tensor that contain the ternarized gradients
-                           and the scalar value for the origional gradients.
-        shape: the shape of the origional gradients' tensor.
+                           and the scalar value for the original gradients.
+        shape: the shape of the original gradients' tensor.
 
     Returns:
         tensor_decompressed: the decompressed tensor, in the same shape as
@@ -164,10 +164,10 @@ def dequantize(quantized_tensor, shape):
 def desparsify(tensors, numel):
     """
     This function re-shapes the sparsified values into the same shape as the
-    origional tensor. This would make dealing with these values easier.
+    original tensor. This would make dealing with these values easier.
     Args:
         tensor: the tensor we need to desparsify.
-        numel: the total number of elements in the origional tensor.
+        numel: the total number of elements in the original tensor.
     Returns:
         The desparsified tensor
     """

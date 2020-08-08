@@ -56,10 +56,10 @@ def sparsify(tensor, compress_ratio):
 def desparsify(tensors, numel):
     """
     This function re-shapes the sparsified values into the same shape as the
-    origional tensor. This would make dealing with these values easier.
+    original tensor. This would make dealing with these values easier.
     Args:
         tensor: the tensor we need to desparsify.
-        numel: the total number of elements in the origional tensor.
+        numel: the total number of elements in the original tensor.
     Returns:
         The desparsified tensor
     """

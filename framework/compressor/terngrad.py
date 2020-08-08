@@ -55,8 +55,8 @@ class TernGradCompressor(Compressor):
 
         Returns:
             compressed_tensor: a tensor that contain the ternarized gradients
-                               and the scalar value for the origional gradients.
-            shape: the shape of the origional gradients' tensor.
+                               and the scalar value for the original gradients.
+            shape: the shape of the original gradients' tensor.
             compression_ratio: the amount of compression we got after compressing
                                 the gradients.
         """
@@ -94,13 +94,13 @@ class TernGradCompressor(Compressor):
     def decompress(self, compressed_tensor, shape):
         """
         This method decompresses the compressed gradients by restoring an
-        estimation of the origional values using the signs and the mean value
+        estimation of the original values using the signs and the mean value
         of the gradients.
 
         Args:
             tensor_compressed: a tensor that contain the quantized gradients
-                               and the mean value for the origional gradients.
-            shape: the shape of the origional gradients' tensor.
+                               and the mean value for the original gradients.
+            shape: the shape of the original gradients' tensor.
 
         Returns:
             tensor_decompressed: the decompressed tensor, in the same shape as

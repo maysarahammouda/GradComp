@@ -24,7 +24,7 @@ class AdaCompCompressor2(Compressor):
         super().__init__()
         self.compensation_const = compensation_const
         self.total_compressed = 0
-        self.total_origional = 0
+        self.total_original = 0
 
     def compress(self, grads, tensor, name):
         """
@@ -40,7 +40,7 @@ class AdaCompCompressor2(Compressor):
             name: the name of the experiment (not used here).
         Returns:
             tensors: the compressed gradients' tensors.
-            ctx: the context (the number of elements and the size of the origional
+            ctx: the context (the number of elements and the size of the original
                     gradients' tensor).
             compression_ratio: the amount of compression we get after compressing
                                 the gradients.
@@ -58,9 +58,9 @@ class AdaCompCompressor2(Compressor):
 
         ctx = tensor.numel(), tensor.size()
 
-        self.total_origional += tensor.numel()
+        self.total_original += tensor.numel()
         self.total_compressed += values.numel() + indices.numel()
-        compression_ratio = self.total_origional / self.total_compressed
+        compression_ratio = self.total_original / self.total_compressed
 
         return tensors, ctx, compression_ratio
 
@@ -111,10 +111,10 @@ def sparsify(grads, tensor, compensation_const):
 def desparsify(tensors, numel):
     """
     This function re-shapes the sparsified values into the same shape as the
-    origional tensor. This would make dealing with these values easier.
+    original tensor. This would make dealing with these values easier.
     Args:
         tensor: the tensor we need to desparsify.
-        numel: the total number of elements in the origional tensor.
+        numel: the total number of elements in the original tensor.
     Returns:
         The desparsified tensor
     """

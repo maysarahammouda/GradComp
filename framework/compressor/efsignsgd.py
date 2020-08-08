@@ -14,7 +14,7 @@ from compressor.compressor import Compressor
 
 class EFSignSGDCompressor(Compressor):
     """
-    This quantization algorithms quantizes the 32-bit values in the origional
+    This quantization algorithms quantizes the 32-bit values in the original
     gradients into 1-bit values. It does that by keeping only the signs of the
     gradients. The special feature in the Error-Feedback SignSGD is the use of
     the residual memory which incorporates the the error made by the compression
@@ -22,7 +22,7 @@ class EFSignSGDCompressor(Compressor):
     algorithm to the same value as the SGD with the same convergance rate.
 
     Args:
-        lr: learning rate (used only in the aggregation step).
+        lr: learning rate (used only in the aggregation step - if needed).
 
     For more information:
     http://proceedings.mlr.press/v97/karimireddy19a.html
@@ -44,7 +44,7 @@ class EFSignSGDCompressor(Compressor):
         Steps:
             1. Check the sign of the gradients and quantize the values to 1 or 0
                 based on their sign.
-            2. Save the mean value of the origional tensor. This is important
+            2. Save the mean value of the original tensor. This is important
                 for the "decompress" function and for the residual memory.
                 Without this, the convergence is not guaranteed.
 
@@ -55,8 +55,8 @@ class EFSignSGDCompressor(Compressor):
 
         Returns:
             tensor_compressed: a tensor that contain the quantized gradients
-                               and the mean value for the origional gradients.
-            shape: the shape of the origional gradients' tensor.
+                               and the mean value for the original gradients.
+            shape: the shape of the original gradients' tensor.
             compression_ratio: the amount of compression we get after compressing
                                 the gradients.
         """
@@ -74,13 +74,13 @@ class EFSignSGDCompressor(Compressor):
 
     def decompress(self, tensor_compressed, shape):
         """
-        This method decompress the compressed tensor by restoring the origional
+        This method decompress the compressed tensor by restoring the original
         values from the compressed tensors.
 
         Args:
             tensor_compressed: a tensor that contain the ternarized gradients
-                               and the scalar value for the origional gradients.
-            shape: the shape of the origional gradients' tensor.
+                               and the scalar value for the original gradients.
+            shape: the shape of the original gradients' tensor.
 
         Returns:
             tensor_decompressed: the decompressed tensor, in the same shape as
@@ -91,17 +91,3 @@ class EFSignSGDCompressor(Compressor):
         sign_decode = mean * sign_decode
         tensor_decompressed = sign_decode.view(shape)
         return tensor_decompressed
-
-
-    def aggregate(self, tensors):
-        """
-        This method aggregates a list of tensors and divides them by the
-        learning rate
-
-        Args:
-            tensors: the tensors to be aggregated.
-
-        Returns:
-            the aggregated tensor.
-        """
-        return sum(tensors) / self.learning_rate
