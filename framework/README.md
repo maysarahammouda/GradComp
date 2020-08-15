@@ -5,7 +5,7 @@
 ___
 
 ### Here is a diagram that shows how the code files in the framework are connected:
-![framework](https://i.ibb.co/zF6cC6Q/framework-2.jpg)
+![framework](https://i.ibb.co/rH1VF5k/framework-update.jpg)
 ___
 
 ### Installation
