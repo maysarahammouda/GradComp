@@ -2,3 +2,5 @@ saved_models/
 saved_models_inference/
 wandb/
 old_framework/
+obsolete/
+__pycache__/
