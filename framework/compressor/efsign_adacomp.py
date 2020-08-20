@@ -143,6 +143,7 @@ def quantize(tensor):
     sign_encode = tensor >= 0
     mean = tensor.abs().mean()
     quantized_tensor = mean, sign_encode.type(torch.uint8)
+
     return quantized_tensor, shape
 
 
@@ -164,6 +165,7 @@ def dequantize(quantized_tensor, shape):
     sign_decode = sign_encode.type(torch.float32) * 2 - 1
     sign_decode = mean * sign_decode
     dequantized_tensor = sign_decode.view(shape)
+
     return dequantized_tensor
 
 

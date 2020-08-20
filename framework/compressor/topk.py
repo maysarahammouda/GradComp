@@ -26,7 +26,7 @@ class TopKCompressor(Compressor):
 
     def compress(self, tensor, name):
         """
-        This function compresses the gradients by choosing the to "compression_ratio"
+        This method compresses the gradients by choosing the to "compression_ratio"
         elements and transmits them along with their indices.
         Args:
             tensor: the tensor we need to quantize.
@@ -51,7 +51,7 @@ class TopKCompressor(Compressor):
 
     def decompress(self, tensors, ctx):
         """
-        This function decompress the compressed tensor by filling empty slots
+        This method decompress the compressed tensor by filling empty slots
         with zeros and reshape back using the original shape.
         Args:
             tensors: the compressed gradients' tensors.

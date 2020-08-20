@@ -64,31 +64,7 @@ class TernGradCompressor(Compressor):
                                 actual applications. The goal here was to show
                                 how TernGrad works.).
         """
-        shape = tensor.size()
-        tensor = tensor.flatten()
-
-        # Step.1: clipping the gradients.
-        # equation(21) in the paper.
-        std = (tensor - torch.mean(tensor)) ** 2
-        std = torch.sqrt(torch.mean(std))   # the standard deviation of the gradients
-        c = self.clip_const * std.item()
-        gradient = torch.clamp(tensor, -c, c)
-
-        # Step.2: getting the maximum norm of all gradients.
-        # equation(2) in the paper (St)
-        abs_gradient = gradient.abs()
-        scalar = abs_gradient.max()
-
-        # Step.3: getting the signs of all gradients and multiplying with the
-        # scalar value from Step.2.
-        sign_gradient = gradient.sign() * scalar
-
-        # Step.4: multiplying with a Bernoulli distribution (either 0 or 1).
-        rnd_sample = torch.empty_like(tensor).uniform_(0, scalar.item())
-        sign_gradient[rnd_sample >= abs_gradient] = 0
-        ternarized_grads = sign_gradient.sign()     # {-1,0,+1}
-
-        compressed_tensor = ternarized_grads.type(torch.int8), scalar.flatten()
+        compressed_tensor, shape = quantize(values, self.clip_const)
 
         compression_ratio = 16
 
@@ -110,7 +86,70 @@ class TernGradCompressor(Compressor):
             tensor_decompressed: the decompressed tensor, in the same shape as
             the origonal gradients' tensor.
         """
-        tensor_compressed, scalar = compressed_tensor
-        sign = tensor_compressed.type(torch.float32)
-        tensor_decompressed = sign * scalar
+        tensor_decompressed = dequantize(quantized_tensor, shape)
+
         return tensor_decompressed.view(shape)
+
+
+def quantize(tensor, clip_const):
+    """
+    This function quantizes the gradients as per TernGrad algorithm.
+
+    Args:
+        tensor: the tensor we need to quantize (after compensation by the
+                residual memory).
+        name: the name of the experiment (not used here).
+
+    Returns:
+        quantized_tensor: a tensor that contain the quantized gradients
+                           and the mean value for the original gradients.
+        shape: the shape of the original gradients' tensor.
+
+    """
+    shape = tensor.size()
+    tensor = tensor.flatten()
+
+    # Step.1: clipping the gradients.
+    # equation(21) in the paper.
+    std = (tensor - torch.mean(tensor)) ** 2
+    std = torch.sqrt(torch.mean(std))   # the standard deviation of the gradients
+    c = clip_const * std.item()
+    gradient = torch.clamp(tensor, -c, c)
+
+    # Step.2: getting the maximum norm of all gradients.
+    # equation(2) in the paper (St)
+    abs_gradient = gradient.abs()
+    scalar = abs_gradient.max()
+
+    # Step.3: getting the signs of all gradients and multiplying with the
+    # scalar from Step.2.
+    sign_gradient = gradient.sign() * scalar
+
+    # Step.4: multiplying with a Bernoulli distribution (either 0 or 1).
+    rnd_sample = torch.empty_like(tensor).uniform_(0, scalar.item())
+    sign_gradient[rnd_sample >= abs_gradient] = 0
+    ternarized_grads = sign_gradient.sign()     # {-1,0,+1}
+
+    quantized_tensor = ternarized_grads.type(torch.int8), scalar.flatten()
+
+    return quantized_tensor, shape
+
+
+def dequantize(quantized_tensor, shape):
+    """
+    This function decompress the compressed tensor by restoring the original
+    values from the compressed tensors.
+
+    Args:
+        tensor_compressed: a tensor that contain the ternarized gradients
+                           and the scalar value for the original gradients.
+        shape: the shape of the original gradients' tensor.
+
+    Returns:
+        dequantized_tensor: the decompressed tensor, in the same shape as
+        the origonal gradients' tensor.
+    """
+    tensor_compressed, scalar = quantized_tensor
+    sign = tensor_compressed.type(torch.float32)
+    dequantized_tensor = sign * scalar
+    return dequantized_tensor.view(shape)

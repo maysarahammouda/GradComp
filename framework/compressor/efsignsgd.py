@@ -60,12 +60,7 @@ class EFSignSGDCompressor(Compressor):
             compression_ratio: the amount of compression we get after compressing
                                 the gradients.
         """
-        shape = tensor.size()
-        tensor = tensor.flatten()
-
-        sign_encode = tensor >= 0
-        mean = tensor.abs().mean()
-        tensor_compressed = mean, sign_encode.type(torch.uint8)
+        tensor_compressed, shape = quantize(tensor)
 
         compression_ratio = 32
 
@@ -86,8 +81,57 @@ class EFSignSGDCompressor(Compressor):
             tensor_decompressed: the decompressed tensor, in the same shape as
             the origonal gradients' tensor.
         """
-        mean, sign_encode = tensor_compressed
-        sign_decode = sign_encode.type(torch.float32) * 2 - 1
-        sign_decode = mean * sign_decode
-        tensor_decompressed = sign_decode.view(shape)
+        tensor_decompressed = dequantize(tensor_compressed, shape)
+
         return tensor_decompressed
+
+
+def quantize(tensor):
+    """
+    This function compresses the gradients based on their signs. If the
+    value of the gradient is greater than or equal to zero, the value will
+    be quantized to +1 (or True), otherwise it will be quantized to 0 (or
+    False). These values will be converted to +1 and -1 using the
+    "decompress" method.
+
+    Args:
+        tensor: the tensor we need to quantize (after compensation by the
+                residual memory).
+        name: the name of the experiment (not used here).
+
+    Returns:
+        tensor_compressed: a tensor that contain the quantized gradients
+                           and the mean value for the original gradients.
+        shape: the shape of the original gradients' tensor.
+        compression_ratio: the amount of compression we get after compressing
+                            the gradients.
+    """
+    shape = tensor.size()
+    tensor = tensor.flatten()
+    sign_encode = tensor >= 0
+    mean = tensor.abs().mean()
+    quantized_tensor = mean, sign_encode.type(torch.uint8)
+
+    return quantized_tensor, shape
+
+
+def dequantize(quantized_tensor, shape):
+    """
+    This function decompress the compressed tensor by restoring the original
+    values from the compressed tensors.
+
+    Args:
+        tensor_compressed: a tensor that contain the ternarized gradients
+                           and the scalar value for the original gradients.
+        shape: the shape of the original gradients' tensor.
+
+    Returns:
+        tensor_decompressed: the decompressed tensor, in the same shape as
+        the origonal gradients' tensor.
+    """
+    mean, sign_encode = quantized_tensor
+    sign_decode = sign_encode.type(torch.float32) * 2 - 1
+    sign_decode = mean * sign_decode
+    dequantized_tensor = sign_decode.view(shape)
+
+    return dequantized_tensor

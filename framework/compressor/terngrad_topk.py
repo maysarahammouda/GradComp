@@ -112,11 +112,7 @@ def sparsify(tensor, compress_ratio):
 
 def quantize(tensor, clip_const):
     """
-    This function compresses the gradients based on their signs. If the
-    value of the gradient is greater than or equal to zero, the value will
-    be quantized to +1 (or True), otherwise it will be quantized to 0 (or
-    False). These values will be converted to +1 and -1 using the
-    "decompress" method.
+    This function quantizes the gradients as per TernGrad algorithm.
 
     Args:
         tensor: the tensor we need to quantize (after compensation by the
@@ -124,11 +120,10 @@ def quantize(tensor, clip_const):
         name: the name of the experiment (not used here).
 
     Returns:
-        tensor_compressed: a tensor that contain the quantized gradients
+        quantized_tensor: a tensor that contain the quantized gradients
                            and the mean value for the original gradients.
         shape: the shape of the original gradients' tensor.
-        compression_ratio: the amount of compression we get after compressing
-                            the gradients.
+
     """
     shape = tensor.size()
     tensor = tensor.flatten()
@@ -170,7 +165,7 @@ def dequantize(quantized_tensor, shape):
         shape: the shape of the original gradients' tensor.
 
     Returns:
-        tensor_decompressed: the decompressed tensor, in the same shape as
+        dequantized_tensor: the decompressed tensor, in the same shape as
         the origonal gradients' tensor.
     """
     tensor_compressed, scalar = quantized_tensor
