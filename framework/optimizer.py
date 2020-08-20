@@ -1,7 +1,11 @@
-## This implpementation was inspired by PyTorch implpementation for SGD
-## (https://github.com/pytorch/pytorch/blob/master/torch/optim/sgd.py)
-## and Horovod implementation for DistributedOptimizer
-## (https://github.com/horovod/horovod/blob/31f1f700b8fa6d3b6df284e291e302593fbb4fa3/horovod/torch/__init__.py)
+#################################################################################################################
+# This code is abandoned. The oprimizer has been incorporated into model_eval.py                                #
+#################################################################################################################
+# This implpementation was inspired by PyTorch implpementation for SGD                                          #
+# (https://github.com/pytorch/pytorch/blob/master/torch/optim/sgd.py)                                           #
+# and Horovod implementation for DistributedOptimizer                                                           #
+# (https://github.com/horovod/horovod/blob/31f1f700b8fa6d3b6df284e291e302593fbb4fa3/horovod/torch/__init__.py)  #
+#################################################################################################################
 
 import torch
 from torch.optim.optimizer import Optimizer, required
@@ -16,6 +20,7 @@ class SGD_Comp(Optimizer):
     This class is a modefied version of the origional SGD optimizer (by PyTorch).
     It handles the gradient compression techniques and eliminates all unncessary
         parts.
+
     Args:
         params (iterable): iterable of parameters to optimize or dicts defining
             parameter groups
@@ -41,6 +46,7 @@ class SGD_Comp(Optimizer):
         """
         This function compresses the gradients based on the compression algorithm
         chosen in self.compressor.
+
         Returns:
             comp_grads_tensors: two tensors containing the compressed gradients
                                 and the corresponding indices.
@@ -65,6 +71,7 @@ class SGD_Comp(Optimizer):
     def step(self, closure=None):
         """
         This function performs a single optimization step.
+
         Args:
             closure (callable, optional): A closure that re-evaluates the model
                                             and returns the loss.

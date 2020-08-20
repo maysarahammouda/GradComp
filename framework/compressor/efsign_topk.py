@@ -1,5 +1,9 @@
 #########################################################################################
-# This implementation was inspired by Horovod's Gradient compression implementation:    #
+# This is the first open-source hybrid algorithm between EF-SignSGD and Top-k.          #
+# This implementation was inspired by the open-source implementation in the             #
+# "Error Feedback Fixes SignSGD and other Gradient Compression Schemes" paper           #
+#                       (https://github.com/epfml/error-feedback-SGD)                   #
+# Horovod's Gradient compression implementation:                                        #
 # (https://github.com/horovod/horovod/tree/31f1f700b8fa6d3b6df284e291e302593fbb4fa3)    #
 # and GRACE open-source framework:                                                      #
 #                   (https://github.com/sands-lab/grace)                                #
@@ -11,8 +15,10 @@ from compressor.compressor import Compressor
 
 class EFSignTopKCompressor(Compressor):
     """
-    This sparsification algorithms chooses the top (highest absolute magnitude)
-    gradients and communicates them.
+    This is a hybrid algorithm between EF-SignSGD quantization and Top-k
+    sparsification algorithms. It is implemented by sparsifying the gradints
+    first, then quantizing the sparsified gradients. For details about the
+    two original methods, please refer to the respective code.
 
     Args:
         compress_ratio: the ratio of the gradients to be kept.
@@ -26,11 +32,14 @@ class EFSignTopKCompressor(Compressor):
 
     def compress(self, tensor, name):
         """
-        This function compresses the gradients by choosing the to "compression_ratio"
-        elements and transmits them along with their indices.
+        This method compresses the gradients by choosing the "compression_ratio"
+        elements and transmits them along with their indices. Then it quantizes
+        then using EF-SignSGD algorithm.
+
         Args:
             tensor: the tensor we need to quantize.
             name: the name of the experiment (not used here).
+
         Returns:
             tensors: the compressed gradients' tensors.
             ctx: the context (the number of elements and the size of the original
@@ -53,12 +62,14 @@ class EFSignTopKCompressor(Compressor):
 
     def decompress(self, tensors, ctx):
         """
-        This function decompress the compressed tensor by filling empty slots
+        This method decompress the compressed tensor by filling empty slots
         with zeros and reshape back using the original shape.
+
         Args:
             tensors: the compressed gradients' tensors.
             ctx: the context (the number of elements and the size of the compressed
                     gradients' tensor).
+
         Returns:
             tensor_decompressed: the decompressed tensor, in the same shape as
             the origonal gradients' tensor.
@@ -77,9 +88,11 @@ def sparsify(tensor, compress_ratio):
     """
     This function performs "sparsification" for "tensor".
     It decides on the number of elements to keep based on the "compress_ratio".
+
     Args:
         tensor: the tensor we need to sparsify.
         compress_ratio: the percentage of the number of elements we want to keep.
+
     Return:
         the values and indices for the choosen elements.
     """
@@ -92,7 +105,7 @@ def sparsify(tensor, compress_ratio):
 
 def quantize(tensor):
     """
-    This method compresses the gradients based on their signs. If the
+    This function compresses the gradients based on their signs. If the
     value of the gradient is greater than or equal to zero, the value will
     be quantized to +1 (or True), otherwise it will be quantized to 0 (or
     False). These values will be converted to +1 and -1 using the
@@ -101,8 +114,6 @@ def quantize(tensor):
     Args:
         tensor: the tensor we need to quantize (after compensation by the
                 residual memory).
-        name: the name of the experiment (not used here).
-
     Returns:
         tensor_compressed: a tensor that contain the quantized gradients
                            and the mean value for the original gradients.
@@ -120,7 +131,7 @@ def quantize(tensor):
 
 def dequantize(quantized_tensor, shape):
     """
-    This method decompress the compressed tensor by restoring the original
+    This function decompress the compressed tensor by restoring the original
     values from the compressed tensors.
 
     Args:
@@ -143,9 +154,11 @@ def desparsify(tensors, numel):
     """
     This function re-shapes the sparsified values into the same shape as the
     original tensor. This would make dealing with these values easier.
+
     Args:
         tensor: the tensor we need to desparsify.
         numel: the total number of elements in the original tensor.
+
     Returns:
         The desparsified tensor
     """

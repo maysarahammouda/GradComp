@@ -1,7 +1,13 @@
+#####################################################################################
+# This code was adapted from:                                                       #
+# https://github.com/deeplearningathome/pytorch-language-model/blob/master/lm.py    #
+#####################################################################################
 import torch.nn as nn
 
 class LSTM(nn.Module):
-    """Container module with an encoder, a recurrent module, and a decoder."""
+    """
+    This class contains the LSTM model used in the project.
+    """
 
     def __init__(self, vocab_size, batch_size, embedding_size, hidden_size, num_layers, dropout_rate, num_step):
         super(LSTM, self).__init__()

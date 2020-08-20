@@ -57,8 +57,12 @@ class TernGradCompressor(Compressor):
             compressed_tensor: a tensor that contain the ternarized gradients
                                and the scalar value for the original gradients.
             shape: the shape of the original gradients' tensor.
-            compression_ratio: the amount of compression we got after compressing
-                                the gradients.
+            compression_ratio: the amount of compression we got after
+                                compressing the gradients. (Here we are fixing
+                                it to 16, assuming that it is encoded properly.
+                                However, this needs to encoded differently for
+                                actual applications. The goal here was to show
+                                how TernGrad works.).
         """
         shape = tensor.size()
         tensor = tensor.flatten()

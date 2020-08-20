@@ -1,3 +1,9 @@
+#####################################################################################
+# This code was partly inspired by:                                                 #
+# https://github.com/salesforce/awd-lstm-lm/                                        #
+#####################################################################################
+
+
 import torch
 import time
 import math
@@ -19,6 +25,7 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device
     """
     This function runs the model on training data.
     It turns on the training mode, which in turn enables dropout.
+
     Args:
         model: the DL model defined in the model.py code.
         criterion: the loss function criterion defined in the main code.
@@ -28,6 +35,7 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device
         epoch: the epoch number, to loop through the data.
         lr: the learning rate.
         args: the command line arguments from the main code.
+
     Returns:
         Nothing.
     """
@@ -84,7 +92,7 @@ def train(model, criterion, optimizer, vocab_size, train_data, epoch, lr, device
         # optimizer.compress_grads()
 
         for name, param in model.named_parameters():
-            # compress and save residual
+            # compress gradients and save residual
             tensor = memory.compensate(param.grad, name, worker_id=worker_id)
             global compression_ratio
             if args.compressor == "adacomp" or args.compressor == "efsignadacomp" or args.compressor == "terngradadacomp" or args.compressor == "adacomp2":
@@ -121,12 +129,14 @@ def evaluate(model, vocab_size, data_source, criterion, epoch, epoch_start_time,
     """
     This function evaluates the model on validation and test data.
     It turns on the evaluation mode, which in turn disables dropout.
+
     Args:
         model: the DL model defined in the model.py code.
         vocab_size: the vocabulary size of the dataset (number of tokens).
         data_source: the dataset to be evaluated (validation / test).
         criterion: the loss function criterion defined in the main code.
         args: the command line arguments from the main code.
+
     Returns:
         Nothing.
     """

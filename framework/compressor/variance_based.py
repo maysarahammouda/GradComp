@@ -11,11 +11,15 @@ from compressor.compressor import Compressor
 
 class VarianceBasedCompressor(Compressor):
     """
-    This sparsification algorithms chooses the top (highest absolute magnitude)
-    gradients and communicates them.
+    This sparsification algorithms chooses the most important gradients based
+    on the relation between the magnitude and the gradients.
 
-    Args:
-        compress_ratio: the ratio of the gradients to be kept.
+    For more information:
+    https://arxiv.org/pdf/1802.06058.pdf
+
+    We have found that this algorithm is totally inefficient when applied to
+    large models/datasets. If you are able to create a more efficient one,
+    please contact us.
     """
 
     def __init__(self, alpha, batch_size):
@@ -27,11 +31,13 @@ class VarianceBasedCompressor(Compressor):
 
     def compress(self, tensor, name):
         """
-        This function compresses the gradients by choosing the to "compression_ratio"
-        elements and transmits them along with their indices.
+        This method compresses the gradients by applying the Variance-Based
+        sparsification algorithm.
+
         Args:
             tensor: the tensor we need to quantize.
             name: the name of the experiment (not used here).
+
         Returns:
             tensors: the compressed gradients' tensors.
             ctx: the context (the number of elements and the size of the original
@@ -39,7 +45,7 @@ class VarianceBasedCompressor(Compressor):
             compression_ratio: the amount of compression we get after compressing
                                 the gradients.
         """
-        tensors = sparsify3(tensor, self.alpha, self.batch_size)
+        tensors = sparsify(tensor, self.alpha, self.batch_size)
         ctx = tensor.numel(), tensor.size()
 
         self.total_original += tensor.numel()
@@ -51,12 +57,14 @@ class VarianceBasedCompressor(Compressor):
 
     def decompress(self, tensors, ctx):
         """
-        This function decompress the compressed tensor by filling empty slots
+        This method decompress the compressed tensor by filling empty slots
         with zeros and reshape back using the original shape.
+
         Args:
             tensors: the compressed gradients' tensors.
             ctx: the context (the number of elements and the size of the compressed
                     gradients' tensor).
+
         Returns:
             tensor_decompressed: the decompressed tensor, in the same shape as
             the origonal gradients' tensor.
@@ -69,10 +77,11 @@ class VarianceBasedCompressor(Compressor):
 def sparsify(tensor, alpha, batch_size):
     """
     This function performs "sparsification" for "tensor".
-    It decides on the number of elements to keep based on the "compress_ratio".
+
     Args:
         tensor: the tensor we need to sparsify.
         compress_ratio: the percentage of the number of elements we want to keep.
+
     Return:
         the values and indices for the choosen elements.
     """
@@ -100,10 +109,11 @@ def sparsify(tensor, alpha, batch_size):
 def sparsify2(tensor, alpha, batch_size):
     """
     This function performs "sparsification" for "tensor".
-    It decides on the number of elements to keep based on the "compress_ratio".
+
     Args:
         tensor: the tensor we need to sparsify.
         compress_ratio: the percentage of the number of elements we want to keep.
+
     Return:
         the values and indices for the choosen elements.
     """
@@ -127,46 +137,14 @@ def sparsify2(tensor, alpha, batch_size):
     return values, indices
 
 
-def sparsify4(tensor, alpha, batch_size):
-    """
-    This function performs "sparsification" for "tensor".
-    It decides on the number of elements to keep based on the "compress_ratio".
-    Args:
-        tensor: the tensor we need to sparsify.
-        compress_ratio: the percentage of the number of elements we want to keep.
-    Return:
-        the values and indices for the choosen elements.
-    """
-    tensor = tensor.flatten()
-    r,v,m = 0,0,1
-    ind = torch.zeros(tensor.numel())
-    gamma = 0.999
-
-    r = torch.cumsum(tensor/batch_size, dim=0)
-    v = torch.cumsum(pow(tensor/batch_size,2), dim=0)
-
-    for i in range(len(tensor)):
-        if pow(r[m-1],2) > alpha*v[m-1] or m == len(r) -1:
-            ind[i] = 1
-            r = torch.cumsum(tensor[i:i+100]/batch_size, dim=0) if len(tensor[i:]>100) else torch.cumsum(tensor[i:]/batch_size, dim=0)
-            v = torch.cumsum(pow(tensor[i:i+100]/batch_size,2), dim=0) if len(tensor[i:]>100) else torch.cumsum(tensor[i:]/batch_size, dim=0)
-            m = 1
-        else:
-            v[m-1] *= gamma
-            m += 1
-
-    indices = torch.where(ind>0)[0].flatten()
-    values = tensor[indices]
-    return values, indices
-
-
 def sparsify3(tensor, alpha, batch_size):
     """
     This function performs "sparsification" for "tensor".
-    It decides on the number of elements to keep based on the "compress_ratio".
+
     Args:
         tensor: the tensor we need to sparsify.
         compress_ratio: the percentage of the number of elements we want to keep.
+
     Return:
         the values and indices for the choosen elements.
     """
@@ -191,20 +169,40 @@ def sparsify3(tensor, alpha, batch_size):
     indices = torch.where(ind>0)[0].flatten()
     values = tensor[indices]
     return values, indices
-#
-# for rr in r:
-#     for vv in v:
-#         if pow(rr,2) > alpha*vv:
-#             # print("i inside",i)
-#             # print("i-m:", i-m)
-#             ind[0] = 1
-#             r = torch.cumsum(tensor[i:]/batch_size, dim=0)
-#             # print("length of r", len(r))
-#             v = torch.cumsum(pow(tensor[i:]/batch_size,2), dim=0)
-#             # print("r", r)
-#             # print("v", v)
-#             # print(ind)
-#             # m = i
+
+
+def sparsify4(tensor, alpha, batch_size):
+    """
+    This function performs "sparsification" for "tensor".
+
+    Args:
+        tensor: the tensor we need to sparsify.
+        compress_ratio: the percentage of the number of elements we want to keep.
+
+    Return:
+        the values and indices for the choosen elements.
+    """
+    tensor = tensor.flatten()
+    r,v,m = 0,0,1
+    ind = torch.zeros(tensor.numel())
+    gamma = 0.999
+
+    r = torch.cumsum(tensor/batch_size, dim=0)
+    v = torch.cumsum(pow(tensor/batch_size,2), dim=0)
+
+    for i in range(len(tensor)):
+        if pow(r[m-1],2) > alpha*v[m-1] or m == len(r) -1:
+            ind[i] = 1
+            r = torch.cumsum(tensor[i:i+100]/batch_size, dim=0) if len(tensor[i:]>100) else torch.cumsum(tensor[i:]/batch_size, dim=0)
+            v = torch.cumsum(pow(tensor[i:i+100]/batch_size,2), dim=0) if len(tensor[i:]>100) else torch.cumsum(tensor[i:]/batch_size, dim=0)
+            m = 1
+        else:
+            v[m-1] *= gamma
+            m += 1
+
+    indices = torch.where(ind>0)[0].flatten()
+    values = tensor[indices]
+    return values, indices
 
 
 def desparsify(tensors, numel):

@@ -1,3 +1,10 @@
+#####################################################################################################
+# This code was adapted from:                                                                       #
+# https://github.com/salesforce/awd-lstm-lm/                                                        #
+# and:                                                                                              #
+# https://medium.com/the-artificial-impostor/notes-neural-language-model-with-pytorch-a8369ba80a5c  #
+#####################################################################################################
+
 '''
 These code is refenced from https://medium.com/the-artificial-impostor/notes-neural-language-model-with-pytorch-a8369ba80a5c
 '''
