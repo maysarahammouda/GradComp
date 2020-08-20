@@ -1,3 +1,8 @@
+###########################################################################################
+# This implementation was inspired by the Horovod's Gradient compression implementation:  #
+# (https://github.com/horovod/horovod/tree/31f1f700b8fa6d3b6df284e291e302593fbb4fa3)      #
+###########################################################################################
+
 from abc import ABC, abstractmethod
 
 class Compressor(ABC):
