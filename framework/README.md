@@ -43,7 +43,6 @@ Sparsification | Quantization | Hybrid
 Top-k | EF-SignSGD | Top-k & EF-SignSGD
 AdaComp | TernGrad | Top-k & TernGrad
 Variance-Based compression | . | AdaComp & EF-SignSGD
-. | . | AdaComp & TernGrad
 
 ___
 
